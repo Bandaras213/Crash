@@ -2,7 +2,8 @@
     "token": "DISCORD_TOKEN",
     "prefix": "€",
   	"botactivity": {
-      "activity": "Streaming Hentai Games",
-      "type": "STREAMING"
+      "activity": "Hentaihaven.org",
+      "type": "WATCHING",
+      "status": "dnd"
     }
 }
