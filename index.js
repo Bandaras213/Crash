@@ -1,11 +1,15 @@
 const Discord = require("discord.js");
 const moment = require('moment');
-let token = process.env.TOKEN
+let token
 
 var bot = new Discord.Client();
 bot.config = require('./config.json');
 bot.log = require('./functions/log.js');
-bot.token = token
+if (process.env.TOKEN == null) {
+    token = bot.config.token
+	 }else{
+    token = process.env.TOKEN}
+		bot.token = token
 
 bot.on('ready', () => require('./events/ready.js')(bot));
 bot.on('message', message => require('./events/message.js')(bot, message, Discord, moment));
