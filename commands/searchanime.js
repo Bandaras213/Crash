@@ -157,7 +157,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         let coverIMG = res0.data[i].attributes.coverImage.original
                         let episodes = res0.data[i].attributes.episodeCount
                         let episodemin = res0.data[i].attributes.episodeLength
-                        let genres = res0.data[i].relationships.categories.links.related<<<<<<< glitch
+                        let genres = res0.data[i].relationships.categories.links.related
 
                         let startfilter = startdate.split("-")
                         let start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0]
