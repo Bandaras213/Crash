@@ -32,7 +32,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
         .then(filter0 => filter0.json())
         .then(async filter0 => {
 
-            //define the embed
             let embed = {
                 "color": 65280,
                 "author": {
@@ -135,6 +134,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 })
                     .then(res0 => res0.json())
                     .then(async res0 => {
+
                         //data
                         let id = res0.data[i].id
                         let type = res0.data[i].type
@@ -157,7 +157,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         let coverIMG = res0.data[i].attributes.coverImage.original
                         let episodes = res0.data[i].attributes.episodeCount
                         let episodemin = res0.data[i].attributes.episodeLength
-                        let genres = res0.data[i].relationships.categories.links.related
+                        let genres = res0.data[i].relationships.categories.links.related<<<<<<< glitch
 
                         let startfilter = startdate.split("-")
                         let start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0]
