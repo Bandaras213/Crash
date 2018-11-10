@@ -1,4 +1,8 @@
 {
     "token": "DISCORD_TOKEN",
-    "prefix": "€"
+    "prefix": "€",
+  	"botactivity": {
+      "activity": "Streaming Hentai Games",
+      "type": "STREAMING"
+    }
 }

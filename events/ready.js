@@ -1,9 +1,10 @@
 const ms = require("ms");
 module.exports = (bot) => {
+let activity = bot.config.botactivity.activity
+let type = bot.config.botactivity.type
     bot.log(`Bot ${bot.user.tag} has started with ${bot.users.size} users, in ${bot.channels.size} channels of ${bot.guilds.size} servers.`, "Started");
-    bot.user.setActivity('Calculating Waifu material', {
-      type: "STREAMING",
-      url: "https://www.twitch.tv/xtobishotz"});
+    bot.user.setActivity(activity, {
+      type: type});
 
 const http = require('http');
 const express = require('express');
