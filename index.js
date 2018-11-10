@@ -18,7 +18,7 @@ bot.on("error", error => require('./events/error.js')(bot, error));
 bot.commands = new Discord.Collection();
 bot.commands.set('benutzer', require('./commands/userinfo.js'));
 bot.commands.set('anime', require('./commands/searchanime.js'));
-bot.commands.set('hilfe', require('./commands/help.js'));
+bot.commands.set('help', require('./commands/help.js'));
 bot.commands.set('test', require('./commands/test.js'));
 
 bot.login(bot.token);
