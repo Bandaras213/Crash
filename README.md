@@ -10,6 +10,7 @@
 | botactivity | | The activity the Bot uses. |
 | | "ACTIVITY" | Changes the Bot activity. |
 | | "TYPE" | Changes the activity type. |
+| | "STATUS" | Changes the status type. |
 
 **Token:**
 

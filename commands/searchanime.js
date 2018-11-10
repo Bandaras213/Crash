@@ -134,7 +134,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 })
                     .then(res0 => res0.json())
                     .then(async res0 => {
-                  console.log(JSON.stringify(res0.data[1], null, 2))
+
                         //data
                         let id = res0.data[i].id
                         let type = res0.data[i].type
@@ -158,7 +158,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         let episodes = res0.data[i].attributes.episodeCount
                         let episodemin = res0.data[i].attributes.episodeLength
                         let genres = res0.data[i].relationships.categories.links.related
-                        let NSFW = res0.data[i].attributes.nsfw
 
                         let startfilter = startdate.split("-")
                         let start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0]
@@ -232,7 +231,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (collected.size == 0) {
                     em1.delete();
                     message.channel.send(`${user}, you didn't react fast enough, try again!`);
-                } else { return }
+                } else { return };
             });
 
         });
