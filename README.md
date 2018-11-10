@@ -6,10 +6,22 @@
 | Setting | Default | Description |
 | ---------------- | ------------ | ------------ |
 | token | "DISCORD_TOKEN" | Discord Bot Token. |
+| prefix | "COMMAND PREFIX" | The prefix to start commands. |
+| botactivity | | The activity the Bot uses. |
+| | "ACTIVITY" | Changes the Bot activity. |
+| | "TYPE" | Changes the activity type. |
+
+**Token:**
 
 Get your Discord Token from [Get Token](https://discordapp.com/developers) and put it on a privat server inside the config.json.
 
 If your using a glitch server put the token in the .env like this TOKEN=Your_token.
+
+**Types:**
+
+Avaliable types are PLAYING, STREAMING, LISTENING, WATCHING.
+
+---
 
 ## Index.js
 **The main file of the bot with all commands and startup references**
@@ -26,15 +38,12 @@ If your using a glitch server put the token in the .env like this TOKEN=Your_tok
 	+ **Error**
 		* This logs erros such as disconnects and lets it auto reconnect.
 
- + ## Commands
-
-	* ### Info
-		- **help**
-			+ Sends an DM embed to the command user and shows all avaliable commands and Infos about them.
-			
-	* ### Anime info
-		- **anime ["Anime Name"]**
-			+ Starts a search for the Anime and gets 7 results that match the name. From these results you can choose the one that you want and the bot gets the Infos for it."
+- ## Commands
+  + **help**
+	  * Sends a DM embed to the command user and shows all avaliable commands and Infos about them.
+  + **anime ["Anime Name"]**
+    * Starts a search for the Anime and gets 7 results that match the name. From these results you can choose the one that you want and the bot gets the Infos for it.
+---
 			
 ## Credits
 
