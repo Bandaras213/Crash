@@ -16,16 +16,16 @@ var emoji = [
 
 module.exports = async (bot, message, args, Discord, moment) => {
 
-    let animename = args.join(' ');
+    let manganame = args.join(' ');
     let user = message.member.user
     let i
     let color = Math.floor(Math.random() * 16777214) + 1;
     let uid = message.author.id
     message.delete();
 
-    if (args.length == 0) return message.channel.send(`${user}, I need a Title to search for! (Usage: €anime Title)`)
+    if (args.length == 0) return message.channel.send(`${user}, I need a Title to search for! (Usage: €manga Title)`)
 
-    await fetch('https://kitsu.io/api/edge/anime/?filter[text]=' + animename, {
+    await fetch('https://kitsu.io/api/edge/manga/?filter[text]=' + manganame, {
         method: 'GET',
         headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json' }
     })
@@ -35,7 +35,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             let embed = {
                 "color": 65280,
                 "author": {
-                    "name": `Results for ${animename}`,
+                    "name": `Results for ${manganame}`,
                 },
                 "footer": {
                     "text": `Please choose by using the reactions below!`,
@@ -76,7 +76,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 ]
             };
 
-            const em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed })
+            const em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed })
             await em1.react(emoji[1]);
             await em1.react(emoji[2]);
             await em1.react(emoji[3]);
@@ -128,17 +128,16 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         break
                 };
 
-                await fetch('https://kitsu.io/api/edge/anime/?filter[text]=' + animename, {
+                await fetch('https://kitsu.io/api/edge/manga/?filter[text]=' + manganame, {
                     method: 'GET',
                     headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json' }
                 })
                     .then(res0 => res0.json())
                     .then(async res0 => {
-
                         //data
                         let id = res0.data[i].id
                         let type = res0.data[i].type
-                        let url = "https://kitsu.io/anime/" + id
+                        let url = "https://kitsu.io/manga/" + id
 
                         //data.atributes
                         let synopsis = res0.data[i].attributes.synopsis
@@ -149,21 +148,15 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         let enddate = res0.data[i].attributes.endDate
                         let poprank = res0.data[i].attributes.popularityRank
                         let ratingrank = res0.data[i].attributes.ratingRank
-                        let ager = res0.data[i].attributes.ageRating
-                        let agerg = res0.data[i].attributes.ageRatingGuide
                         let subtype = res0.data[i].attributes.subtype
                         let status = res0.data[i].attributes.status
                         let posterIMG = res0.data[i].attributes.posterImage.medium
                         let coverIMG = res0.data[i].attributes.coverImage
-                        let episodes = res0.data[i].attributes.episodeCount
-                        let episodemin = res0.data[i].attributes.episodeLength
+                        let chapters = res0.data[i].attributes.chapterCount
                         let genres = res0.data[i].relationships.categories.links.related
 
                         let startfilter = startdate.split("-")
                         let start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0]
-                        if (episodemin == null) {
-                            episodemin = "20"
-                        };
 
                         let endfilter
                         let end
@@ -174,15 +167,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             end = endfilter[2] + "." + endfilter[1] + "." + endfilter[0]
                         };
 
-                        let runtime
-                        if (episodes === null) {
-                            runtime = "Can't Calculate Runtime without Episodes."
-                        } else {
-                            runtime = Math.round(episodes * episodemin / 60) + " Hours"
-                        };
-
-                        if (episodes === null) {
-                            episodes = "No Episodes in the Kitsu.io Database."
+                        if (chapters === null) {
+                            chapters = "No Chapters in the Kitsu.io Database."
                         };
 
                         if (coverIMG === null) {
@@ -204,23 +190,20 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                     .setTitle(canonTitle)
                                     .setColor(color)
                                     .setDescription(synopsis)
-                                    .setFooter(canonTitle) 
+                                    .setFooter(canonTitle)
                                     .setImage(coverIMG)
                                     .setThumbnail(posterIMG)
                                     .setTimestamp()
                                     .setURL(url)
                                     .addField('Genre:', genreval.join(", "))
-                                    .addField('Episodes:', episodes)
+                                    .addField('Chapters:', chapters)
                                     .addField('Status:', status.charAt(0).toUpperCase() + status.substring(1))
                                     .addField('Aired:', `${subtype.charAt(0).toUpperCase() + subtype.substring(1)} ${start} - ${end}`)
                                     .addField('Type:', type.charAt(0).toUpperCase() + type.substring(1))
-                                    .addField('Length per Episode:', `${episodemin} Min`)
-                                    .addField('Time spend to watch:', `${runtime}`)
                                     .addField('Community Rating:', avgRating + "%")
                                     .addField('Favorit Counter:', favcount)
                                     .addField('Popularity Rank:', poprank)
                                     .addField('Rating Rank:', ratingrank)
-                                    .addField('Age Category:', `${ager} ${agerg}`)
 
                                 await em1.edit(`${user}, here is the result for ${canonTitle}`, { embed });
                             });
@@ -231,7 +214,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (collected.size == 0) {
                     em1.delete();
                     message.channel.send(`${user}, you didn't react fast enough, try again!`);
-                } else { return };
+                } else { return }
             });
 
         });
