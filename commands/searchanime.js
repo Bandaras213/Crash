@@ -1,221 +1,238 @@
 const fetch = require('node-fetch');
 
+var emoji = [
+    "❌", //X
+    "\u0031\u20E3", //1
+    "\u0032\u20E3", //2
+    "\u0033\u20E3", //3
+    "\u0034\u20E3", //4
+    "\u0035\u20E3", //5
+    "\u0036\u20E3", //6
+    "\u0037\u20E3", //7
+    "\u0038\u20E3", //8
+    "\u0039\u20E3", //9
+];
+
+
 module.exports = async (bot, message, args, Discord, moment) => {
 
-let animename = args.join(' ')
-let user = message.member.user
-let i
-let color = Math.floor(Math.random() * 16777214) + 1;
-const mes = await message.channel.send(`${user} is choosing a Anime.`)
+    let animename = args.join(' ');
+    let user = message.member.user
+    let i
+    let color = Math.floor(Math.random() * 16777214) + 1;
+    let uid = message.author.id
+    message.delete();
 
-await fetch('https://kitsu.io/api/edge/anime/?filter[text]=' + animename, {
-  	method: 'GET',
-  	headers: {'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json'} 
-})
-	.then(filter0 => filter0.json())
-  .then(async filter0 => {
-  
-  //define the embed
-    let embed = {
-        "color": 65280,
-        "author": {
-            "name": `Please choose`,
-        },
-        "footer": {
-            "text": `Please choose a number between 0-7`,
-        },
-        "fields": [
-            {
-                "name": filter0.data[0].attributes.canonicalTitle,
-              	"value": "Number: 1"
-            },
-            {
-                "name": filter0.data[1].attributes.canonicalTitle,
-              	"value": "Number: 2"
-            },
-            {
-                "name": filter0.data[2].attributes.canonicalTitle,
-              	"value": "Number: 3"
-            },
-            {
-                "name": filter0.data[3].attributes.canonicalTitle,
-              	"value": "Number: 4"
-            },
-            {
-                "name": filter0.data[4].attributes.canonicalTitle,
-              	"value": "Number: 5"
-            },
-            {
-                "name": filter0.data[5].attributes.canonicalTitle,
-              	"value": "Number: 6"
-            },
-            {
-                "name": filter0.data[6].attributes.canonicalTitle,
-              	"value": "Number: 7"
-            },
-          	{
-          			"name": "None of the above (Go back)",
-              	"value": "Number: 0"
-            }
-        ]
-    }
+    if (args.length == 0) return message.channel.send(`${user}, I need a Title to search for! (Usage: €anime Title)`)
 
-await message.author.send(`This is what the search found for ${animename}`, { embed })
-  .then (async (newmsg) => {
-  
-let msgs = await newmsg.channel.awaitMessages(msg => {
-  			return msg.content;
-}, { max: 1, time: 20000 });
-  
-      if (Number.isInteger(parseInt(msgs.map(msg => msg.content)))) {
+    await fetch('https://kitsu.io/api/edge/anime/?filter[text]=' + animename, {
+        method: 'GET',
+        headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json' }
+    })
+        .then(filter0 => filter0.json())
+        .then(async filter0 => {
 
-        let msgint = parseInt(msgs.map(msg => msg.content), 10);
-        if (msgint === NaN || msgint > 7 || msgint === "") {
-            return mes.edit("I need a number between 0-7")
-        }
-        
-        switch (msgint) {
-            case 0:
-                mes.edit("Number 0 got chosen and the command got canceled.")
-            		newmsg.channel.send("You choose number 0 and canceled the command.")
-            		message.delete
-                break
-            case 1:
-                mes.edit("Number 1 got chosen")
-            		newmsg.channel.send(`You choose number 1 the result got send to ${message.channel.name}.`)
-            		message.delete
-            		i = 0
-                break
-            case 2:
-                mes.edit("Number 2 got chosen");
-            		newmsg.channel.send(`You choose number 2 the results got send to ${message.channel.name}.`)
-            		message.delete
-            		i = 1
-                break
-            case 3:
-                mes.edit("Number 3 got chosen");
-            		newmsg.channel.send(`You choose number 3 results got send to ${message.channel.name}.`)
-            		message.delete
-            		i = 2
-                break
-            case 4:
-                mes.edit("Number 4 got chosen");
-            		newmsg.channel.send(`You choose number 4 results got send to ${message.channel.name}.`)
-            		message.delete
-            		i = 3
-                break
-            case 5:
-                mes.edit("Number 5 got chosen");
-            		newmsg.channel.send(`You choose number 5 results got send to ${message.channel.name}.`)
-            		message.delete
-            		i = 4
-                break
-            case 6:
-                mes.edit("Number 6 got chosen");
-            		newmsg.channel.send(`You choose number 6 results got send to ${message.channel.name}.`)
-            		message.delete
-            		i = 5
-                break
-            case 7:
-                mes.edit("Nummber 7 got chosen");
-            		newmsg.channel.send(`You choose number 7 results got send to ${message.channel.name}.`)
-    						message.delete
-            		i = 6
-                break
-        };
-            } else {
-        return mes.edit("I need a number between 0 - 7")
-}
-  
+            //define the embed
+            let embed = {
+                "color": 65280,
+                "author": {
+                    "name": `Results for ${animename}`,
+                },
+                "footer": {
+                    "text": `Please choose by using the reactions below!`,
+                },
+                "fields": [
+                    {
+                        "name": filter0.data[0].attributes.canonicalTitle,
+                        "value": `Reaction: ${emoji[1]}`
+                    },
+                    {
+                        "name": filter0.data[1].attributes.canonicalTitle,
+                        "value": `Reaction: ${emoji[2]}`
+                    },
+                    {
+                        "name": filter0.data[2].attributes.canonicalTitle,
+                        "value": `Reaction: ${emoji[3]}`
+                    },
+                    {
+                        "name": filter0.data[3].attributes.canonicalTitle,
+                        "value": `Reaction: ${emoji[4]}`
+                    },
+                    {
+                        "name": filter0.data[4].attributes.canonicalTitle,
+                        "value": `Reaction: ${emoji[5]}`
+                    },
+                    {
+                        "name": filter0.data[5].attributes.canonicalTitle,
+                        "value": `Reaction: ${emoji[6]}`
+                    },
+                    {
+                        "name": filter0.data[6].attributes.canonicalTitle,
+                        "value": `Reaction: ${emoji[7]}`
+                    },
+                    {
+                        "name": "None of the above (Go back)",
+                        "value": `Reaction: ${emoji[0]}`
+                    }
+                ]
+            };
 
-await fetch('https://kitsu.io/api/edge/anime/?filter[text]=' + animename, {
-  	method: 'GET',
-  	headers: {'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json'} 
-})
-	.then(res0 => res0.json())
-  .then(async res0 => {
-//console.log(JSON.stringify(res0.data[0], null, 2))
-//data
-let id = res0.data[i].id
-let type = res0.data[i].type
-let url = "https://kitsu.io/anime/" + id
+            const em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed })
+            await em1.react(emoji[1]);
+            await em1.react(emoji[2]);
+            await em1.react(emoji[3]);
+            await em1.react(emoji[4]);
+            await em1.react(emoji[5]);
+            await em1.react(emoji[6]);
+            await em1.react(emoji[7]);
+            await em1.react(emoji[0]);
 
-//data.atributes
-let synopsis = res0.data[i].attributes.synopsis
-let canonTitle = res0.data[i].attributes.canonicalTitle
-let avgRating = res0.data[i].attributes.averageRating
-let favcount = res0.data[i].attributes.favoritesCount
-let startdate = res0.data[i].attributes.startDate
-let enddate = res0.data[i].attributes.endDate
-let poprank = res0.data[i].attributes.popularityRank
-let ratingrank = res0.data[i].attributes.ratingRank
-let ager = res0.data[i].attributes.ageRating
-let agerg = res0.data[i].attributes.ageRatingGuide
-let subtype =  res0.data[i].attributes.subtype
-let status = res0.data[i].attributes.status
-let posterIMG = res0.data[i].attributes.posterImage.medium
-let coverIMG = res0.data[i].attributes.coverImage.original
-let episodes = res0.data[i].attributes.episodeCount
-let episodemin = res0.data[i].attributes.episodeLength
-let genres = res0.data[i].relationships.categories.links.related
+            const filter = (reaction, user) => {
+                return emoji.includes(reaction.emoji.name) === true && user.id === uid;
+            };
 
-let startfilter = startdate.split("-")
-let start = startfilter[2]+"."+startfilter[1]+"."+startfilter[0]
-if (episodemin == null) {
-  episodemin = "20"}
-let endfilter
-let end
-if (enddate === null) {
-  end = "running"
-}else{
-endfilter = enddate.split("-")
-end = endfilter[2]+"."+endfilter[1]+"."+endfilter[0]
-}
-let runtime 
-if (episodes === null) {
-  runtime = "Can't Calculate runtime without Episodes."
-}else{
- runtime = Math.round(episodes * episodemin / 60) + " Hours"
-}
-if (episodes === null) {
-  episodes = "No Episodes in Kitsu.io Database."}
-if (coverIMG === null) {
-  coverIMG = "./img/empty.png"}
-  
-await fetch(`${genres}`, {
-  	method: 'GET',
-  	headers: {'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json'} 
-})
-	.then(res1 => res1.json())
-  .then(async res1 => {
-  //console.log(JSON.stringify(res1, null, 2))
-  var genreval=[];
-	for(var o = 0; o < res1.data.length; o++){
-  genreval.push(res1.data[o].attributes.title);
-}
+            const collector = em1.createReactionCollector(filter, { max: 1, time: 15000 });
 
-    const embed = new Discord.RichEmbed()
-  .setTitle(canonTitle)
-  .setColor(color)
-  .setDescription(synopsis)
-  .setFooter(canonTitle)
-  .setImage(coverIMG)
-  .setThumbnail(posterIMG)
-  .setTimestamp()
-  .setURL(url)
-  .addField('Genre:', genreval.join(", "))
-  .addField('Episodes:', episodes)
-  .addField('Status:', status.charAt(0).toUpperCase() + status.substring(1))
-  .addField('Aired:', `${subtype.charAt(0).toUpperCase() + subtype.substring(1)} ${start} - ${end}`)
-  .addField('Type:', type.charAt(0).toUpperCase() + type.substring(1))
-  .addField('Length per Episode:', `${episodemin} Min`)
-  .addField('Time spend to watch:', `${runtime}`)
-  .addField('Community Rating:', avgRating+"%") 
-  .addField('Favorit Counter:', favcount)
-  .addField('Popularity Rank:', poprank)
-  .addField('Rating Rank:', ratingrank)
-  .addField('Age Category:', `${ager} ${agerg}`)
- 
-  await mes.edit(`${user}, Here is the result for ${canonTitle}`, {embed});
-  message.delete(2000)
-})})})})}
+            collector.on('collect', async (reaction, reactionCollector) => {
+                let chosen = reaction.emoji.name
+
+                switch (chosen) {
+                    case emoji[0]:
+                        return em1.delete(), message.channel.send(`${user} aborted the command`);
+                    case emoji[1]:
+                        em1.clearReactions();
+                        i = 0
+                        break
+                    case emoji[2]:
+                        em1.clearReactions();
+                        i = 1
+                        break
+                    case emoji[3]:
+                        em1.clearReactions();
+                        i = 2
+                        break
+                    case emoji[4]:
+                        em1.clearReactions();
+                        i = 3
+                        break
+                    case emoji[5]:
+                        em1.clearReactions();
+                        i = 4
+                        break
+                    case emoji[6]:
+                        em1.clearReactions();
+                        i = 5
+                        break
+                    case emoji[7]:
+                        em1.clearReactions();
+                        i = 6
+                        break
+                };
+
+                await fetch('https://kitsu.io/api/edge/anime/?filter[text]=' + animename, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json' }
+                })
+                    .then(res0 => res0.json())
+                    .then(async res0 => {
+                        //data
+                        let id = res0.data[i].id
+                        let type = res0.data[i].type
+                        let url = "https://kitsu.io/anime/" + id
+
+                        //data.atributes
+                        let synopsis = res0.data[i].attributes.synopsis
+                        let canonTitle = res0.data[i].attributes.canonicalTitle
+                        let avgRating = res0.data[i].attributes.averageRating
+                        let favcount = res0.data[i].attributes.favoritesCount
+                        let startdate = res0.data[i].attributes.startDate
+                        let enddate = res0.data[i].attributes.endDate
+                        let poprank = res0.data[i].attributes.popularityRank
+                        let ratingrank = res0.data[i].attributes.ratingRank
+                        let ager = res0.data[i].attributes.ageRating
+                        let agerg = res0.data[i].attributes.ageRatingGuide
+                        let subtype = res0.data[i].attributes.subtype
+                        let status = res0.data[i].attributes.status
+                        let posterIMG = res0.data[i].attributes.posterImage.medium
+                        let coverIMG = res0.data[i].attributes.coverImage.original
+                        let episodes = res0.data[i].attributes.episodeCount
+                        let episodemin = res0.data[i].attributes.episodeLength
+                        let genres = res0.data[i].relationships.categories.links.related
+
+                        let startfilter = startdate.split("-")
+                        let start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0]
+                        if (episodemin == null) {
+                            episodemin = "20"
+                        };
+
+                        let endfilter
+                        let end
+                        if (enddate === null) {
+                            end = "running"
+                        } else {
+                            endfilter = enddate.split("-")
+                            end = endfilter[2] + "." + endfilter[1] + "." + endfilter[0]
+                        };
+
+                        let runtime
+                        if (episodes === null) {
+                            runtime = "Can't Calculate Runtime without Episodes."
+                        } else {
+                            runtime = Math.round(episodes * episodemin / 60) + " Hours"
+                        };
+
+                        if (episodes === null) {
+                            episodes = "No Episodes in the Kitsu.io Database."
+                        };
+
+                        if (coverIMG === null) {
+                            coverIMG = "./img/empty.png"
+                        };
+
+                        await fetch(`${genres}`, {
+                            method: 'GET',
+                            headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json' }
+                        })
+                            .then(res1 => res1.json())
+                            .then(async res1 => {
+                                var genreval = [];
+                                for (var o = 0; o < res1.data.length; o++) {
+                                    genreval.push(res1.data[o].attributes.title);
+                                };
+
+                                const embed = new Discord.RichEmbed()
+                                    .setTitle(canonTitle)
+                                    .setColor(color)
+                                    .setDescription(synopsis)
+                                    .setFooter(canonTitle)
+                                    .setImage(coverIMG)
+                                    .setThumbnail(posterIMG)
+                                    .setTimestamp()
+                                    .setURL(url)
+                                    .addField('Genre:', genreval.join(", "))
+                                    .addField('Episodes:', episodes)
+                                    .addField('Status:', status.charAt(0).toUpperCase() + status.substring(1))
+                                    .addField('Aired:', `${subtype.charAt(0).toUpperCase() + subtype.substring(1)} ${start} - ${end}`)
+                                    .addField('Type:', type.charAt(0).toUpperCase() + type.substring(1))
+                                    .addField('Length per Episode:', `${episodemin} Min`)
+                                    .addField('Time spend to watch:', `${runtime}`)
+                                    .addField('Community Rating:', avgRating + "%")
+                                    .addField('Favorit Counter:', favcount)
+                                    .addField('Popularity Rank:', poprank)
+                                    .addField('Rating Rank:', ratingrank)
+                                    .addField('Age Category:', `${ager} ${agerg}`)
+
+                                await em1.edit(`${user}, here is the result for ${canonTitle}`, { embed });
+                            });
+                    });
+            });
+
+            collector.on('end', collected => {
+                if (collected.size == 0) {
+                    em1.delete();
+                    message.channel.send(`${user}, you didn't react fast enough, try again!`);
+                } else { return };
+            });
+
+        });
+};
