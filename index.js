@@ -5,11 +5,15 @@ let token
 var bot = new Discord.Client();
 bot.config = require('./config.json');
 bot.log = require('./functions/log.js');
+bot.caps = require('./functions/capitalize.js');
+
 if (process.env.TOKEN == null) {
-    token = bot.config.token
-	 }else{
-    token = process.env.TOKEN}
-		bot.token = token
+  token = bot.config.token
+} else {
+  token = process.env.TOKEN
+};
+
+bot.token = token
 
 bot.on('ready', () => require('./events/ready.js')(bot));
 bot.on('message', message => require('./events/message.js')(bot, message, Discord, moment));
