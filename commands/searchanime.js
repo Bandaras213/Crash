@@ -42,31 +42,31 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 },
                 "fields": [
                     {
-                        "name": `${filter0.data[0].attributes.canonicalTitle} - ${filter0.data[0].type}`,
+                        "name": `${filter0.data[0].attributes.canonicalTitle} - ${filter0.data[0].type.charAt(0).toUpperCase() + filter0.data[0].type.substring(1)}`,
                         "value": `Reaction: ${emoji[1]}`
                     },
                     {
-                        "name": `${filter0.data[1].attributes.canonicalTitle} - ${filter0.data[1].type}`,
+                        "name": `${filter0.data[1].attributes.canonicalTitle} - ${filter0.data[1].type.charAt(0).toUpperCase() + filter0.data[1].type.substring(1)}`,
                         "value": `Reaction: ${emoji[2]}`
                     },
                     {
-                        "name": `${filter0.data[2].attributes.canonicalTitle} - ${filter0.data[2].type}`,
+                        "name": `${filter0.data[2].attributes.canonicalTitle} - ${filter0.data[2].type.charAt(0).toUpperCase() + filter0.data[2].type.substring(1)}`,
                         "value": `Reaction: ${emoji[3]}`
                     },
                     {
-                        "name": `${filter0.data[3].attributes.canonicalTitle} - ${filter0.data[3].type}`,
+                        "name": `${filter0.data[3].attributes.canonicalTitle} - ${filter0.data[3].type.charAt(0).toUpperCase() + filter0.data[3].type.substring(1)}`,
                         "value": `Reaction: ${emoji[4]}`
                     },
                     {
-                        "name": `${filter0.data[4].attributes.canonicalTitle} - ${filter0.data[4].type}`,
+                        "name": `${filter0.data[4].attributes.canonicalTitle} - ${filter0.data[4].type.charAt(0).toUpperCase() + filter0.data[4].type.substring(1)}`,
                         "value": `Reaction: ${emoji[5]}`
                     },
                     {
-                        "name": `${filter0.data[5].attributes.canonicalTitle} - ${filter0.data[5].type}`,
+                        "name": `${filter0.data[5].attributes.canonicalTitle} - ${filter0.data[5].type.charAt(0).toUpperCase() + filter0.data[5].type.substring(1)}`,
                         "value": `Reaction: ${emoji[6]}`
                     },
                     {
-                        "name": `${filter0.data[6].attributes.canonicalTitle} - ${filter0.data[6].type}`,
+                        "name": `${filter0.data[6].attributes.canonicalTitle} - ${filter0.data[6].type.charAt(0).toUpperCase() + filter0.data[6].type.substring(1)}`,
                         "value": `Reaction: ${emoji[7]}`
                     },
                     {
