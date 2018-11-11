@@ -13,7 +13,6 @@ var emoji = [
     "\u0039\u20E3", //9
 ];
 
-
 module.exports = async (bot, message, args, Discord, moment) => {
 
     let manganame = args.join(' ');
@@ -42,31 +41,31 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 },
                 "fields": [
                     {
-                        "name": `${filter0.data[0].attributes.canonicalTitle} - ${filter0.data[0].type.charAt(0).toUpperCase() + filter0.data[0].type.substring(1)} - ${filter0.data[0].id}`,
+                        "name": `${filter0.data[0].attributes.canonicalTitle} - ${bot.caps(filter0.data[0].type)} - ${filter0.data[0].id}`,
                         "value": `Reaction: ${emoji[1]}`
                     },
                     {
-                        "name": `${filter0.data[1].attributes.canonicalTitle} - ${filter0.data[1].type.charAt(0).toUpperCase() + filter0.data[1].type.substring(1)} - ${filter0.data[1].id}`,
+                        "name": `${filter0.data[1].attributes.canonicalTitle} - ${bot.caps(filter0.data[1].type)} - ${filter0.data[1].id}`,
                         "value": `Reaction: ${emoji[2]}`
                     },
                     {
-                        "name": `${filter0.data[2].attributes.canonicalTitle} - ${filter0.data[2].type.charAt(0).toUpperCase() + filter0.data[2].type.substring(1)} - ${filter0.data[2].id}`,
+                        "name": `${filter0.data[2].attributes.canonicalTitle} - ${bot.caps(filter0.data[2].type)} - ${filter0.data[2].id}`,
                         "value": `Reaction: ${emoji[3]}`
                     },
                     {
-                        "name": `${filter0.data[3].attributes.canonicalTitle} - ${filter0.data[3].type.charAt(0).toUpperCase() + filter0.data[3].type.substring(1)} - ${filter0.data[3].id}`,
+                        "name": `${filter0.data[3].attributes.canonicalTitle} - ${bot.caps(filter0.data[3].type)} - ${filter0.data[3].id}`,
                         "value": `Reaction: ${emoji[4]}`
                     },
                     {
-                        "name": `${filter0.data[4].attributes.canonicalTitle} - ${filter0.data[4].type.charAt(0).toUpperCase() + filter0.data[4].type.substring(1)} - ${filter0.data[4].id}`,
+                        "name": `${filter0.data[4].attributes.canonicalTitle} - ${bot.caps(filter0.data[4].type)} - ${filter0.data[4].id}`,
                         "value": `Reaction: ${emoji[5]}`
                     },
                     {
-                        "name": `${filter0.data[5].attributes.canonicalTitle} - ${filter0.data[5].type.charAt(0).toUpperCase() + filter0.data[5].type.substring(1)} - ${filter0.data[5].id}`,
+                        "name": `${filter0.data[5].attributes.canonicalTitle} - ${bot.caps(filter0.data[5].type)} - ${filter0.data[5].id}`,
                         "value": `Reaction: ${emoji[6]}`
                     },
                     {
-                        "name": `${filter0.data[6].attributes.canonicalTitle} - ${filter0.data[6].type.charAt(0).toUpperCase() + filter0.data[6].type.substring(1)} - ${filter0.data[6].id}`,
+                        "name": `${filter0.data[6].attributes.canonicalTitle} - ${bot.caps(filter0.data[6].type)} - ${filter0.data[6].id}`,
                         "value": `Reaction: ${emoji[7]}`
                     },
                     {
@@ -156,71 +155,92 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         let genres = res0.data[i].relationships.categories.links.related
 
                         if (startdate === null && enddate === null) {
-                          	start = "No startdate in the database"
-                          	end = "No enddate in the database"};
+                            start = "No startdate in the database"
+                            end = "No enddate in the database"
+                        };
 
                         let startfilter
                         let start
                         if (startdate === null) {
-                          	start = "Not running or no data in databank."}
-                  			else{
-                        		startfilter = startdate.split("-")
-                            start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0]};
-                  
-                  			let endfilter
+                            start = "Not running or no data in databank."
+                        } else {
+                            startfilter = startdate.split("-")
+                            start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0]
+                        };
+
+                        let endfilter
                         let end
                         if (enddate === null) {
                             end = "running"
                         } else {
                             endfilter = enddate.split("-")
-                            end = endfilter[2] + "." + endfilter[1] + "." + endfilter[0]};
-                  
+                            end = endfilter[2] + "." + endfilter[1] + "." + endfilter[0]
+                        };
+
                         if (avgRating === null) {
-                          	avgRating = "No data in databank."}
-                  			else {avgRating = avgRating + "%"};
-                  
-                  			if (favcount === null) {
-                          	favcount = "No data in databank."};
-                  			if (poprank === null) {
-                          	poprank = "No data in databank."};
-                  			if (ratingrank === null) {
-                          	ratingrank = "No data in databank."};
-                  
-                  			if (subtype === null) {
-                          	subtype = "No data in database."
-                        }else {subtype = subtype.charAt(0).toUpperCase() + subtype.substring(1)};
-                  
-                  			if (status === null) {
-                          	status = "No data in databank."
-                        }else {status = status.charAt(0).toUpperCase() + status.substring(1)};
-                  
-                  			if (posterIMG === null) {
-                          	posterIMG = 'https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848'};
+                            avgRating = "No data in databank."
+                        } else {
+                            avgRating = avgRating + "%"
+                        };
+
+                        if (favcount === null) {
+                            favcount = "No data in databank."
+                        };
+
+                        if (poprank === null) {
+                            poprank = "No data in databank."
+                        };
+
+                        if (ratingrank === null) {
+                            ratingrank = "No data in databank."
+                        };
+
+                        if (subtype === null) {
+                            subtype = "No data in database."
+                        } else {
+                            subtype = bot.caps(subtype);
+                        };
+
+                        if (status === null) {
+                            status = "No data in databank."
+                        } else {
+                            status = bot.caps(status);
+                        };
+
+                        if (posterIMG === null) {
+                            posterIMG = 'https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848'
+                        };
 
                         if (chapters === null) {
-                            chapters = "No Chapters in the Kitsu.io Database."};
+                            chapters = "No Chapters in the Kitsu.io Database."
+                        };
 
                         if (coverIMG === null) {
                             coverIMG = ""
-                        }else{ coverIMG = coverIMG.original};
-                				
+                        } else {
+                            coverIMG = coverIMG.original
+                        };
+
                         await fetch(`${genres}`, {
                             method: 'GET',
                             headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json' }
                         })
                             .then(res1 => res1.json())
                             .then(async res1 => {
-                          			var genreval = []
-                          			if (res1.data[0].attributes.title === null) {
-                              			genreval.push(null)
-                                }else {
-                                for (var o = 0; o < res1.data.length; o++) {
-                                		genreval.push(res1.data[o].attributes.title)
-                                }};
-                          
-                        				if (genreval == null || genreval == "") {
-                                  	genreval = "No genres in databank."
-                                }else { genreval = genreval.join(", ")};
+                                var genreval = []
+                                if (res1.data[0].attributes.title === null) {
+                                    genreval.push(null)
+                                } else {
+                                    for (var o = 0; o < res1.data.length; o++) {
+                                        genreval.push(res1.data[o].attributes.title)
+                                    };
+                                };
+
+                                if (genreval == null || genreval == "") {
+                                    genreval = "No genres in databank."
+                                } else {
+                                    genreval = genreval.join(", ");
+                                };
 
                                 const embed = new Discord.RichEmbed()
                                     .setTitle(canonTitle)
@@ -234,8 +254,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                     .addField('Genre:', genreval)
                                     .addField('Chapters:', chapters)
                                     .addField('Status:', status)
-                                    .addField('Aired:', `${subtype} ${start} - ${end}`)
-                                    .addField('Type:', type.charAt(0).toUpperCase() + type.substring(1))
+                                    .addField('Published:', `${subtype} ${start} - ${end}`)
+                                    .addField('Type:', bot.caps(type))
                                     .addField('Community Rating:', avgRating)
                                     .addField('Favorit Counter:', favcount)
                                     .addField('Popularity Rank:', poprank)
@@ -252,6 +272,5 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     message.channel.send(`${user}, you didn't react fast enough, try again!`);
                 } else { return }
             });
-
         });
 };
