@@ -42,31 +42,31 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 },
                 "fields": [
                     {
-                        "name": filter0.data[0].attributes.canonicalTitle,
+                        "name": `${filter0.data[0].attributes.canonicalTitle} - ${filter0.data[0].type}`,
                         "value": `Reaction: ${emoji[1]}`
                     },
                     {
-                        "name": filter0.data[1].attributes.canonicalTitle,
+                        "name": `${filter0.data[1].attributes.canonicalTitle} - ${filter0.data[1].type}`,
                         "value": `Reaction: ${emoji[2]}`
                     },
                     {
-                        "name": filter0.data[2].attributes.canonicalTitle,
+                        "name": `${filter0.data[2].attributes.canonicalTitle} - ${filter0.data[2].type}`,
                         "value": `Reaction: ${emoji[3]}`
                     },
                     {
-                        "name": filter0.data[3].attributes.canonicalTitle,
+                        "name": `${filter0.data[3].attributes.canonicalTitle} - ${filter0.data[3].type}`,
                         "value": `Reaction: ${emoji[4]}`
                     },
                     {
-                        "name": filter0.data[4].attributes.canonicalTitle,
+                        "name": `${filter0.data[4].attributes.canonicalTitle} - ${filter0.data[4].type}`,
                         "value": `Reaction: ${emoji[5]}`
                     },
                     {
-                        "name": filter0.data[5].attributes.canonicalTitle,
+                        "name": `${filter0.data[5].attributes.canonicalTitle} - ${filter0.data[5].type}`,
                         "value": `Reaction: ${emoji[6]}`
                     },
                     {
-                        "name": filter0.data[6].attributes.canonicalTitle,
+                        "name": `${filter0.data[6].attributes.canonicalTitle} - ${filter0.data[6].type}`,
                         "value": `Reaction: ${emoji[7]}`
                     },
                     {
