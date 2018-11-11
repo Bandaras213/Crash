@@ -159,11 +159,17 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         let episodemin = res0.data[i].attributes.episodeLength
                         let genres = res0.data[i].relationships.categories.links.related
 
-                        let startfilter = startdate.split("-")
-                        let start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0]
-                        if (episodemin == null) {
-                            episodemin = "20"
-                        };
+                        if (startdate === null && enddate === null) {
+                          	start = "No startdate in the database"
+                          	end = "No enddate in the database"};
+                        
+                        let startfilter
+                        let start
+                        if (startdate === null) {
+                          	start = "Not running or no data in databank."}
+                  			else{
+                        		startfilter = startdate.split("-")
+                            start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0]};
 
                         let endfilter
                         let end
@@ -173,17 +179,45 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             endfilter = enddate.split("-")
                             end = endfilter[2] + "." + endfilter[1] + "." + endfilter[0]
                         };
+                  
+                        if (avgRating === null) {
+                          	avgRating = "No data in databank."}
+                  			else {avgRating = avgRating + "%"};
+                  
+                  			if (favcount === null) {
+                          	favcount = "No data in databank."};
+                  			if (poprank === null) {
+                          	poprank = "No data in databank."};
+                  			if (ratingrank === null) {
+                          	ratingrank = "No data in databank."};
+                  			if (ager === null) {
+                          	ager = "No data in database."};
+                  			if (agerg === null) {
+                          	agerg = "No data in databank."};
+                  
+                  			if (subtype === null) {
+                          	subtype = "No data in database."
+                        }else {subtype = subtype.charAt(0).toUpperCase() + subtype.substring(1)};
+                  
+                  			if (status === null) {
+                          	status = "No data in databank."
+                        }else {status = status.charAt(0).toUpperCase() + status.substring(1)};
+                  
+                  			if (posterIMG === null) {
+                          	posterIMG = 'https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848'};
 
                         let runtime
-                        if (episodes === null) {
-                            runtime = "Can't Calculate Runtime without Episodes."
+                        if (episodes === null || episodemin === null) {
+                            runtime = "Can't Calculate Runtime without Episodes or Episode length."
                         } else {
                             runtime = Math.round(episodes * episodemin / 60) + " Hours"
                         };
 
                         if (episodes === null) {
-                            episodes = "No Episodes in the Kitsu.io Database."
-                        };
+                            episodes = "No Episodes in the Kitsu.io Database."};
+                  
+                  			if (episodemin === null) {
+                          	episodemin = "No data in database."};
 
                         if (coverIMG === null) {
                             coverIMG = ""
@@ -199,6 +233,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                 for (var o = 0; o < res1.data.length; o++) {
                                     genreval.push(res1.data[o].attributes.title);
                                 };
+                          			if (genreval == null || genreval == "") {
+                                  	genreval = "No genres in databank."
+                                }else { genreval = genreval.join(", ")};
 
                                 const embed = new Discord.RichEmbed()
                                     .setTitle(canonTitle)
@@ -209,14 +246,14 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                     .setThumbnail(posterIMG)
                                     .setTimestamp()
                                     .setURL(url)
-                                    .addField('Genre:', genreval.join(", "))
+                                    .addField('Genre:', genreval)
                                     .addField('Episodes:', episodes)
-                                    .addField('Status:', status.charAt(0).toUpperCase() + status.substring(1))
-                                    .addField('Aired:', `${subtype.charAt(0).toUpperCase() + subtype.substring(1)} ${start} - ${end}`)
+                                    .addField('Status:', status)
+                                    .addField('Aired:', `${subtype} ${start} - ${end}`)
                                     .addField('Type:', type.charAt(0).toUpperCase() + type.substring(1))
                                     .addField('Length per Episode:', `${episodemin} Min`)
                                     .addField('Time spend to watch:', `${runtime}`)
-                                    .addField('Community Rating:', avgRating + "%")
+                                    .addField('Community Rating:', avgRating)
                                     .addField('Favorit Counter:', favcount)
                                     .addField('Popularity Rank:', poprank)
                                     .addField('Rating Rank:', ratingrank)
