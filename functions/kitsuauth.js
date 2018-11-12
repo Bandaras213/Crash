@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 
 module.export = async (bot) => {
+    
     let username
     let password
     let clientid

@@ -80,8 +80,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     let NSFW = [];
                     for (var a = 0; a < 7; a++) {
                         if (filter0.data[a].attributes.nsfw == true) {
-                            NSFW.push(":stop_sign:" + "NSFW" + ":stop_sign:");
-                        } else { NSFW.push("") };
+                            NSFW.push("🔞" + "NSFW" + "🔞");
+                        } else {
+                            NSFW.push("");
+                        };
                     };
 
                     let embed = {
@@ -90,7 +92,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             "name": `Results for "${animename}"`,
                         },
                         "footer": {
-                            "text": `Please choose by using the reactions below!`,
+                            "text": `Please choose by using the Reactions below!`,
                         },
                         "fields": [
                             {
@@ -384,7 +386,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                                 if (nsfw == false) {
                                                     await em1.edit(`${user}, here is the result for ${canonTitle}`, { embed });
                                                 } else {
-                                                    await em1.delete()
+                                                    await em1.delete();
                                                     await message.channel.send(`${user}, You've selected a NSFW Anime! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
                                                     await message.author.send(`Here is the result for ${canonTitle}`, { embed });
                                                 };
