@@ -155,14 +155,14 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         let genres = res0.data[i].relationships.categories.links.related
 
                         if (startdate === null && enddate === null) {
-                            start = "No startdate in the database"
-                            end = "No enddate in the database"
+                            start = "No Startdate in the Database."
+                            end = "No Enddate in the Database."
                         };
 
                         let startfilter
                         let start
                         if (startdate === null) {
-                            start = "Not running or no data in databank."
+                            start = "Not Running or no Data in Database."
                         } else {
                             startfilter = startdate.split("-")
                             start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0]
@@ -171,38 +171,38 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         let endfilter
                         let end
                         if (enddate === null) {
-                            end = "running"
+                            end = "Running"
                         } else {
                             endfilter = enddate.split("-")
                             end = endfilter[2] + "." + endfilter[1] + "." + endfilter[0]
                         };
 
                         if (avgRating === null) {
-                            avgRating = "No data in databank."
+                            avgRating = "No Data in Database."
                         } else {
                             avgRating = avgRating + "%"
                         };
 
                         if (favcount === null) {
-                            favcount = "No data in databank."
+                            favcount = "No Data in Database."
                         };
 
                         if (poprank === null) {
-                            poprank = "No data in databank."
+                            poprank = "No Data in Database."
                         };
 
                         if (ratingrank === null) {
-                            ratingrank = "No data in databank."
+                            ratingrank = "No Data in Database."
                         };
 
                         if (subtype === null) {
-                            subtype = "No data in database."
+                            subtype = "No Data in Database."
                         } else {
                             subtype = bot.caps(subtype);
                         };
 
                         if (status === null) {
-                            status = "No data in databank."
+                            status = "No Data in Database."
                         } else {
                             status = bot.caps(status);
                         };
@@ -237,7 +237,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                 };
 
                                 if (genreval == null || genreval == "") {
-                                    genreval = "No genres in databank."
+                                    genreval = "No Genres in Database."
                                 } else {
                                     genreval = genreval.join(", ");
                                 };
