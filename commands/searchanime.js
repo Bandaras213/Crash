@@ -15,6 +15,53 @@ var emoji = [
 
 module.exports = async (bot, message, args, Discord, moment) => {
 
+		let username
+    let password
+    let clientid
+    let clientsecret
+
+    if (process.env.KITSUUSERNAME) {
+        username = process.env.KITSUUSERNAME
+    } else {
+        username = bot.config.KITSUUSERNAME
+    };
+
+    if (process.env.KITSUPASSWORD) {
+        password = process.env.KITSUPASSWORD
+    } else {
+        password = bot.config.KITSUPASSWORD
+    };
+
+    if (process.env.KITSUCLIENTID) {
+        clientid = process.env.KITSUCLIENTID
+    } else {
+        clientid = bot.config.KITSUCLIENTID
+    };
+
+    if (process.env.KITSUCLIENTSECRET) {
+        clientsecret = process.env.KITSUCLIENTSECRET
+    } else {
+        clientsecret = bot.config.KITSUCLIENTSECRET
+    };
+
+    const authbody = {
+        grant_type: 'password',
+        username: username,
+        password: password,
+        client_id: clientid,
+        client_secret: clientsecret
+    };
+  
+  await fetch('https://kitsu.io/api/oauth/token', {
+        method: 'post',
+        body:    JSON.stringify(authbody),
+        headers: {'Content-Type': 'application/json' },
+        })
+        .then(tores => tores.json())
+        .then(async tores => {
+    
+    let toktype = tores.token_type
+    let acctok = tores.access_token
     let animename = args.join(' ');
     let user = message.member.user
     let i
@@ -26,11 +73,17 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
     await fetch('https://kitsu.io/api/edge/anime/?filter[text]=' + animename, {
         method: 'GET',
-        headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json' }
-    })
+        headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}`}
+    		})
         .then(filter0 => filter0.json())
         .then(async filter0 => {
-
+      				let NSFW = [];
+              for (var a = 0; a < 7; a++) {
+        			if (filter0.data[a].attributes.nsfw == true) {
+              		NSFW.push(":stop_sign:"+"NSFW"+":stop_sign:");
+              }else { NSFW.push("")};
+              }
+      
             let embed = {
                 "color": 65280,
                 "author": {
@@ -41,35 +94,35 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 },
                 "fields": [
                     {
-                        "name": `${filter0.data[0].attributes.canonicalTitle} - ${bot.caps(filter0.data[0].type)}`,
+                        "name": `${filter0.data[0].attributes.canonicalTitle} (${bot.caps(filter0.data[0].attributes.subtype)}) ${NSFW[0]}`,
                         "value": `Reaction: ${emoji[1]}`
                     },
                     {
-                        "name": `${filter0.data[1].attributes.canonicalTitle} - ${bot.caps(filter0.data[1].type)}`,
+                        "name": `${filter0.data[1].attributes.canonicalTitle} (${bot.caps(filter0.data[1].attributes.subtype)}) ${NSFW[1]}`,
                         "value": `Reaction: ${emoji[2]}`
                     },
                     {
-                        "name": `${filter0.data[2].attributes.canonicalTitle} - ${bot.caps(filter0.data[2].type)}`,
+                        "name": `${filter0.data[2].attributes.canonicalTitle} (${bot.caps(filter0.data[2].attributes.subtype)}) ${NSFW[2]}`,
                         "value": `Reaction: ${emoji[3]}`
                     },
                     {
-                        "name": `${filter0.data[3].attributes.canonicalTitle} - ${bot.caps(filter0.data[3].type)}`,
+                        "name": `${filter0.data[3].attributes.canonicalTitle} (${bot.caps(filter0.data[3].attributes.subtype)}) ${NSFW[3]}`,
                         "value": `Reaction: ${emoji[4]}`
                     },
                     {
-                        "name": `${filter0.data[4].attributes.canonicalTitle} - ${bot.caps(filter0.data[4].type)}`,
+                        "name": `${filter0.data[4].attributes.canonicalTitle} (${bot.caps(filter0.data[4].attributes.subtype)}) ${NSFW[4]}`,
                         "value": `Reaction: ${emoji[5]}`
                     },
                     {
-                        "name": `${filter0.data[5].attributes.canonicalTitle} - ${bot.caps(filter0.data[5].type)}`,
+                        "name": `${filter0.data[5].attributes.canonicalTitle} (${bot.caps(filter0.data[5].attributes.subtype)}) ${NSFW[5]}`,
                         "value": `Reaction: ${emoji[6]}`
                     },
                     {
-                        "name": `${filter0.data[6].attributes.canonicalTitle} - ${bot.caps(filter0.data[6].type)}`,
+                        "name": `${filter0.data[6].attributes.canonicalTitle} (${bot.caps(filter0.data[6].attributes.subtype)}) ${NSFW[6]}`,
                         "value": `Reaction: ${emoji[7]}`
                     },
                     {
-                        "name": "None of the above (Go back)",
+                        "name": "None of the above (Abort Command)",
                         "value": `Reaction: ${emoji[0]}`
                     }
                 ]
@@ -129,7 +182,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
                 await fetch('https://kitsu.io/api/edge/anime/?filter[text]=' + animename, {
                     method: 'GET',
-                    headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json' }
+                    headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}`}
                 })
                     .then(res0 => res0.json())
                     .then(async res0 => {
@@ -156,7 +209,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         let coverIMG = res0.data[i].attributes.coverImage
                         let episodes = res0.data[i].attributes.episodeCount
                         let episodemin = res0.data[i].attributes.episodeLength
-                        let genres = res0.data[i].relationships.categories.links.related
+                        let genres = res0.data[i].relationships.genres.links.related
+                        let categories = res0.data[i].relationships.categories.links.related
+                        let videoid = res0.data[i].attributes.youtubeVideoId
+                        let nsfw = res0.data[i].attributes.nsfw
+                        
 
                         if (startdate === null && enddate === null) {
                             start = "No startdate in the database"
@@ -190,7 +247,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         if (favcount === null) {
                             favcount = "No data in databank."
                         };
-
+                  
+                  			if (videoid == null || videoid == undefined) {
+														videoid = "DLzxrzFCyOs"
+												};
+ 
                         if (poprank === null) {
                             poprank = "No data in databank."
                         };
@@ -222,21 +283,38 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         if (posterIMG === null) {
                             posterIMG = 'https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848'
                         };
-
+                				
+                  			let time
+                  			function timeConvert(n) {
+							 					var num = n;
+							 					var hours = (num / 60);
+								  			var rhours = Math.floor(hours);
+								  			var minutes = (hours - rhours) * 60;
+								  			var rminutes = Math.floor(minutes);
+                          
+                  			if (rhours === 0) {
+                          	time = rminutes + " minute(s)."
+                        }else { time = "approx" + rhours + " hour(s) and " + rminutes + " minute(s)."};
+                        };
+                  
+                  			if (time == undefined || time == null) {
+                          	time = "No data in database"};
+                  
                         let runtime
                         if (episodes === null || episodemin === null) {
                             runtime = "Can't Calculate Runtime without Episodes or Episode length."
                         } else {
-                            runtime = Math.round(episodes * episodemin / 60) + " Hours"
+                          	runtime = episodes * episodemin
+                          	timeConvert(runtime)
                         };
 
                         if (episodes === null) {
-                            episodes = "No Episodes in the Kitsu.io Database."
+                            episodes = "No Episodes in the Kitsu.io database."
                         };
 
                         if (episodemin === null) {
                             episodemin = "No data in database."
-                        };
+                        }else { episodemin = episodemin + " Min"};
 
                         if (coverIMG === null) {
                             coverIMG = ""
@@ -246,15 +324,32 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
                         await fetch(`${genres}`, {
                             method: 'GET',
-                            headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json' }
-                        })
+                            headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}`}
+                        		})
                             .then(res1 => res1.json())
                             .then(async res1 => {
                                 var genreval = [];
                                 for (var o = 0; o < res1.data.length; o++) {
-                                    genreval.push(res1.data[o].attributes.title);
+                                    genreval.push(res1.data[o].attributes.name);
                                 };
-
+                          
+                        await fetch(`${categories}`, {
+                            method: 'GET',
+                            headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}`}
+                        		})
+                            .then(res9 => res9.json())
+                            .then(async res9 => {
+                              	var categoryval = [];
+                              	for (var owo = 0; owo < res9.data.length; owo++) {
+                              			categoryval.push(res9.data[owo].attributes.title);
+                              	};
+                                
+																if (categoryval == null || categoryval == "") {
+																		categoryval = "No categories in databank."
+																} else {
+																		categoryval = categoryval.join(", ");
+																};
+								
                                 if (genreval == null || genreval == "") {
                                     genreval = "No genres in databank."
                                 } else {
@@ -270,20 +365,22 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                     .setThumbnail(posterIMG)
                                     .setTimestamp()
                                     .setURL(url)
-                                    .addField('Genre:', genreval)
-                                    .addField('Episodes:', episodes)
+                                    .addField('Type:', `${subtype}`)
                                     .addField('Status:', status)
-                                    .addField('Aired:', `${subtype} ${start} - ${end}`)
-                                    .addField('Type:', bot.caps(type))
-                                    .addField('Length per Episode:', `${episodemin} Min`)
-                                    .addField('Time Needed to Complete:', `${runtime}`)
+                                		.addField('Preview Trailer:', `[Click Me](https://www.youtube.com/watch?v=` + `${videoid})`)
+                                    .addField('Categories:', categoryval)
+                                    .addField('Aired:', `From ${start} to ${end}`)
+                                    .addField('Episodes:', episodes)
+                                    .addField('Episode Length:', `${episodemin}`)
+                                    .addField('Total Runtime:', `${time}`)
                                     .addField('Community Rating:', avgRating)
-                                    .addField('Favorit Counter:', favcount)
-                                    .addField('Popularity Rank:', poprank)
-                                    .addField('Rating Rank:', ratingrank)
                                     .addField('Age Category:', `${ager} ${agerg}`)
-
+                                
+																if (nsfw == false) {
                                 await em1.edit(`${user}, here is the result for ${canonTitle}`, { embed });
+                                }else { await em1.delete()
+                                  			await message.channel.send(`${user}, nsfw anime pls check DM for your results.`);
+                                    		await message.author.send(embed)};
                             });
                     });
             });
@@ -295,4 +392,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 } else { return };
             });
         });
+		});
+});
 };
