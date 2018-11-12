@@ -1,7 +1,8 @@
 const fetch = require('node-fetch');
 
 module.export = async (bot) => {
-		let username
+    
+    let username
     let password
     let clientid
     let clientsecret
@@ -38,13 +39,13 @@ module.export = async (bot) => {
         client_id: clientid,
         client_secret: clientsecret
     };
-  
-  await fetch('https://kitsu.io/api/oauth/token', {
-                method: 'post',
-            body:    JSON.stringify(body),
-        headers: {'Content-Type': 'application/json' },
-        })
+
+    await fetch('https://kitsu.io/api/oauth/token', {
+        method: 'post',
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+    })
         .then(res => res.json())
         .then(json => console.log(json));
-  
+
 };
