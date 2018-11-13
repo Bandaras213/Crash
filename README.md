@@ -52,6 +52,8 @@ Avaliable types are PLAYING, STREAMING, LISTENING, WATCHING.
     * Starts a search for a Anime and gets 7 results that match the name. From these results you can choose the one that you want and the bot gets the Infos for it.
   +	**manga ["Manga Name"]**
   	* Starts a search for a Manga and gets 7 results that match the name with type and ID. From these results you can choose the one that you want and the Bot gets the Infos for it.
+  + **rdmanime**
+  	* Displays a random anime.
 ---
 			
 ## Credits
