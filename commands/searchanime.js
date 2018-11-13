@@ -331,8 +331,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
                                 await fetch(`${genres}`, {
                                     method: 'GET',
-                                    headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}` },
-                                  	redirect: 'manual'
+                                    headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}` }
                                 })
                                     .then(res1 => res1.json())
                                     .then(async res1 => {
@@ -340,7 +339,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                         for (var o = 0; o < res1.data.length; o++) {
                                             genreval.push(res1.data[o].attributes.name);
                                         };
-                                  console.log(JSON.stringify(res1, null, 2))
 
                                         await fetch(`${categories}`, {
                                             method: 'GET',

@@ -2,8 +2,8 @@
     "token": "DISCORD_TOKEN",
     "prefix": "€",
     "botactivity": {
-        "activity": "NIGHTCORE 24/7 Radio",
-        "type": "LISTENING",
+        "activity": "4pm Js Coding",
+        "type": "STREAMING",
         "status": "dnd"
     },
     "KITSUUSERNAME": "username",
