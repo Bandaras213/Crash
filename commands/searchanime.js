@@ -300,7 +300,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
                                     if (hours === 0) {
                                         time = minutes + " minute(s)."
-                                    } else { time = "Approximately " + hours + " hour(s) and " + minutes + " minute(s)." };
+                                    } else {
+                                        time = "Approximately " + hours + " hour(s) and " + minutes + " minute(s)."
+                                    };
                                 };
 
                                 if (time == undefined || time == null) {
@@ -312,7 +314,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                     runtime = "Can't Calculate Runtime without Episodes or Episode length."
                                 } else {
                                     runtime = episodes * episodemin
-                                    timeConvert(runtime)
+                                    timeConvert(runtime);
                                 };
 
                                 if (episodes === null) {
@@ -321,7 +323,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
                                 if (episodemin === null) {
                                     episodemin = "No Data in Database."
-                                } else { episodemin = episodemin + " Min" };
+                                } else {
+                                    episodemin = episodemin + " Min"
+                                };
 
                                 if (coverIMG === null) {
                                     coverIMG = ""
