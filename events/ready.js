@@ -17,7 +17,7 @@ module.exports = (bot) => {
     type = bot.config.botactivity.type
   };
 
-  if (process.env.botactivity.status) {
+  if (process.env.ACTIVITYSTATUS) {
     status = process.env.ACTIVITYSTATUS
   } else {
     status = bot.config.botactivity.status
