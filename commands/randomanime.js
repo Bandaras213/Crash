@@ -64,7 +64,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 let idb = ida.split("=");
                 let idc = idb.pop();
                 let idnum = Math.floor(Math.random() * idc) + 1;
-                
                 	
             await fetch('https://kitsu.io/api/edge/anime/' + idnum, {
                 method: 'GET',
@@ -72,7 +71,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             })
                 .then(filter0 => filter0.json())
                 .then(async filter0 => {
-                    let NSFW = filter0.data.attributes.nsfw
+                    let nsfw = filter0.data.attributes.nsfw
                     let newid = filter0.data.id
                     
                   await fetch('https://kitsu.io/api/edge/anime/' + newid, {
