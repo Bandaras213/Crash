@@ -65,7 +65,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     let idc = idb.pop();
                     let idnum = Math.floor(Math.random() * idc) + 1;
 
-
                     await fetch('https://kitsu.io/api/edge/anime/' + idnum, {
                         method: 'GET',
                         headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}` }
