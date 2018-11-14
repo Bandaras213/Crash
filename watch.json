@@ -10,7 +10,7 @@
       "^public/",
       "^dist/"
     ],
-    "include": [      
+    "include": [
       "\\.js$",
       "\\.json"
     ]

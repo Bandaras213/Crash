@@ -34,7 +34,6 @@
     "tweetnacl": "^1.0.0",
     "ws": "^6.1.0",
     "node-fetch": "^2.2.0",
-    "graphql": "^14.0.2",
-    "simple-oauth2": "^2.2.1"
+    "graphql": "^14.0.2"
   }
 }
