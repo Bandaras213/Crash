@@ -415,7 +415,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     start = "Not Running or no Data in Database.";
                 } else {
                     startfilter = startdate;
-                    start = startfilter.day + "." + startfilter.month + "." + startfilter.year;
+                    start = startfilter.day + "/" + startfilter.month + "/" + startfilter.year;
                 };
 
                 let endday = enddate.day;
@@ -480,7 +480,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     if (hours === 0) {
                         time = minutes + " minute(s)."
                     } else {
-                        time = "Approximately " + hours + " hour(s) and " + minutes + " minute(s).";
+                        time = hours + " hour(s) and " + minutes + " minute(s).";
                     };
                 };
 
@@ -503,7 +503,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (episodemin === null) {
                     episodemin = "No Data in Database.";
                 } else {
-                    episodemin = episodemin + " Min";
+                    episodemin = episodemin + " minutes.";
                 };
 
                 if (coverIMG === null) {
@@ -539,7 +539,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     .addField('Aired:', `From ${season} ${start} to ${end}`)
                     .addField('Episodes:', episodes)
                     .addField('Episode Length:', `${episodemin}`)
-                    .addField('Total Runtime:', `${time}`)
+                    .addField('Estimated Total Runtime:', `${time}`)
                     .addField('Community Rating:', avgRating)
                     .addField('Source:', `${sourcefilter}`)
 
