@@ -6,6 +6,7 @@ dependencies:
   discord.js: 11.4.2
   erlpack: 0.1.2
   express: 4.16.4
+  graphql: 14.0.2
   libsodium-wrappers: 0.7.3
   long: 4.0.0
   moment: 2.22.2
@@ -560,6 +561,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-vcfuiIxogLV4DlGBHIUOwI0IbrJ8HWPc4MU7HzviGeNho/UJDfi6B5p3sHeWIQ0KGIU0Jpxi5ZHxemQfLkkAwQ==
+  /graphql/14.0.2:
+    dependencies:
+      iterall: 1.2.2
+    dev: false
+    engines:
+      node: '>= 6.x'
+    resolution:
+      integrity: sha512-gUC4YYsaiSJT1h40krG3J+USGlwhzNTXSb4IOZljn9ag5Tj+RkoXrWp+Kh7WyE3t1NCfab5kzCuxBIvOMERMXw==
   /har-schema/2.0.0:
     dev: false
     engines:
@@ -681,6 +690,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
+  /iterall/1.2.2:
+    dev: false
+    resolution:
+      integrity: sha512-yynBb1g+RFUPY64fTrFv7nsjRrENBQJaX2UL+2Szc9REFrSNm1rpSXHGzhmAy7a9uv3vlvgBlXnf9RqmPH1/DA==
   /jsbn/0.1.1:
     dev: false
     resolution:
@@ -1464,6 +1477,7 @@ specifiers:
   discord.js: ^11.4.2
   erlpack: ^0.1.2
   express: ^4.16.4
+  graphql: ^14.0.2
   libsodium-wrappers: ^0.7.3
   long: ^4.0.0
   moment: ^2.22.2

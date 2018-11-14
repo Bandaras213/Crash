@@ -4,13 +4,13 @@ module.exports = (str) => {
         return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase();
 
     } else if (typeof str == "object") {
-        var arr2str = "";
+        let arr2str = "";
         for (let i = 0; i < str.length; i++) {
             arr2str += str[i].charAt(0).toUpperCase() + str[i].substring(1).toLowerCase() + " ";
         };
-        return arr2str;
-
+        return arr2str
     } else {
-        return undefined;
+        return undefined
     };
 };
+

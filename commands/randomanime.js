@@ -71,7 +71,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     })
                         .then(filter0 => filter0.json())
                         .then(async filter0 => {
-                            let NSFW = filter0.data.attributes.nsfw
+                            let nsfw = filter0.data.attributes.nsfw
                             let newid = filter0.data.id
 
                             await fetch('https://kitsu.io/api/edge/anime/' + newid, {
@@ -170,9 +170,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
                                         if (hours === 0) {
                                             time = minutes + " minute(s)."
-                                        } else {
-                                            time = "Approximately " + hours + " hour(s) and " + minutes + " minute(s)."
-                                        };
+                                        } else { time = "Approximately " + hours + " hour(s) and " + minutes + " minute(s)." };
                                     };
 
                                     if (time == undefined || time == null) {
@@ -193,9 +191,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
                                     if (episodemin === null) {
                                         episodemin = "No Data in Database."
-                                    } else {
-                                        episodemin = episodemin + " Min"
-                                    };
+                                    } else { episodemin = episodemin + " Min" };
 
                                     if (coverIMG === null) {
                                         coverIMG = ""
@@ -238,13 +234,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                                 .addField('Episode Length:', `${episodemin}`)
                                                 .addField('Total Runtime:', `${time}`)
                                                 .addField('Community Rating:', avgRating)
-                                                .addField('Age Category:', `${ager} ${agerg}`);
+                                                .addField('Age Category:', `${ager} ${agerg}`)
 
-                                            if (NSFW == false) {
-                                                await message.channel.send(`${user}, Here is your random Anime! It's: ${canonTitle}`, { embed });
+                                            if (nsfw == false) {
+                                                await message.channel.send(`${user}, here is your random result it is ${canonTitle}`, { embed });
                                             } else {
-                                                await message.channel.send(`${user}, Your random selected Anime is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                                                await message.author.send(`Here is your random Anime! It's: ${canonTitle}`, { embed });
+                                                await message.channel.send(`${user}, You're random selection was a NSFW Anime! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
+                                                await message.author.send(`Here is your random result it is ${canonTitle}`, { embed });
                                             };
                                         });
                                 });
