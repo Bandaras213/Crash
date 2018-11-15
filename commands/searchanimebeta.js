@@ -112,7 +112,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 };
 
                 field1.push({
-                    "name": `${fetch1.data.Page.media[a].title.romaji} (${bot.caps(fetch1.data.Page.media[a].format)}) ${NSFW[a]}`,
+                    "name": `${fetch1.data.Page.media[a].title.romaji} (${bot.caps(fetch1.data.Page.media[a].format.split("_"))}) ${NSFW[a]}`,
                     "value": `Reaction: ${emoji[a + 1]}`
                 });
             };
@@ -332,7 +332,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 return emoji.includes(reaction.emoji.name) === true && user.id === uid;
             };
 
-            const collector = em1.createReactionCollector(filter, { max: 1, time: 15000 });
+            const collector = await em1.createReactionCollector(filter, { max: 1, time: 15000 });
 
             collector.on('collect', async (reaction, reactionCollector) => {
                 let chosen = reaction.emoji.name;
@@ -400,8 +400,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     //var timez = new Date().getTime();
                     dateairing = new Date(nextepi.airingAt * 1000);
                     dateairing = dateairing.toUTCString();
-                    dateairing = moment(dateairing).format('DD.MM.YYYY, h:mm:ss a');
-                    nextepi = "Episode: " + nextepi.episode + " Airing at: " + dateairing;
+                    dateairing = `${moment(dateairing).format('DD.MM.YYYY')}` + " at " + `${moment(dateairing).format('hh:mm a')}`;
+                    nextepi = "Episode " + nextepi.episode + ", Airing on: " + dateairing;
                 };
 
                 if (startdate === null && enddate === null) {
@@ -415,20 +415,27 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     start = "Not Running or no Data in Database.";
                 } else {
                     startfilter = startdate;
-                    start = startfilter.day + "/" + startfilter.month + "/" + startfilter.year;
+                    start = startfilter.day + "." + startfilter.month + "." + startfilter.year;
                 };
 
                 let endday = enddate.day;
                 let endmonth = enddate.month;
                 let endyear = enddate.year;
                 let end;
-                if (enddate === null) {
-                    end = "Running";
+
+                if (enddate == null) {
+                    end = "(Ongoing)";
                 } else {
-                    end = enddate.day + "/" + enddate.month + "/" + enddate.year;
+                    end = "to " + enddate.day + "." + enddate.month + "." + enddate.year;
                 };
-                if (endday == null || endmonth == null)
-                    end = endyear;
+
+                if (endday == null || endmonth == null) {
+                    if (endyear == null) {
+                        end = "(Ongoing)";
+                    } else {
+                        end = "to " + endyear;
+                    };
+                };
 
                 if (avgRating === null) {
                     avgRating = "No Data in Database.";
@@ -478,9 +485,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     let minutes = Math.floor((n / 60 - hours) * 60);
 
                     if (hours === 0) {
-                        time = minutes + " minute(s)."
+                        time = minutes + " minute(s)"
+                    } else if (minutes === 0) {
+                        time = hours + " hour(s)"
                     } else {
-                        time = hours + " hour(s) and " + minutes + " minute(s).";
+                        time = hours + " hour(s) and " + minutes + " minute(s)";
                     };
                 };
 
@@ -503,7 +512,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (episodemin === null) {
                     episodemin = "No Data in Database.";
                 } else {
-                    episodemin = episodemin + " minutes.";
+                    episodemin = episodemin + " minutes";
                 };
 
                 if (coverIMG === null) {
@@ -531,12 +540,12 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     .setThumbnail(posterIMG)
                     .setTimestamp()
                     .setURL(url)
-                    .addField('Type:', `${bot.caps(format)}`)
-                    .addField('Status:', `${status}`)
-                    .addField('Next Episode:', `${nextepi}`)
                     .addField('Preview Trailer:', `[Click Me](https://www.youtube.com/watch?v=` + `${video})`)
+                    .addField('Type:', `${bot.caps(format.split("_"))}`)
                     .addField('Genres:', `${genres}`)
-                    .addField('Aired:', `From ${season} ${start} to ${end}`)
+                    .addField('Status:', `${status}`)
+                    .addField('Aired:', `From ${season} ${start} ${end}`)
+                    .addField('Next Episode:', `${nextepi}`)
                     .addField('Episodes:', episodes)
                     .addField('Episode Length:', `${episodemin}`)
                     .addField('Estimated Total Runtime:', `${time}`)
@@ -555,8 +564,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
             collector.on('end', collected => {
                 if (collected.size == 0) {
                     em1.delete();
-                    message.channel
-                }
-            })
-        })
+                    message.channel.send(`${user}, You didn't react fast enough, try again!`);
+                };
+            });
+        });
 };
