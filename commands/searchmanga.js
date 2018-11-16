@@ -173,7 +173,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         if (enddate === null) {
                             end = "Running"
                         } else {
-                            endfilter = enddate.split("-")
+                            endfilter = enddate.split("-");
                             end = endfilter[2] + "." + endfilter[1] + "." + endfilter[0]
                         };
 
@@ -259,7 +259,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                     .addField('Community Rating:', avgRating)
                                     .addField('Favorit Counter:', favcount)
                                     .addField('Popularity Rank:', poprank)
-                                    .addField('Rating Rank:', ratingrank)
+                                    .addField('Rating Rank:', ratingrank);
 
                                 await em1.edit(`${user}, here is the result for ${canonTitle}`, { embed });
                             });
