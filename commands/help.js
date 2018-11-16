@@ -10,7 +10,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
       },
       title: "Help",
       url: "http://github.com/Bandaras213/Crash/wiki/Commands",
-      description: "Thelse are all Commands with a description.",
+      description: "These are all Commands with a description.",
       fields: [{
         name: `${prefix}help`,
         value: "Shows you this embed."
