@@ -5,19 +5,19 @@ module.exports = (bot) => {
   let type
   let status
 
-  if (process.env.ACTIVITYACTIVITY) {
+  if (process.env.ACTIVITYACTIVITY != null) {
     activity = process.env.ACTIVITYACTIVITY
   } else {
     activity = bot.config.botactivity.activity
   };
 
-  if (process.env.ACTIVITYTYPE) {
+  if (process.env.ACTIVITYTYPE != null) {
     type = process.env.ACTIVITYTYPE
   } else {
     type = bot.config.botactivity.type
   };
 
-  if (process.env.ACTIVITYSTATUS) {
+  if (process.env.ACTIVITYSTATUS != null) {
     status = process.env.ACTIVITYSTATUS
   } else {
     status = bot.config.botactivity.status

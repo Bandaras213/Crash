@@ -23,6 +23,7 @@ bot.commands = new Discord.Collection();
 bot.commands.set('benutzer', require('./commands/userinfo.js'));
 bot.commands.set('anime', require('./commands/searchanime.js'));
 bot.commands.set('betaanime', require('./commands/searchanimebeta.js'));
+bot.commands.set('character', require('./commands/searchcharacter.js'));
 bot.commands.set('manga', require('./commands/searchmanga.js'));
 bot.commands.set('rdmanime', require('./commands/randomanime.js'));
 bot.commands.set('help', require('./commands/help.js'));
