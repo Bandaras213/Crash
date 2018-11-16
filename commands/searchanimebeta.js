@@ -101,7 +101,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
-console.log(fetch1)
+
             let field1 = [];
             let NSFW = [];
             for (let a = 0; a < fetch1.data.Page.media.length; a++) {
