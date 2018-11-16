@@ -94,7 +94,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             const collector = em1.createReactionCollector(filter, { max: 1, time: 15000 });
 
             collector.on('collect', async (reaction, reactionCollector) => {
-                let chosen = reaction.emoji.name;   
+                let chosen = reaction.emoji.name;
 
                 switch (chosen) {
                     case emoji[0]:

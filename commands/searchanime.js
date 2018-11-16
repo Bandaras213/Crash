@@ -247,7 +247,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                 };
 
                                 if (favcount === null) {
-                                    favcount = "No Data in Database.";      
+                                    favcount = "No Data in Database.";
                                 };
 
                                 if (videoid == null || videoid == undefined) {
