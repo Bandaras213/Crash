@@ -30,58 +30,61 @@ module.exports = async (bot, message, args, Discord, moment) => {
     var query = `
 	query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 		Page (page: $page, perPage: $perPage) {
-    pageInfo {
-      total
-      currentPage
-      lastPage
-      hasNextPage
-      perPage
-}
-  media (id: $id, search: $search, type: ANIME) {
-    id
-    siteUrl
-		format
-    title {
-        romaji
-				english
+            pageInfo {
+                total
+                currentPage
+                lastPage
+                hasNextPage
+                perPage
+                }
+            media (id: $id, search: $search, type: ANIME) {
+                id
+                siteUrl
+                format
+                title {
+                    romaji
+                    english
+                }
+                coverImage {
+                    large
+                }
+                bannerImage
+                status
+                description
+                averageScore
+                startDate {
+                    day
+                    month
+                    year
+                }
+                endDate {
+                    day
+                    month
+                    year
+                }
+                nextAiringEpisode {
+                    id
+                    airingAt
+                    timeUntilAiring
+                    episode
+                }
+                season
+                episodes
+                duration
+                countryOfOrigin
+                isLicensed
+                source
+                trailer {
+                    id
+                    site
+                }
+                genres
+                meanScore
+                popularity
+                isAdult
+                }
         }
-        coverImage {
-									large
-        }
-				bannerImage
-        status
-        description
-        averageScore
-				startDate {
-									day
-									month
-									year}
-				endDate {
-									day
-									month
-									year}
-				nextAiringEpisode{
-									id
-									airingAt
-									timeUntilAiring
-									episode}
-				season
-				episodes
-				duration
-				countryOfOrigin
-				isLicensed
-				source
-				trailer {
-								id
-								site}
-				genres
-				meanScore
-				popularity
-				isAdult
-    }
-  }
-}
-`;
+    }`;
 
     let variables = {
         search: animename,
