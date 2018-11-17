@@ -30,61 +30,87 @@ module.exports = async (bot, message, args, Discord, moment) => {
     var query = `
 	query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 		Page (page: $page, perPage: $perPage) {
-            pageInfo {
-                total
-                currentPage
-                lastPage
-                hasNextPage
-                perPage
-                }
-            media (id: $id, search: $search, type: ANIME) {
-                id
-                siteUrl
-                format
-                title {
-                    romaji
-                    english
-                }
-                coverImage {
-                    large
-                }
-                bannerImage
-                status
-                description
-                averageScore
-                startDate {
-                    day
-                    month
-                    year
-                }
-                endDate {
-                    day
-                    month
-                    year
-                }
-                nextAiringEpisode {
-                    id
-                    airingAt
-                    timeUntilAiring
-                    episode
-                }
-                season
-                episodes
-                duration
-                countryOfOrigin
-                isLicensed
-                source
-                trailer {
-                    id
-                    site
-                }
-                genres
-                meanScore
-                popularity
-                isAdult
-                }
+    pageInfo {
+      total
+      currentPage
+      lastPage
+      hasNextPage
+      perPage
+}
+  media (id: $id, search: $search, type: ANIME) {
+    id
+    siteUrl
+		format
+    title {
+        romaji
+				english
         }
-    }`;
+        coverImage {
+									large
+        }
+				bannerImage
+        status
+        description
+        averageScore
+				startDate {
+									day
+									month
+									year}
+				endDate {
+									day
+									month
+									year}
+				nextAiringEpisode{
+									id
+									airingAt
+									timeUntilAiring
+									episode}
+				season
+				episodes
+				duration
+				countryOfOrigin
+				isLicensed
+				source
+				trailer {
+								id
+								site}
+				genres
+				meanScore
+				popularity
+				isAdult
+				characters(page: 1, role: MAIN) {
+      	nodes {
+        id
+        name {
+          first
+          last
+        }
+				siteUrl
+      }
+    }
+				staff(page: 1) {
+				edges {
+      	node {
+        id
+        name {
+          first
+          last
+        }
+				siteUrl
+      	}
+				role
+			}
+    }
+				studios {
+      	nodes {
+        id
+        name
+      }
+		}
+}
+}
+}
+`;
 
     let variables = {
         search: animename,
@@ -104,7 +130,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
-
+      
             let field1 = [];
             let NSFW = [];
             for (let a = 0; a < fetch1.data.Page.media.length; a++) {
@@ -395,6 +421,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 let video = fetch1.data.Page.media[i].trailer;
                 let nsfw = fetch1.data.Page.media[i].isAdult;
                 let nextepi = fetch1.data.Page.media[i].nextAiringEpisode;
+              	let staffdatas = fetch1.data.Page.media[i].staff.edges;
+              	let charactersdatas = fetch1.data.Page.media[i].characters.nodes;
 
                 let dateairing
                 if (nextepi == null) {
@@ -533,7 +561,39 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (genre == null) {
                     genres = "No Data in Database.";
                 };
-
+              	
+              	let chardata = []
+                
+              	for (let c = 0; c < charactersdatas.length; ++c) {
+                  if (charactersdatas[c].name.last == null) {
+                    	chardata.push("["+charactersdatas[c].name.first+"]"+"("+charactersdatas[c].siteUrl+")");
+                  }else{
+                  		chardata.push("["+charactersdatas[c].name.first+" "+charactersdatas[c].name.last+"]"+"("+charactersdatas[c].siteUrl+")")};
+                };
+              
+              	let mainchar = chardata.join(", ")
+                
+                let studiosdata = []
+                
+                for (let s = 0; s < fetch1.data.Page.media[i].studios.nodes.length; ++s) {
+                  	studiosdata.push(fetch1.data.Page.media[i].studios.nodes[s].name)
+                };
+              
+              	let studios = studiosdata.join(", ")
+                
+                let staffdata = []
+                
+                for (let m = 0; m < staffdatas.length; ++m) {
+                		if (staffdatas[m].role == "Original Creator") {
+                  			staffdata.push(staffdatas[m].role+": "+"["+staffdatas[m].node.name.first+" "+staffdatas[m].node.name.last+"]"+"("+staffdatas[m].node.siteUrl+")")};
+                    if (staffdatas[m].role == "Director") {
+                        staffdata.push(staffdatas[m].role+": "+"["+staffdatas[m].node.name.first+" "+staffdatas[m].node.name.last+"]"+"("+staffdatas[m].node.siteUrl+")")};
+                    if (staffdatas[m].role == "Music") {
+                        staffdata.push(staffdatas[m].role+": "+"["+staffdatas[m].node.name.first+" "+staffdatas[m].node.name.last+"]"+"("+staffdatas[m].node.siteUrl+")")};
+                };
+              
+              	let staff = staffdata.join("\n")
+                
                 const embed = new Discord.RichEmbed()
                     .setTitle(canonTitle)
                     .setColor(color)
@@ -548,12 +608,15 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     .addField('Genres:', `${genres}`)
                     .addField('Status:', `${status}`)
                     .addField('Aired:', `From ${season} ${start} ${end}`)
+                		.addField('Studios:', `${studios}`)
                     .addField('Next Episode:', `${nextepi}`)
                     .addField('Episodes:', episodes)
                     .addField('Episode Length:', `${episodemin}`)
                     .addField('Estimated Total Runtime:', `${time}`)
+                		.addField('Main Characters:', `${mainchar}`)
                     .addField('Community Rating:', avgRating)
                     .addField('Source:', `${sourcefilter}`)
+                		.addField('Staff:', `${staff}`)
 
                 if (nsfw == false) {
                     await em1.edit(`${user}, here is the result for ${canonTitle}`, { embed });
