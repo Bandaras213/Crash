@@ -1,5 +1,5 @@
 module.exports = async (bot, message, args, Discord, moment) => {
-  let prefix = bot.config.prefix
+  let prefix = bot.config.prefix;
 
   message.author.send({
     embed: {
@@ -8,24 +8,24 @@ module.exports = async (bot, message, args, Discord, moment) => {
         name: `${bot.user.tag}`,
         icon_url: bot.user.avatarURL
       },
-      title: "Help",
+      title: `${bot.user.username} command Help`,
       url: "http://github.com/Bandaras213/Crash/wiki/Commands",
-      description: "These are all Commands with a description.",
+      description: "These are all Commands with a Description.",
       fields: [{
         name: `${prefix}help`,
-        value: "Shows you this embed."
+        value: "Shows you this Embed."
       },
       {
         name: `${prefix}anime [Anime Name]`,
-        value: "Starts a search for a anime for you and let's you choose one of seven results."
+        value: "Starts a search for Anime and let's you choose one of the results."
       },
       {
         name: `${prefix}manga [Manga Name]`,
-        value: "Starts a search for a Manga for you and let's you choose one of seven results."
+        value: "Starts a search for Manga and let's you choose one of the results."
       },
       {
         name: `${prefix}rdmanime`,
-        value: "Searches a random Anime for you."
+        value: "Searches for a random Anime."
       }
       ],
       timestamp: new Date(),
@@ -37,5 +37,4 @@ module.exports = async (bot, message, args, Discord, moment) => {
   });
 
   message.delete(1000);
-
 };
