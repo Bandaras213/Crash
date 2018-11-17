@@ -15,33 +15,33 @@ var emoji = [
 
 module.exports = async (bot, message, args, Discord, moment) => {
 
-    let username;
-    let password;
-    let clientid;
-    let clientsecret;
+    let username
+    let password
+    let clientid
+    let clientsecret
 
     if (process.env.KITSUUSERNAME) {
-        username = process.env.KITSUUSERNAME;
+        username = process.env.KITSUUSERNAME
     } else {
-        username = bot.config.KITSUUSERNAME;
+        username = bot.config.KITSUUSERNAME
     };
 
     if (process.env.KITSUPASSWORD) {
-        password = process.env.KITSUPASSWORD;
+        password = process.env.KITSUPASSWORD
     } else {
-        password = bot.config.KITSUPASSWORD;
+        password = bot.config.KITSUPASSWORD
     };
 
     if (process.env.KITSUCLIENTID) {
-        clientid = process.env.KITSUCLIENTID;
+        clientid = process.env.KITSUCLIENTID
     } else {
-        clientid = bot.config.KITSUCLIENTID;
+        clientid = bot.config.KITSUCLIENTID
     };
 
     if (process.env.KITSUCLIENTSECRET) {
-        clientsecret = process.env.KITSUCLIENTSECRET;
+        clientsecret = process.env.KITSUCLIENTSECRET
     } else {
-        clientsecret = bot.config.KITSUCLIENTSECRET;
+        clientsecret = bot.config.KITSUCLIENTSECRET
     };
 
     const authbody = {
@@ -60,13 +60,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
         .then(tores => tores.json())
         .then(async tores => {
 
-            let toktype = tores.token_type;
-            let acctok = tores.access_token;
+            let toktype = tores.token_type
+            let acctok = tores.access_token
             let animename = args.join(' ');
-            let user = message.member.user;
-            let i;
+            let user = message.member.user
+            let i
             let color = Math.floor(Math.random() * 16777214) + 1;
-            let uid = message.author.id;
+            let uid = message.author.id
             message.delete();
 
             if (args.length == 0) return message.channel.send(`${user}, I need a Title to search for! (Usage: €anime Title)`)
@@ -147,39 +147,39 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     const collector = em1.createReactionCollector(filter, { max: 1, time: 15000 });
 
                     collector.on('collect', async (reaction, reactionCollector) => {
-                        let chosen = reaction.emoji.name;
+                        let chosen = reaction.emoji.name
 
                         switch (chosen) {
                             case emoji[0]:
                                 return em1.delete(), message.channel.send(`${user} aborted the command.`);
                             case emoji[1]:
                                 em1.clearReactions();
-                                i = 0;
-                                break;
+                                i = 0
+                                break
                             case emoji[2]:
                                 em1.clearReactions();
-                                i = 1;
-                                break;
+                                i = 1
+                                break
                             case emoji[3]:
                                 em1.clearReactions();
-                                i = 2;
-                                break;
+                                i = 2
+                                break
                             case emoji[4]:
                                 em1.clearReactions();
-                                i = 3;
-                                break;
+                                i = 3
+                                break
                             case emoji[5]:
                                 em1.clearReactions();
-                                i = 4;
-                                break;
+                                i = 4
+                                break
                             case emoji[6]:
                                 em1.clearReactions();
-                                i = 5;
-                                break;
+                                i = 5
+                                break
                             case emoji[7]:
                                 em1.clearReactions();
-                                i = 6;
-                                break;
+                                i = 6
+                                break
                         };
 
                         await fetch('https://kitsu.io/api/edge/anime/?filter[text]=' + animename, {
@@ -190,103 +190,103 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             .then(async res0 => {
 
                                 //data
-                                let id = res0.data[i].id;
+                                let id = res0.data[i].id
                                 //let type = res0.data[i].type
-                                let url = "https://kitsu.io/anime/" + id;
+                                let url = "https://kitsu.io/anime/" + id
 
                                 //data.atributes
-                                let synopsis = res0.data[i].attributes.synopsis;
-                                let canonTitle = res0.data[i].attributes.canonicalTitle;
-                                let avgRating = res0.data[i].attributes.averageRating;
-                                let favcount = res0.data[i].attributes.favoritesCount;
-                                let startdate = res0.data[i].attributes.startDate;
-                                let enddate = res0.data[i].attributes.endDate;
-                                let poprank = res0.data[i].attributes.popularityRank;
-                                let ratingrank = res0.data[i].attributes.ratingRank;
-                                let ager = res0.data[i].attributes.ageRating;
-                                let agerg = res0.data[i].attributes.ageRatingGuide;
-                                let subtype = res0.data[i].attributes.subtype;
-                                let status = res0.data[i].attributes.status;
-                                let posterIMG = res0.data[i].attributes.posterImage.medium;
-                                let coverIMG = res0.data[i].attributes.coverImage;
-                                let episodes = res0.data[i].attributes.episodeCount;
-                                let episodemin = res0.data[i].attributes.episodeLength;
-                                let genres = res0.data[i].relationships.genres.links.related;
-                                let categories = res0.data[i].relationships.categories.links.related;
-                                let videoid = res0.data[i].attributes.youtubeVideoId;
-                                let nsfw = res0.data[i].attributes.nsfw;
+                                let synopsis = res0.data[i].attributes.synopsis
+                                let canonTitle = res0.data[i].attributes.canonicalTitle
+                                let avgRating = res0.data[i].attributes.averageRating
+                                let favcount = res0.data[i].attributes.favoritesCount
+                                let startdate = res0.data[i].attributes.startDate
+                                let enddate = res0.data[i].attributes.endDate
+                                let poprank = res0.data[i].attributes.popularityRank
+                                let ratingrank = res0.data[i].attributes.ratingRank
+                                let ager = res0.data[i].attributes.ageRating
+                                let agerg = res0.data[i].attributes.ageRatingGuide
+                                let subtype = res0.data[i].attributes.subtype
+                                let status = res0.data[i].attributes.status
+                                let posterIMG = res0.data[i].attributes.posterImage.medium
+                                let coverIMG = res0.data[i].attributes.coverImage
+                                let episodes = res0.data[i].attributes.episodeCount
+                                let episodemin = res0.data[i].attributes.episodeLength
+                                let genres = res0.data[i].relationships.genres.links.related
+                                let categories = res0.data[i].relationships.categories.links.related
+                                let videoid = res0.data[i].attributes.youtubeVideoId
+                                let nsfw = res0.data[i].attributes.nsfw
 
 
                                 if (startdate === null && enddate === null) {
-                                    start = "No Startdate in the Database.";
-                                    end = "No Enddate in the Database.";
+                                    start = "No Startdate in the Database."
+                                    end = "No Enddate in the Database."
                                 };
 
-                                let startfilter;
-                                let start;
+                                let startfilter
+                                let start
                                 if (startdate === null) {
-                                    start = "Not Running or no Data in Database.";
+                                    start = "Not Running or no Data in Database."
                                 } else {
-                                    startfilter = startdate.split("-");
-                                    start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0];
+                                    startfilter = startdate.split("-")
+                                    start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0]
                                 };
 
-                                let endfilter;
-                                let end;
+                                let endfilter
+                                let end
                                 if (enddate === null) {
-                                    end = "Running";
+                                    end = "running"
                                 } else {
-                                    endfilter = enddate.split("-");
-                                    end = endfilter[2] + "." + endfilter[1] + "." + endfilter[0];
+                                    endfilter = enddate.split("-")
+                                    end = endfilter[2] + "." + endfilter[1] + "." + endfilter[0]
                                 };
 
                                 if (avgRating === null) {
-                                    avgRating = "No Data in Database.";
+                                    avgRating = "No Data in Database."
                                 } else {
-                                    avgRating = avgRating + "%";
+                                    avgRating = avgRating + "%"
                                 };
 
                                 if (favcount === null) {
-                                    favcount = "No Data in Database.";
+                                    favcount = "No Data in Database."
                                 };
 
                                 if (videoid == null || videoid == undefined) {
-                                    videoid = "DLzxrzFCyOs";
+                                    videoid = "DLzxrzFCyOs"
                                 };
 
                                 if (poprank === null) {
-                                    poprank = "No Data in Database.";
+                                    poprank = "No Data in Database."
                                 };
 
                                 if (ratingrank === null) {
-                                    ratingrank = "No Data in Database.";
+                                    ratingrank = "No Data in Database."
                                 };
 
                                 if (ager === null) {
-                                    ager = "No Data in Database.";
+                                    ager = "No data in database."
                                 };
 
                                 if (agerg === null) {
-                                    agerg = "No Data in Database.";
+                                    agerg = "No Data in Database."
                                 };
 
                                 if (subtype === null) {
-                                    subtype = "No Data in Database.";
+                                    subtype = "No Data in Database."
                                 } else {
                                     subtype = bot.caps(subtype);
                                 };
 
                                 if (status === null) {
-                                    status = "No Data in Database.";
+                                    status = "No Data in Database."
                                 } else {
                                     status = bot.caps(status);
                                 };
 
                                 if (posterIMG === null) {
-                                    posterIMG = 'https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848';
+                                    posterIMG = 'https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848'
                                 };
 
-                                let time;
+                                let time
                                 function timeConvert(n) {
 
                                     /* var num = n;
@@ -299,38 +299,38 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                     let minutes = Math.floor((n / 60 - hours) * 60);
 
                                     if (hours === 0) {
-                                        time = minutes + " minute(s).";
+                                        time = minutes + " minute(s)."
                                     } else {
-                                        time = "Approximately " + hours + " hour(s) and " + minutes + " minute(s).";
+                                        time = "Approximately " + hours + " hour(s) and " + minutes + " minute(s)."
                                     };
                                 };
 
                                 if (time == undefined || time == null) {
-                                    time = "No Data in Database.";
+                                    time = "No Data in Database."
                                 };
 
-                                let runtime;
+                                let runtime
                                 if (episodes === null || episodemin === null) {
-                                    runtime = "Can't Calculate Runtime without Episodes or Episode length.";
+                                    runtime = "Can't Calculate Runtime without Episodes or Episode length."
                                 } else {
-                                    runtime = episodes * episodemin;
+                                    runtime = episodes * episodemin
                                     timeConvert(runtime);
                                 };
 
                                 if (episodes === null) {
-                                    episodes = "No Episodes in the Database.";
+                                    episodes = "No Episodes in the Kitsu.io database."
                                 };
 
                                 if (episodemin === null) {
-                                    episodemin = "No Data in Database.";
+                                    episodemin = "No Data in Database."
                                 } else {
-                                    episodemin = episodemin + " Minutes.";
+                                    episodemin = episodemin + " Min"
                                 };
 
                                 if (coverIMG === null) {
-                                    coverIMG = "";
+                                    coverIMG = ""
                                 } else {
-                                    coverIMG = coverIMG.original;
+                                    coverIMG = coverIMG.original
                                 };
 
                                 await fetch(`${genres}`, {
@@ -356,13 +356,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                                 };
 
                                                 if (categoryval == null || categoryval == "") {
-                                                    categoryval = "No Categories in Database.";
+                                                    categoryval = "No Categories in Database."
                                                 } else {
                                                     categoryval = categoryval.join(", ");
                                                 };
 
                                                 if (genreval == null || genreval == "") {
-                                                    genreval = "No Genres in Database.";
+                                                    genreval = "No Genres in Database."
                                                 } else {
                                                     genreval = genreval.join(", ");
                                                 };
@@ -385,10 +385,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                                     .addField('Episode Length:', `${episodemin}`)
                                                     .addField('Total Runtime:', `${time}`)
                                                     .addField('Community Rating:', avgRating)
-                                                    .addField('Age Category:', `${ager} ${agerg}`);
+                                                    .addField('Age Category:', `${ager} ${agerg}`)
 
                                                 if (nsfw == false) {
-                                                    await em1.edit(`${user}, Here is your result for ${canonTitle}`, { embed });
+                                                    await em1.edit(`${user}, here is the result for ${canonTitle}`, { embed });
                                                 } else {
                                                     await em1.delete();
                                                     await message.channel.send(`${user}, You've selected a NSFW Anime! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);

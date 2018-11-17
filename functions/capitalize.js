@@ -10,6 +10,6 @@ module.exports = (str) => {
         };
         return arr2str.join(" ");
     } else {
-        return undefined;
+        return undefined
     };
 };

@@ -1,26 +1,26 @@
 const ms = require("ms");
 module.exports = (bot) => {
 
-  let activity;
-  let type;
-  let status;
+  let activity
+  let type
+  let status
 
   if (process.env.ACTIVITYACTIVITY != null) {
-    activity = process.env.ACTIVITYACTIVITY;
+    activity = process.env.ACTIVITYACTIVITY
   } else {
-    activity = bot.config.botactivity.activity;
+    activity = bot.config.botactivity.activity
   };
 
   if (process.env.ACTIVITYTYPE != null) {
-    type = process.env.ACTIVITYTYPE;
+    type = process.env.ACTIVITYTYPE
   } else {
-    type = bot.config.botactivity.type;
+    type = bot.config.botactivity.type
   };
 
   if (process.env.ACTIVITYSTATUS != null) {
-    status = process.env.ACTIVITYSTATUS;
+    status = process.env.ACTIVITYSTATUS
   } else {
-    status = bot.config.botactivity.status;
+    status = bot.config.botactivity.status
   };
 
 
