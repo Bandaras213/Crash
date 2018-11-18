@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const query = require("../data/animequery.js");
 
 var emoji = [
     "❌", //X
@@ -10,83 +11,63 @@ var emoji = [
     "\u0036\u20E3", //6
     "\u0037\u20E3", //7
     "\u0038\u20E3", //8
-    "\u0039\u20E3", //9
+    "\u0039\u20E3" //9
 ];
 
 module.exports = async (bot, message, args, Discord, moment) => {
 
-    let username;
-    let password;
-    let clientid;
-    let clientsecret;
+    let animename = args.join(' ');
+    let user = message.member.user;
+    let i;
+    let color = Math.floor(Math.random() * 16777214) + 1;
+    let uid = message.author.id;
+    message.delete();
 
-    if (process.env.KITSUUSERNAME) {
-        username = process.env.KITSUUSERNAME;
-    } else {
-        username = bot.config.KITSUUSERNAME;
+
+    if (args.length == 0) {
+        return message.channel.send(`${user}, I need a Title to search for! (Usage: €betaanime Title)`);
     };
 
-    if (process.env.KITSUPASSWORD) {
-        password = process.env.KITSUPASSWORD;
-    } else {
-        password = bot.config.KITSUPASSWORD;
+    await query
+
+    let variables = {
+        search: animename,
+        page: 1,
+        perPage: 7,
     };
 
-    if (process.env.KITSUCLIENTID) {
-        clientid = process.env.KITSUCLIENTID;
-    } else {
-        clientid = bot.config.KITSUCLIENTID;
+    let databody = {
+        query: query,
+        variables: variables
     };
 
-    if (process.env.KITSUCLIENTSECRET) {
-        clientsecret = process.env.KITSUCLIENTSECRET;
-    } else {
-        clientsecret = bot.config.KITSUCLIENTSECRET;
-    };
-
-    const authbody = {
-        grant_type: 'password',
-        username: username,
-        password: password,
-        client_id: clientid,
-        client_secret: clientsecret
-    };
-
-    await fetch('https://kitsu.io/api/oauth/token', {
+    await fetch('https://graphql.anilist.co', {
         method: 'post',
-        body: JSON.stringify(authbody),
-        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(databody),
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
     })
-        .then(tores => tores.json())
-        .then(async tores => {
+        .then(fetch1 => fetch1.json())
+        .then(async fetch1 => {
+      
+            let field1 = [];
+            let NSFW = [];
+            for (let a = 0; a < fetch1.data.Page.media.length; a++) {
+                if (fetch1.data.Page.media[a].isAdult == true) {
+                    NSFW.push("🔞" + "NSFW" + "🔞");
+                } else {
+                    NSFW.push("");
+                };
 
-            let toktype = tores.token_type;
-            let acctok = tores.access_token;
-            let animename = args.join(' ');
-            let user = message.member.user;
-            let i;
-            let color = Math.floor(Math.random() * 16777214) + 1;
-            let uid = message.author.id;
-            message.delete();
+                field1.push({
+                    "name": `${fetch1.data.Page.media[a].title.romaji} (${bot.caps(fetch1.data.Page.media[a].format.split("_"))}) ${NSFW[a]}`,
+                    "value": `Reaction: ${emoji[a + 1]}`
+                });
+            };
 
-            if (args.length == 0) return message.channel.send(`${user}, I need a Title to search for! (Usage: €anime Title)`)
-
-            await fetch('https://kitsu.io/api/edge/anime/?filter[text]=' + animename, {
-                method: 'GET',
-                headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}` }
-            })
-                .then(filter0 => filter0.json())
-                .then(async filter0 => {
-                    let NSFW = [];
-                    for (var a = 0; a < 7; a++) {
-                        if (filter0.data[a].attributes.nsfw == true) {
-                            NSFW.push("🔞" + "NSFW" + "🔞");
-                        } else {
-                            NSFW.push("");
-                        };
-                    };
-
-                    let embed = {
+            let embed
+            switch (fetch1.data.Page.media.length) {
+                case 1:
+                    embed = {
                         "color": 65280,
                         "author": {
                             "name": `Results for "${animename}"`,
@@ -95,42 +76,194 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             "text": `Please choose by using the Reactions below!`,
                         },
                         "fields": [
-                            {
-                                "name": `${filter0.data[0].attributes.canonicalTitle} (${bot.caps(filter0.data[0].attributes.subtype)}) ${NSFW[0]}`,
-                                "value": `Reaction: ${emoji[1]}`
-                            },
-                            {
-                                "name": `${filter0.data[1].attributes.canonicalTitle} (${bot.caps(filter0.data[1].attributes.subtype)}) ${NSFW[1]}`,
-                                "value": `Reaction: ${emoji[2]}`
-                            },
-                            {
-                                "name": `${filter0.data[2].attributes.canonicalTitle} (${bot.caps(filter0.data[2].attributes.subtype)}) ${NSFW[2]}`,
-                                "value": `Reaction: ${emoji[3]}`
-                            },
-                            {
-                                "name": `${filter0.data[3].attributes.canonicalTitle} (${bot.caps(filter0.data[3].attributes.subtype)}) ${NSFW[3]}`,
-                                "value": `Reaction: ${emoji[4]}`
-                            },
-                            {
-                                "name": `${filter0.data[4].attributes.canonicalTitle} (${bot.caps(filter0.data[4].attributes.subtype)}) ${NSFW[4]}`,
-                                "value": `Reaction: ${emoji[5]}`
-                            },
-                            {
-                                "name": `${filter0.data[5].attributes.canonicalTitle} (${bot.caps(filter0.data[5].attributes.subtype)}) ${NSFW[5]}`,
-                                "value": `Reaction: ${emoji[6]}`
-                            },
-                            {
-                                "name": `${filter0.data[6].attributes.canonicalTitle} (${bot.caps(filter0.data[6].attributes.subtype)}) ${NSFW[6]}`,
-                                "value": `Reaction: ${emoji[7]}`
-                            },
+                            field1[0],
                             {
                                 "name": "None of the above (Abort Command)",
                                 "value": `Reaction: ${emoji[0]}`
                             }
                         ]
                     };
+                    break
+                case 2:
+                    embed = {
+                        "color": 65280,
+                        "author": {
+                            "name": `Results for "${animename}"`,
+                        },
+                        "footer": {
+                            "text": `Please choose by using the Reactions below!`,
+                        },
+                        "fields": [
+                            field1[0],
+                            field1[1],
+                            {
+                                "name": "None of the above (Abort Command)",
+                                "value": `Reaction: ${emoji[0]}`
+                            }
+                        ]
+                    };
+                    break
+                case 3:
+                    embed = {
+                        "color": 65280,
+                        "author": {
+                            "name": `Results for "${animename}"`,
+                        },
+                        "footer": {
+                            "text": `Please choose by using the Reactions below!`,
+                        },
+                        "fields": [
+                            field1[0],
+                            field1[2],
+                            field1[3],
+                            {
+                                "name": "None of the above (Abort Command)",
+                                "value": `Reaction: ${emoji[0]}`
+                            }
+                        ]
+                    };
+                    break
+                case 4:
+                    embed = {
+                        "color": 65280,
+                        "author": {
+                            "name": `Results for "${animename}"`,
+                        },
+                        "footer": {
+                            "text": `Please choose by using the Reactions below!`,
+                        },
+                        "fields": [
+                            field1[0],
+                            field1[1],
+                            field1[2],
+                            field1[3],
+                            {
+                                "name": "None of the above (Abort Command)",
+                                "value": `Reaction: ${emoji[0]}`
+                            }
+                        ]
+                    };
+                    break
+                case 5:
+                    embed = {
+                        "color": 65280,
+                        "author": {
+                            "name": `Results for "${animename}"`,
+                        },
+                        "footer": {
+                            "text": `Please choose by using the Reactions below!`,
+                        },
+                        "fields": [
+                            field1[0],
+                            field1[1],
+                            field1[2],
+                            field1[3],
+                            field1[4],
+                            {
+                                "name": "None of the above (Abort Command)",
+                                "value": `Reaction: ${emoji[0]}`
+                            }
+                        ]
+                    };
+                    break
+                case 6:
+                    embed = {
+                        "color": 65280,
+                        "author": {
+                            "name": `Results for "${animename}"`,
+                        },
+                        "footer": {
+                            "text": `Please choose by using the Reactions below!`,
+                        },
+                        "fields": [
+                            field1[0],
+                            field1[1],
+                            field1[2],
+                            field1[3],
+                            field1[4],
+                            field1[5],
+                            {
+                                "name": "None of the above (Abort Command)",
+                                "value": `Reaction: ${emoji[0]}`
+                            }
+                        ]
+                    };
+                    break
+                case 7:
+                    embed = {
+                        "color": 65280,
+                        "author": {
+                            "name": `Results for "${animename}"`,
+                        },
+                        "footer": {
+                            "text": `Please choose by using the Reactions below!`,
+                        },
+                        "fields": [
+                            field1[0],
+                            field1[1],
+                            field1[2],
+                            field1[3],
+                            field1[4],
+                            field1[5],
+                            field1[6],
+                            {
+                                "name": "None of the above (Abort Command)",
+                                "value": `Reaction: ${emoji[0]}`
+                            }
+                        ]
+                    };
+                    break
+            };
 
-                    const em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed })
+            let em1
+            switch (fetch1.data.Page.media.length) {
+                case 1:
+                    em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+                    await em1.react(emoji[1]);
+                    await em1.react(emoji[0]);
+                    break;
+                case 2:
+                    em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+                    await em1.react(emoji[1]);
+                    await em1.react(emoji[2]);
+                    await em1.react(emoji[0]);
+                    break;
+                case 3:
+                    em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+                    await em1.react(emoji[1]);
+                    await em1.react(emoji[2]);
+                    await em1.react(emoji[3]);
+                    await em1.react(emoji[0]);
+                    break;
+                case 4:
+                    em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+                    await em1.react(emoji[1]);
+                    await em1.react(emoji[2]);
+                    await em1.react(emoji[3]);
+                    await em1.react(emoji[4]);
+                    await em1.react(emoji[0]);
+                    break;
+                case 5:
+                    em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+                    await em1.react(emoji[1]);
+                    await em1.react(emoji[2]);
+                    await em1.react(emoji[3]);
+                    await em1.react(emoji[4]);
+                    await em1.react(emoji[5]);
+                    await em1.react(emoji[0]);
+                    break;
+                case 6:
+                    em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+                    await em1.react(emoji[1]);
+                    await em1.react(emoji[2]);
+                    await em1.react(emoji[3]);
+                    await em1.react(emoji[4]);
+                    await em1.react(emoji[5]);
+                    await em1.react(emoji[6]);
+                    await em1.react(emoji[0]);
+                    break;
+                case 7:
+                    em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[2]);
                     await em1.react(emoji[3]);
@@ -139,272 +272,284 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     await em1.react(emoji[6]);
                     await em1.react(emoji[7]);
                     await em1.react(emoji[0]);
+                    break;
+            };
 
-                    const filter = (reaction, user) => {
-                        return emoji.includes(reaction.emoji.name) === true && user.id === uid;
+            const filter = (reaction, user) => {
+                return emoji.includes(reaction.emoji.name) === true && user.id === uid;
+            };
+
+            const collector = await em1.createReactionCollector(filter, { max: 1, time: 15000 });
+
+            collector.on('collect', async (reaction, reactionCollector) => {
+                let chosen = reaction.emoji.name;
+
+                switch (chosen) {
+                    case emoji[0]:
+                        return em1.delete(), message.channel.send(`${user} aborted the command.`);
+                    case emoji[1]:
+                        em1.clearReactions();
+                        i = 0
+                        break
+                    case emoji[2]:
+                        em1.clearReactions();
+                        i = 1
+                        break
+                    case emoji[3]:
+                        em1.clearReactions();
+                        i = 2
+                        break
+                    case emoji[4]:
+                        em1.clearReactions();
+                        i = 3
+                        break
+                    case emoji[5]:
+                        em1.clearReactions();
+                        i = 4
+                        break
+                    case emoji[6]:
+                        em1.clearReactions();
+                        i = 5
+                        break
+                    case emoji[7]:
+                        em1.clearReactions();
+                        i = 6
+                        break
+                };
+
+                //data
+                let id = fetch1.data.Page.media[i].id
+                let url = fetch1.data.Page.media[i].siteUrl;
+
+                //data.atributes
+                let format = fetch1.data.Page.media[i].format;
+                let synopsis = fetch1.data.Page.media[i].description;
+                let canonTitle = fetch1.data.Page.media[i].title.romaji;
+                let avgRating = fetch1.data.Page.media[i].averageScore;
+                let startdate = fetch1.data.Page.media[i].startDate;
+                let enddate = fetch1.data.Page.media[i].endDate;
+                let season = fetch1.data.Page.media[i].season;
+                let source = fetch1.data.Page.media[i].source;
+                let status = fetch1.data.Page.media[i].status;
+                let posterIMG = fetch1.data.Page.media[i].coverImage.large;
+                let coverIMG = fetch1.data.Page.media[i].bannerImage;
+                let episodes = fetch1.data.Page.media[i].episodes;
+                let episodemin = fetch1.data.Page.media[i].duration;
+                let genre = fetch1.data.Page.media[i].genres;
+                let video = fetch1.data.Page.media[i].trailer;
+                let nsfw = fetch1.data.Page.media[i].isAdult;
+                let nextepi = fetch1.data.Page.media[i].nextAiringEpisode;
+              	let staffdatas = fetch1.data.Page.media[i].staff.edges;
+              	let charactersdatas = fetch1.data.Page.media[i].characters.nodes;
+
+                let dateairing
+                if (nextepi == null) {
+                    nextepi = "No new Episodes to Air.";
+                } else {
+                    //var timez = new Date().getTime();
+                    dateairing = new Date(nextepi.airingAt * 1000);
+                    dateairing = dateairing.toUTCString();
+                    dateairing = `${moment(dateairing).format('DD.MM.YYYY')}` + " at " + `${moment(dateairing).format('hh:mm a')}`;
+                    nextepi = "Episode " + nextepi.episode + ", Airing on: " + dateairing;
+                };
+
+                if (startdate === null && enddate === null) {
+                    start = "No Startdate in the Database.";
+                    end = "No Enddate in the Database.";
+                };
+
+                let startfilter;
+                let start;
+                if (startdate === null) {
+                    start = "Not Running or no Data in Database.";
+                } else {
+                    startfilter = startdate;
+                    start = startfilter.day + "." + startfilter.month + "." + startfilter.year;
+                };
+
+                let endday = enddate.day;
+                let endmonth = enddate.month;
+                let endyear = enddate.year;
+                let end;
+
+                if (enddate == null) {
+                    end = "(Ongoing)";
+                } else {
+                    end = "to " + enddate.day + "." + enddate.month + "." + enddate.year;
+                };
+
+                if (endday == null || endmonth == null) {
+                    if (endyear == null) {
+                        end = "(Ongoing)";
+                    } else {
+                        end = "to " + endyear;
                     };
+                };
 
-                    const collector = em1.createReactionCollector(filter, { max: 1, time: 15000 });
+                if (avgRating === null) {
+                    avgRating = "No Data in Database.";
+                } else {
+                    avgRating = avgRating + "%";
+                };
 
-                    collector.on('collect', async (reaction, reactionCollector) => {
-                        let chosen = reaction.emoji.name;
+                if (season === null) {
+                    season = "No Data in Database.";
+                } else {
+                    season = bot.caps(season);
+                };
 
-                        switch (chosen) {
-                            case emoji[0]:
-                                return em1.delete(), message.channel.send(`${user} aborted the command.`);
-                            case emoji[1]:
-                                em1.clearReactions();
-                                i = 0;
-                                break;
-                            case emoji[2]:
-                                em1.clearReactions();
-                                i = 1;
-                                break;
-                            case emoji[3]:
-                                em1.clearReactions();
-                                i = 2;
-                                break;
-                            case emoji[4]:
-                                em1.clearReactions();
-                                i = 3;
-                                break;
-                            case emoji[5]:
-                                em1.clearReactions();
-                                i = 4;
-                                break;
-                            case emoji[6]:
-                                em1.clearReactions();
-                                i = 5;
-                                break;
-                            case emoji[7]:
-                                em1.clearReactions();
-                                i = 6;
-                                break;
-                        };
+                if (video == null || video == undefined || video == "") {
+                    video = "DLzxrzFCyOs"
+                } else {
+                    video = video.id;
+                };
 
-                        await fetch('https://kitsu.io/api/edge/anime/?filter[text]=' + animename, {
-                            method: 'GET',
-                            headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}` }
-                        })
-                            .then(res0 => res0.json())
-                            .then(async res0 => {
+                let sourcefilter;
+                if (source == null || source == undefined) {
+                    sourcefilter = "No Data in Database.";
+                } else {
+                    sourcefilter = bot.caps(source.split("_"));
+                };
 
-                                //data
-                                let id = res0.data[i].id;
-                                //let type = res0.data[i].type
-                                let url = "https://kitsu.io/anime/" + id;
+                if (status === null) {
+                    status = "No Data in Database.";
+                } else {
+                    status = bot.caps(status);
+                };
 
-                                //data.atributes
-                                let synopsis = res0.data[i].attributes.synopsis;
-                                let canonTitle = res0.data[i].attributes.canonicalTitle;
-                                let avgRating = res0.data[i].attributes.averageRating;
-                                let favcount = res0.data[i].attributes.favoritesCount;
-                                let startdate = res0.data[i].attributes.startDate;
-                                let enddate = res0.data[i].attributes.endDate;
-                                let poprank = res0.data[i].attributes.popularityRank;
-                                let ratingrank = res0.data[i].attributes.ratingRank;
-                                let ager = res0.data[i].attributes.ageRating;
-                                let agerg = res0.data[i].attributes.ageRatingGuide;
-                                let subtype = res0.data[i].attributes.subtype;
-                                let status = res0.data[i].attributes.status;
-                                let posterIMG = res0.data[i].attributes.posterImage.medium;
-                                let coverIMG = res0.data[i].attributes.coverImage;
-                                let episodes = res0.data[i].attributes.episodeCount;
-                                let episodemin = res0.data[i].attributes.episodeLength;
-                                let genres = res0.data[i].relationships.genres.links.related;
-                                let categories = res0.data[i].relationships.categories.links.related;
-                                let videoid = res0.data[i].attributes.youtubeVideoId;
-                                let nsfw = res0.data[i].attributes.nsfw;
+                if (posterIMG === null) {
+                    posterIMG = 'https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848';
+                };
 
+                let time;
+                function timeConvert(n) {
 
-                                if (startdate === null && enddate === null) {
-                                    start = "No Startdate in the Database.";
-                                    end = "No Enddate in the Database.";
-                                };
+                    /* var num = n;
+                    var hours = (num / 60);
+                    var rhours = Math.floor(hours);
+                    var minutes = (hours - rhours) * 60;
+                    var rminutes = Math.floor(minutes); */
 
-                                let startfilter;
-                                let start;
-                                if (startdate === null) {
-                                    start = "Not Running or no Data in Database.";
-                                } else {
-                                    startfilter = startdate.split("-");
-                                    start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0];
-                                };
+                    let hours = Math.floor(n / 60);
+                    let minutes = Math.floor((n / 60 - hours) * 60);
 
-                                let endfilter;
-                                let end;
-                                if (enddate === null) {
-                                    end = "Running";
-                                } else {
-                                    endfilter = enddate.split("-");
-                                    end = endfilter[2] + "." + endfilter[1] + "." + endfilter[0];
-                                };
+                    if (hours === 0) {
+                        time = minutes + " minute(s)"
+                    } else if (minutes === 0) {
+                        time = hours + " hour(s)"
+                    } else {
+                        time = hours + " hour(s) and " + minutes + " minute(s)";
+                    };
+                };
 
-                                if (avgRating === null) {
-                                    avgRating = "No Data in Database.";
-                                } else {
-                                    avgRating = avgRating + "%";
-                                };
+                if (time == undefined || time == null) {
+                    time = "No Data in Database.";
+                };
 
-                                if (favcount === null) {
-                                    favcount = "No Data in Database.";
-                                };
+                let runtime;
+                if (episodes === null || episodemin === null) {
+                    runtime = "Can't Calculate Runtime without Episodes or Episode length.";
+                } else {
+                    runtime = episodes * episodemin;
+                    timeConvert(runtime);
+                };
 
-                                if (videoid == null || videoid == undefined) {
-                                    videoid = "DLzxrzFCyOs";
-                                };
+                if (episodes === null) {
+                    episodes = "No Episodes in the database.";
+                };
 
-                                if (poprank === null) {
-                                    poprank = "No Data in Database.";
-                                };
+                if (episodemin === null) {
+                    episodemin = "No Data in Database.";
+                } else {
+                    episodemin = episodemin + " minutes";
+                };
 
-                                if (ratingrank === null) {
-                                    ratingrank = "No Data in Database.";
-                                };
+                if (coverIMG === null) {
+                    coverIMG = "";
+                };
 
-                                if (ager === null) {
-                                    ager = "No Data in Database.";
-                                };
+                let genre1 = [];
 
-                                if (agerg === null) {
-                                    agerg = "No Data in Database.";
-                                };
+                for (let b = 0; b < fetch1.data.Page.media[i].genres.length; ++b) {
+                    genre1.push(fetch1.data.Page.media[i].genres[b]);
+                };
 
-                                if (subtype === null) {
-                                    subtype = "No Data in Database.";
-                                } else {
-                                    subtype = bot.caps(subtype);
-                                };
+                let genres = genre1.join(", ");
 
-                                if (status === null) {
-                                    status = "No Data in Database.";
-                                } else {
-                                    status = bot.caps(status);
-                                };
+                if (genre == null) {
+                    genres = "No Data in Database.";
+                };
+              	
+              	let chardata = []
+                
+              	for (let c = 0; c < charactersdatas.length; ++c) {
+                  if (charactersdatas[c].name.last == null) {
+                    	chardata.push("["+charactersdatas[c].name.first+"]"+"("+charactersdatas[c].siteUrl+")");
+                  }else{
+                  		chardata.push("["+charactersdatas[c].name.first+" "+charactersdatas[c].name.last+"]"+"("+charactersdatas[c].siteUrl+")")};
+                };
+              
+              	let mainchar = chardata.join(", ")
+                
+                let studiosdata = []
+                
+                for (let s = 0; s < fetch1.data.Page.media[i].studios.nodes.length; ++s) {
+                  	studiosdata.push(fetch1.data.Page.media[i].studios.nodes[s].name)
+                };
+              
+              	let studios = studiosdata.join(", ")
+                
+                let staffdata = []
+                
+                for (let m = 0; m < staffdatas.length; ++m) {
+                		if (staffdatas[m].role == "Original Creator") {
+                  			staffdata.push(staffdatas[m].role+": "+"["+staffdatas[m].node.name.first+" "+staffdatas[m].node.name.last+"]"+"("+staffdatas[m].node.siteUrl+")")};
+                    if (staffdatas[m].role == "Director") {
+                        staffdata.push(staffdatas[m].role+": "+"["+staffdatas[m].node.name.first+" "+staffdatas[m].node.name.last+"]"+"("+staffdatas[m].node.siteUrl+")")};
+                    if (staffdatas[m].role == "Music") {
+                        staffdata.push(staffdatas[m].role+": "+"["+staffdatas[m].node.name.first+" "+staffdatas[m].node.name.last+"]"+"("+staffdatas[m].node.siteUrl+")")};
+                };
+              
+              	let staff = staffdata.join("\n")
+                
+                const embed = new Discord.RichEmbed()
+                    .setTitle(canonTitle)
+                    .setColor(color)
+                    .setDescription(synopsis.replace(/<[^>]*>/g, ' ').replace(/\s{2,}/g, ' ').trim())
+                    .setFooter(canonTitle)
+                    .setImage(coverIMG)
+                    .setThumbnail(posterIMG)
+                    .setTimestamp()
+                    .setURL(url)
+                    .addField('Preview Trailer:', `[Click Me](https://www.youtube.com/watch?v=` + `${video})`)
+                    .addField('Type:', `${bot.caps(format.split("_"))}`)
+                    .addField('Genres:', `${genres}`)
+                    .addField('Status:', `${status}`)
+                    .addField('Aired:', `From ${season} ${start} ${end}`)
+                		.addField('Studios:', `${studios}`)
+                    .addField('Next Episode:', `${nextepi}`)
+                    .addField('Episodes:', episodes)
+                    .addField('Episode Length:', `${episodemin}`)
+                    .addField('Estimated Total Runtime:', `${time}`)
+                		.addField('Main Characters:', `${mainchar}`)
+                    .addField('Community Rating:', avgRating)
+                    .addField('Source:', `${sourcefilter}`)
+                		.addField('Staff:', `${staff}`)
 
-                                if (posterIMG === null) {
-                                    posterIMG = 'https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848';
-                                };
+                if (nsfw == false) {
+                    await em1.edit(`${user}, here is the result for ${canonTitle}`, { embed });
+                } else {
+                    await em1.delete();
+                    await message.channel.send(`${user}, You've selected a NSFW Anime! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
+                    await message.author.send(`Here is the result for ${canonTitle}`, { embed });
+                };
+            });
 
-                                let time;
-                                function timeConvert(n) {
-
-                                    /* var num = n;
-                                    var hours = (num / 60);
-                                    var rhours = Math.floor(hours);
-                                    var minutes = (hours - rhours) * 60;
-                                    var rminutes = Math.floor(minutes); */
-
-                                    let hours = Math.floor(n / 60);
-                                    let minutes = Math.floor((n / 60 - hours) * 60);
-
-                                    if (hours === 0) {
-                                        time = minutes + " minute(s).";
-                                    } else {
-                                        time = "Approximately " + hours + " hour(s) and " + minutes + " minute(s).";
-                                    };
-                                };
-
-                                if (time == undefined || time == null) {
-                                    time = "No Data in Database.";
-                                };
-
-                                let runtime;
-                                if (episodes === null || episodemin === null) {
-                                    runtime = "Can't Calculate Runtime without Episodes or Episode length.";
-                                } else {
-                                    runtime = episodes * episodemin;
-                                    timeConvert(runtime);
-                                };
-
-                                if (episodes === null) {
-                                    episodes = "No Episodes in the Database.";
-                                };
-
-                                if (episodemin === null) {
-                                    episodemin = "No Data in Database.";
-                                } else {
-                                    episodemin = episodemin + " Minutes.";
-                                };
-
-                                if (coverIMG === null) {
-                                    coverIMG = "";
-                                } else {
-                                    coverIMG = coverIMG.original;
-                                };
-
-                                await fetch(`${genres}`, {
-                                    method: 'GET',
-                                    headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}` }
-                                })
-                                    .then(res1 => res1.json())
-                                    .then(async res1 => {
-                                        var genreval = [];
-                                        for (var o = 0; o < res1.data.length; o++) {
-                                            genreval.push(res1.data[o].attributes.name);
-                                        };
-
-                                        await fetch(`${categories}`, {
-                                            method: 'GET',
-                                            headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}` }
-                                        })
-                                            .then(res9 => res9.json())
-                                            .then(async res9 => {
-                                                var categoryval = [];
-                                                for (var owo = 0; owo < res9.data.length; owo++) {
-                                                    categoryval.push(res9.data[owo].attributes.title);
-                                                };
-
-                                                if (categoryval == null || categoryval == "") {
-                                                    categoryval = "No Categories in Database.";
-                                                } else {
-                                                    categoryval = categoryval.join(", ");
-                                                };
-
-                                                if (genreval == null || genreval == "") {
-                                                    genreval = "No Genres in Database.";
-                                                } else {
-                                                    genreval = genreval.join(", ");
-                                                };
-
-                                                const embed = new Discord.RichEmbed()
-                                                    .setTitle(canonTitle)
-                                                    .setColor(color)
-                                                    .setDescription(synopsis)
-                                                    .setFooter(canonTitle)
-                                                    .setImage(coverIMG)
-                                                    .setThumbnail(posterIMG)
-                                                    .setTimestamp()
-                                                    .setURL(url)
-                                                    .addField('Type:', `${subtype}`)
-                                                    .addField('Status:', status)
-                                                    .addField('Preview Trailer:', `[Click Me](https://www.youtube.com/watch?v=` + `${videoid})`)
-                                                    .addField('Categories:', categoryval)
-                                                    .addField('Aired:', `From ${start} to ${end}`)
-                                                    .addField('Episodes:', episodes)
-                                                    .addField('Episode Length:', `${episodemin}`)
-                                                    .addField('Total Runtime:', `${time}`)
-                                                    .addField('Community Rating:', avgRating)
-                                                    .addField('Age Category:', `${ager} ${agerg}`);
-
-                                                if (nsfw == false) {
-                                                    await em1.edit(`${user}, Here is your result for ${canonTitle}`, { embed });
-                                                } else {
-                                                    await em1.delete();
-                                                    await message.channel.send(`${user}, You've selected a NSFW Anime! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                                                    await message.author.send(`Here is the result for ${canonTitle}`, { embed });
-                                                };
-                                            });
-                                    });
-                            });
-                    });
-
-                    collector.on('end', collected => {
-                        if (collected.size == 0) {
-                            em1.delete();
-                            message.channel.send(`${user}, You didn't react fast enough, try again!`);
-                        } else { return };
-                    });
-                });
+            collector.on('end', collected => {
+                if (collected.size == 0) {
+                    em1.delete();
+                    message.channel.send(`${user}, You didn't react fast enough, try again!`);
+                };
+            });
         });
 };
