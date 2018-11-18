@@ -35,7 +35,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
         perPage: 7
     };
 
-    let databody = {
+	let databody = {
         query: query,
         variables: variables
     };
@@ -74,6 +74,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             };
 
             let embed
+
             switch (fetch1.data.Page.characters.length) {
                 case 1:
                     embed = {
@@ -123,8 +124,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         },
                         "fields": [
                             field1[0],
+                            field1[1],
                             field1[2],
-                            field1[3],
                             {
                                 "name": "None of the above (Abort Command)",
                                 "value": `Reaction: ${emoji[0]}`
