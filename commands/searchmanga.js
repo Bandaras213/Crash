@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const query = require("../data/mangaquery.js");
 
 var emoji = [
     "❌", //X
@@ -10,7 +11,7 @@ var emoji = [
     "\u0036\u20E3", //6
     "\u0037\u20E3", //7
     "\u0038\u20E3", //8
-    "\u0039\u20E3", //9
+    "\u0039\u20E3" //9
 ];
 
 module.exports = async (bot, message, args, Discord, moment) => {
@@ -22,256 +23,489 @@ module.exports = async (bot, message, args, Discord, moment) => {
     let uid = message.author.id;
     message.delete();
 
+
     if (args.length == 0) {
-        return message.channel.send(`${user}, I need a Title to search for! (Usage: €manga Title)`);
+        return message.channel.send(`${user}, I need a Title to search for! (Usage: €betamanga Title)`);
     };
 
-    await fetch('https://kitsu.io/api/edge/manga/?filter[text]=' + manganame, {
-        method: 'GET',
-        headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json' }
-    })
-        .then(filter0 => filter0.json())
-        .then(async filter0 => {
+    await query
 
-            let embed = {
-                "color": 65280,
-                "author": {
-                    "name": `Results for ${manganame}`,
-                },
-                "footer": {
-                    "text": `Please choose by using the reactions below!`,
-                },
-                "fields": [
-                    {
-                        "name": `${filter0.data[0].attributes.canonicalTitle} - ${bot.caps(filter0.data[0].type)} - ${filter0.data[0].id}`,
-                        "value": `Reaction: ${emoji[1]}`
-                    },
-                    {
-                        "name": `${filter0.data[1].attributes.canonicalTitle} - ${bot.caps(filter0.data[1].type)} - ${filter0.data[1].id}`,
-                        "value": `Reaction: ${emoji[2]}`
-                    },
-                    {
-                        "name": `${filter0.data[2].attributes.canonicalTitle} - ${bot.caps(filter0.data[2].type)} - ${filter0.data[2].id}`,
-                        "value": `Reaction: ${emoji[3]}`
-                    },
-                    {
-                        "name": `${filter0.data[3].attributes.canonicalTitle} - ${bot.caps(filter0.data[3].type)} - ${filter0.data[3].id}`,
-                        "value": `Reaction: ${emoji[4]}`
-                    },
-                    {
-                        "name": `${filter0.data[4].attributes.canonicalTitle} - ${bot.caps(filter0.data[4].type)} - ${filter0.data[4].id}`,
-                        "value": `Reaction: ${emoji[5]}`
-                    },
-                    {
-                        "name": `${filter0.data[5].attributes.canonicalTitle} - ${bot.caps(filter0.data[5].type)} - ${filter0.data[5].id}`,
-                        "value": `Reaction: ${emoji[6]}`
-                    },
-                    {
-                        "name": `${filter0.data[6].attributes.canonicalTitle} - ${bot.caps(filter0.data[6].type)} - ${filter0.data[6].id}`,
-                        "value": `Reaction: ${emoji[7]}`
-                    },
-                    {
-                        "name": "None of the above (Abort Command)",
-                        "value": `Reaction: ${emoji[0]}`
-                    }
-                ]
+    let variables = {
+        search: manganame,
+        page: 1,
+        perPage: 7,
+    };
+
+    let databody = {
+        query: query,
+        variables: variables
+    };
+
+    await fetch('https://graphql.anilist.co', {
+        method: 'post',
+        body: JSON.stringify(databody),
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+    })
+        .then(fetch1 => fetch1.json())
+        .then(async fetch1 => {
+
+            let field1 = [];
+            let NSFW = [];
+            for (let a = 0; a < fetch1.data.Page.media.length; a++) {
+                if (fetch1.data.Page.media[a].isAdult == true) {
+                    NSFW.push("🔞" + "NSFW" + "🔞");
+                } else {
+                    NSFW.push("");
+                };
+
+                if (fetch1.data.Page.media[a].title.romaji != null) {
+                    field1.push({
+                        "name": `${fetch1.data.Page.media[a].title.romaji} (${bot.caps(fetch1.data.Page.media[a].format.split("_"))}) ${NSFW[a]}`,
+                        "value": `Reaction: ${emoji[a + 1]}`
+                    });
+                } else {
+                    field1.push({
+                        "name": `${fetch1.data.Page.media[a].title.english} (${bot.caps(fetch1.data.Page.media[a].format.split(" "))}) ${NSFW[a]}`,
+                        "value": `Reaction: ${emoji[a + 1]}`
+                    });
+                };
             };
 
-            const em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
-            await em1.react(emoji[1]);
-            await em1.react(emoji[2]);
-            await em1.react(emoji[3]);
-            await em1.react(emoji[4]);
-            await em1.react(emoji[5]);
-            await em1.react(emoji[6]);
-            await em1.react(emoji[7]);
-            await em1.react(emoji[0]);
+            let embed
+            switch (fetch1.data.Page.media.length) {
+                case 1:
+                    embed = {
+                        "color": 65280,
+                        "author": {
+                            "name": `Results for "${manganame}"`,
+                        },
+                        "footer": {
+                            "text": `Please choose by using the Reactions below!`,
+                        },
+                        "fields": [
+                            field1[0],
+                            {
+                                "name": "None of the above (Abort Command)",
+                                "value": `Reaction: ${emoji[0]}`
+                            }
+                        ]
+                    };
+                    break
+                case 2:
+                    embed = {
+                        "color": 65280,
+                        "author": {
+                            "name": `Results for "${manganame}"`,
+                        },
+                        "footer": {
+                            "text": `Please choose by using the Reactions below!`,
+                        },
+                        "fields": [
+                            field1[0],
+                            field1[1],
+                            {
+                                "name": "None of the above (Abort Command)",
+                                "value": `Reaction: ${emoji[0]}`
+                            }
+                        ]
+                    };
+                    break
+                case 3:
+                    embed = {
+                        "color": 65280,
+                        "author": {
+                            "name": `Results for "${manganame}"`,
+                        },
+                        "footer": {
+                            "text": `Please choose by using the Reactions below!`,
+                        },
+                        "fields": [
+                            field1[0],
+                            field1[2],
+                            field1[3],
+                            {
+                                "name": "None of the above (Abort Command)",
+                                "value": `Reaction: ${emoji[0]}`
+                            }
+                        ]
+                    };
+                    break
+                case 4:
+                    embed = {
+                        "color": 65280,
+                        "author": {
+                            "name": `Results for "${manganame}"`,
+                        },
+                        "footer": {
+                            "text": `Please choose by using the Reactions below!`,
+                        },
+                        "fields": [
+                            field1[0],
+                            field1[1],
+                            field1[2],
+                            field1[3],
+                            {
+                                "name": "None of the above (Abort Command)",
+                                "value": `Reaction: ${emoji[0]}`
+                            }
+                        ]
+                    };
+                    break
+                case 5:
+                    embed = {
+                        "color": 65280,
+                        "author": {
+                            "name": `Results for "${manganame}"`,
+                        },
+                        "footer": {
+                            "text": `Please choose by using the Reactions below!`,
+                        },
+                        "fields": [
+                            field1[0],
+                            field1[1],
+                            field1[2],
+                            field1[3],
+                            field1[4],
+                            {
+                                "name": "None of the above (Abort Command)",
+                                "value": `Reaction: ${emoji[0]}`
+                            }
+                        ]
+                    };
+                    break
+                case 6:
+                    embed = {
+                        "color": 65280,
+                        "author": {
+                            "name": `Results for "${manganame}"`,
+                        },
+                        "footer": {
+                            "text": `Please choose by using the Reactions below!`,
+                        },
+                        "fields": [
+                            field1[0],
+                            field1[1],
+                            field1[2],
+                            field1[3],
+                            field1[4],
+                            field1[5],
+                            {
+                                "name": "None of the above (Abort Command)",
+                                "value": `Reaction: ${emoji[0]}`
+                            }
+                        ]
+                    };
+                    break
+                case 7:
+                    embed = {
+                        "color": 65280,
+                        "author": {
+                            "name": `Results for "${manganame}"`,
+                        },
+                        "footer": {
+                            "text": `Please choose by using the Reactions below!`,
+                        },
+                        "fields": [
+                            field1[0],
+                            field1[1],
+                            field1[2],
+                            field1[3],
+                            field1[4],
+                            field1[5],
+                            field1[6],
+                            {
+                                "name": "None of the above (Abort Command)",
+                                "value": `Reaction: ${emoji[0]}`
+                            }
+                        ]
+                    };
+                    break
+            };
+
+            let em1
+            switch (fetch1.data.Page.media.length) {
+                case 1:
+                    em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
+                    await em1.react(emoji[1]);
+                    await em1.react(emoji[0]);
+                    break;
+                case 2:
+                    em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
+                    await em1.react(emoji[1]);
+                    await em1.react(emoji[2]);
+                    await em1.react(emoji[0]);
+                    break;
+                case 3:
+                    em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
+                    await em1.react(emoji[1]);
+                    await em1.react(emoji[2]);
+                    await em1.react(emoji[3]);
+                    await em1.react(emoji[0]);
+                    break;
+                case 4:
+                    em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
+                    await em1.react(emoji[1]);
+                    await em1.react(emoji[2]);
+                    await em1.react(emoji[3]);
+                    await em1.react(emoji[4]);
+                    await em1.react(emoji[0]);
+                    break;
+                case 5:
+                    em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
+                    await em1.react(emoji[1]);
+                    await em1.react(emoji[2]);
+                    await em1.react(emoji[3]);
+                    await em1.react(emoji[4]);
+                    await em1.react(emoji[5]);
+                    await em1.react(emoji[0]);
+                    break;
+                case 6:
+                    em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
+                    await em1.react(emoji[1]);
+                    await em1.react(emoji[2]);
+                    await em1.react(emoji[3]);
+                    await em1.react(emoji[4]);
+                    await em1.react(emoji[5]);
+                    await em1.react(emoji[6]);
+                    await em1.react(emoji[0]);
+                    break;
+                case 7:
+                    em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
+                    await em1.react(emoji[1]);
+                    await em1.react(emoji[2]);
+                    await em1.react(emoji[3]);
+                    await em1.react(emoji[4]);
+                    await em1.react(emoji[5]);
+                    await em1.react(emoji[6]);
+                    await em1.react(emoji[7]);
+                    await em1.react(emoji[0]);
+                    break;
+            };
 
             const filter = (reaction, user) => {
                 return emoji.includes(reaction.emoji.name) === true && user.id === uid;
             };
 
-            const collector = em1.createReactionCollector(filter, { max: 1, time: 15000 });
+            const collector = await em1.createReactionCollector(filter, { max: 1, time: 15000 });
 
             collector.on('collect', async (reaction, reactionCollector) => {
                 let chosen = reaction.emoji.name;
 
                 switch (chosen) {
                     case emoji[0]:
-                        return em1.delete(), message.channel.send(`${user} aborted the command`);
+                        return em1.delete(), message.channel.send(`${user} aborted the command.`);
                     case emoji[1]:
                         em1.clearReactions();
-                        i = 0;
-                        break;
+                        i = 0
+                        break
                     case emoji[2]:
                         em1.clearReactions();
-                        i = 1;
-                        break;
+                        i = 1
+                        break
                     case emoji[3]:
                         em1.clearReactions();
-                        i = 2;
-                        break;
+                        i = 2
+                        break
                     case emoji[4]:
                         em1.clearReactions();
-                        i = 3;
-                        break;
+                        i = 3
+                        break
                     case emoji[5]:
                         em1.clearReactions();
-                        i = 4;
-                        break;
+                        i = 4
+                        break
                     case emoji[6]:
                         em1.clearReactions();
-                        i = 5;
-                        break;
+                        i = 5
+                        break
                     case emoji[7]:
                         em1.clearReactions();
-                        i = 6;
-                        break;
+                        i = 6
+                        break
                 };
 
-                await fetch('https://kitsu.io/api/edge/manga/?filter[text]=' + manganame, {
-                    method: 'GET',
-                    headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json' }
-                })
-                    .then(res0 => res0.json())
-                    .then(async res0 => {
-                        //data
-                        let id = res0.data[i].id;
-                        let type = res0.data[i].type;
-                        let url = "https://kitsu.io/manga/" + id;
+                //data
+                let id = fetch1.data.Page.media[i].id
+                let url = fetch1.data.Page.media[i].siteUrl;
 
-                        //data.atributes
-                        let synopsis = res0.data[i].attributes.synopsis;
-                        let canonTitle = res0.data[i].attributes.canonicalTitle;
-                        let avgRating = res0.data[i].attributes.averageRating;
-                        let favcount = res0.data[i].attributes.favoritesCount;
-                        let startdate = res0.data[i].attributes.startDate;
-                        let enddate = res0.data[i].attributes.endDate;
-                        let poprank = res0.data[i].attributes.popularityRank;
-                        let ratingrank = res0.data[i].attributes.ratingRank;
-                        let subtype = res0.data[i].attributes.subtype;
-                        let status = res0.data[i].attributes.status;
-                        let posterIMG = res0.data[i].attributes.posterImage.medium;
-                        let coverIMG = res0.data[i].attributes.coverImage;
-                        let chapters = res0.data[i].attributes.chapterCount;
-                        let genres = res0.data[i].relationships.categories.links.related;
+                //data.atributes
+                let format = fetch1.data.Page.media[i].format;
+                let synopsis = fetch1.data.Page.media[i].description;
+                let canonTitle = fetch1.data.Page.media[i].title.romaji;
+                let avgRating = fetch1.data.Page.media[i].averageScore;
+                let startdate = fetch1.data.Page.media[i].startDate;
+                let enddate = fetch1.data.Page.media[i].endDate;
+                let season = fetch1.data.Page.media[i].season;
+                let source = fetch1.data.Page.media[i].source;
+                let status = fetch1.data.Page.media[i].status;
+                let posterIMG = fetch1.data.Page.media[i].coverImage.large;
+                let coverIMG = fetch1.data.Page.media[i].bannerImage;
+                let chapters = fetch1.data.Page.media[i].chapters;
+                let volumes = fetch1.data.Page.media[i].volumes;
+                let genre = fetch1.data.Page.media[i].genres;
+                let nsfw = fetch1.data.Page.media[i].isAdult;
+                let staffdatas = fetch1.data.Page.media[i].staff.edges;
+                let charactersdatas = fetch1.data.Page.media[i].characters.nodes;
 
-                        if (startdate === null && enddate === null) {
-                            start = "No Startdate in the Database.";
-                            end = "No Enddate in the Database.";
-                        };
+                if (startdate === null && enddate === null) {
+                    start = "No Startdate in the Database.";
+                    end = "No Enddate in the Database.";
+                };
 
-                        let startfilter;
-                        let start;
-                        if (startdate === null) {
-                            start = "Not Running or no Data in Database.";
-                        } else {
-                            startfilter = startdate.split("-");
-                            start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0];
-                        };
+                let startfilter;
+                let start;
+                if (startdate === null) {
+                    start = "Not Running or no Data in Database.";
+                } else {
+                    startfilter = startdate;
+                    start = startfilter.day + "." + startfilter.month + "." + startfilter.year;
+                };
 
-                        let endfilter;
-                        let end;
-                        if (enddate === null) {
-                            end = "Running";
-                        } else {
-                            endfilter = enddate.split("-");
-                            end = endfilter[2] + "." + endfilter[1] + "." + endfilter[0];
-                        };
+                let endday = enddate.day;
+                let endmonth = enddate.month;
+                let endyear = enddate.year;
+                let end;
 
-                        if (avgRating === null) {
-                            avgRating = "No Data in Database.";
-                        } else {
-                            avgRating = avgRating + "%";
-                        };
+                if (enddate == null) {
+                    end = "(Ongoing)";
+                } else {
+                    end = "to " + enddate.day + "." + enddate.month + "." + enddate.year;
+                };
 
-                        if (favcount === null) {
-                            favcount = "No Data in Database.";
-                        };
+                if (endday == null || endmonth == null) {
+                    if (endyear == null) {
+                        end = "(Ongoing)";
+                    } else {
+                        end = "to " + endyear;
+                    };
+                };
 
-                        if (poprank === null) {
-                            poprank = "No Data in Database.";
-                        };
+                if (avgRating === null) {
+                    avgRating = "No Data in Database.";
+                } else {
+                    avgRating = avgRating + "%";
+                };
 
-                        if (ratingrank === null) {
-                            ratingrank = "No Data in Database.";
-                        };
+                let sourcefilter;
+                if (source == null || source == undefined) {
+                    sourcefilter = "No Source in Database.";
+                } else {
+                    sourcefilter = bot.caps(source.split("_"));
+                };
 
-                        if (subtype === null) {
-                            subtype = "No Data in Database.";
-                        } else {
-                            subtype = bot.caps(subtype);
-                        };
+                if (status === null) {
+                    status = "No Data in Database.";
+                } else {
+                    status = bot.caps(status);
+                };
 
-                        if (status === null) {
-                            status = "No Data in Database.";
-                        } else {
-                            status = bot.caps(status);
-                        };
+                if (posterIMG === null) {
+                    posterIMG = 'https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848';
+                };
 
-                        if (posterIMG === null) {
-                            posterIMG = 'https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848';
-                        };
+                if (chapters === null) {
+                    chapters = "No Chapter in the Database.";
+                };
 
-                        if (chapters === null) {
-                            chapters = "No Chapters in the Kitsu.io Database.";
-                        };
+                if (volumes == null) {
+                    volumes = "No Volumes in the Database.";
+                };
 
-                        if (coverIMG === null) {
-                            coverIMG = "";
-                        } else {
-                            coverIMG = coverIMG.original;
-                        };
+                if (coverIMG === null) {
+                    coverIMG = "";
+                };
 
-                        await fetch(`${genres}`, {
-                            method: 'GET',
-                            headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json' }
-                        })
-                            .then(res1 => res1.json())
-                            .then(async res1 => {
+                let genre1 = [];
 
-                                var genreval = [];
-                                if (res1.data[0].attributes.title === null) {
-                                    genreval.push(null);
-                                } else {
-                                    for (var o = 0; o < res1.data.length; o++) {
-                                        genreval.push(res1.data[o].attributes.title);
-                                    };
-                                };
+                for (let b = 0; b < fetch1.data.Page.media[i].genres.length; ++b) {
+                    genre1.push(fetch1.data.Page.media[i].genres[b]);
+                };
 
-                                if (genreval == null || genreval == "") {
-                                    genreval = "No Genres in Database.";
-                                } else {
-                                    genreval = genreval.join(", ");
-                                };
+                let genres = genre1.join(", ");
 
-                                const embed = new Discord.RichEmbed()
-                                    .setTitle(canonTitle)
-                                    .setColor(color)
-                                    .setDescription(synopsis)
-                                    .setFooter(canonTitle)
-                                    .setImage(coverIMG)
-                                    .setThumbnail(posterIMG)
-                                    .setTimestamp()
-                                    .setURL(url)
-                                    .addField('Type:', bot.caps(type))
-                                    .addField('Genre:', genreval)
-                                    .addField('Chapters:', chapters)
-                                    .addField('Status:', status)
-                                    .addField('Published:', `${subtype} ${start} - ${end}`)
-                                    .addField('Community Rating:', avgRating);
+                if (genre == null) {
+                    genres = "No Data in Database.";
+                };
 
-                                await em1.edit(`${user}, here is your result for ${canonTitle}`, { embed });
-                            });
-                    });
+                let chardata = []
+
+                for (let c = 0; c < charactersdatas.length; ++c) {
+                    if (charactersdatas[c].name.last == null) {
+                        chardata.push("[" + charactersdatas[c].name.first + "]" + "(" + charactersdatas[c].siteUrl + ")");
+                    } else {
+                        chardata.push("[" + charactersdatas[c].name.first + " " + charactersdatas[c].name.last + "]" + "(" + charactersdatas[c].siteUrl + ")")
+                    };
+                };
+
+                let mainchar
+                if (chardata.length == 0) {
+                    mainchar = "No Characters in the Database."
+                } else {
+                    mainchar = chardata.join(", ")
+                };
+
+                let staffdata = []
+
+                for (let m = 0; m < staffdatas.length; ++m) {
+                    staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")")
+                };
+
+                let staff = staffdata.join("\n")
+
+                let embed
+                if (status == "Finished") {
+                    embed = new Discord.RichEmbed()
+                        .setTitle(canonTitle)
+                        .setColor(color)
+                        .setDescription(synopsis.replace(/<[^>]*>/g, ' ').replace(/\s{2,}/g, ' ').trim())
+                        .setFooter(canonTitle)
+                        .setImage(coverIMG)
+                        .setThumbnail(posterIMG)
+                        .setTimestamp()
+                        .setURL(url)
+                        .addField('Type:', `${bot.caps(format.split("_"))}`)
+                        .addField('Genres:', `${genres}`)
+                        .addField('Status:', `${status}`)
+                        .addField('Released:', `Started ${start} ${end}`)
+                        .addField('Chapter:', chapters)
+                        .addField('Volumes:', `${volumes}`)
+                        .addField('Main Characters:', `${mainchar}`)
+                        .addField('Community Rating:', avgRating)
+                        .addField('Source:', `${sourcefilter}`)
+                        .addField('Staff:', `${staff}`)
+                } else {
+                    embed = new Discord.RichEmbed()
+                        .setTitle(canonTitle)
+                        .setColor(color)
+                        .setDescription(synopsis.replace(/<[^>]*>/g, ' ').replace(/\s{2,}/g, ' ').trim())
+                        .setFooter(canonTitle)
+                        .setImage(coverIMG)
+                        .setThumbnail(posterIMG)
+                        .setTimestamp()
+                        .setURL(url)
+                        .addField('Type:', `${bot.caps(format.split("_"))}`)
+                        .addField('Genres:', `${genres}`)
+                        .addField('Status:', `${status}`)
+                        .addField('Released:', `Started ${start} ${end}`)
+                        .addField('Main Characters:', `${mainchar}`)
+                        .addField('Community Rating:', avgRating)
+                        .addField('Source:', `${sourcefilter}`)
+                        .addField('Staff:', `${staff}`)
+                };
+
+                if (nsfw == false) {
+                    await em1.edit(`${user}, here is the result for ${canonTitle}`, { embed });
+                } else {
+                    await em1.delete();
+                    await message.channel.send(`${user}, You've selected a NSFW Manga! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
+                    await message.author.send(`Here is the result for ${canonTitle}`, { embed });
+                };
             });
 
             collector.on('end', collected => {
                 if (collected.size == 0) {
                     em1.delete();
-                    message.channel.send(`${user}, you didn't react fast enough, try again!`);
-                } else {
-                    return;
+                    message.channel.send(`${user}, You didn't react fast enough, try again!`);
                 };
             });
         });
