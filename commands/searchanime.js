@@ -215,11 +215,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     break;
             };
 
-            let em1
+            let em1;
             switch (fetch1.data.Page.media.length) {
                 case 0:
-                em1 = await message.channel.send(`${user}, Couldn't find any Results for "${args.join(" ")}"!`);
-                return;
+                    em1 = await message.channel.send(`${user}, Couldn't find any Results for "${args.join(" ")}"!`);
+                    return;
                 case 1:
                     em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
                     await em1.react(emoji[1]);

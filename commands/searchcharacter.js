@@ -225,7 +225,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     break;
             };
 
-            let em1
+            let em1;
             switch (fetch1.data.Page.characters.length) {
                 case 0:
                 em1 = await message.channel.send(`${user}, Couldn't find any Results for "${args.join(" ")}"!`);
