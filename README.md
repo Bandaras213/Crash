@@ -1,5 +1,5 @@
 # Crash Bot
-**This is a try to make a Kitsu.io Discord Bot.**
+**This is a try to make a Anime Discord Bot.**
 **This Bot works right out the box with glitch.com but can be used on other platforms with little changes.**
 
 ## Config.json file
@@ -47,13 +47,15 @@ Avaliable types are PLAYING, STREAMING, LISTENING, WATCHING.
 
 - ## Commands
   + **help**
-	  * Sends a DM embed to the command user and shows all avaliable commands and Infos about them.
+     * Sends a DM embed to the command user and shows all avaliable commands and Infos about them.
   + **anime ["Anime Name"]**
-    * Starts a search for a Anime and gets 7 results that match the name. From these results you can choose the one that you want and the bot gets the Infos for it.
-  +	**manga ["Manga Name"]**
-  	* Starts a search for a Manga and gets 7 results that match the name with type and ID. From these results you can choose the one that you want and the Bot gets the Infos for it.
+     * Starts a search for ["Anime Name"] and gets the 7 best matching results. From these results you can choose the one that matches the one you wanted and displays its details.
+  + **character ["Character Name"]**
+     * Starts a search for ["Character Name"] and gets the 7 best matching results. From these results you can choose the one that matches the one you wanted and displays his/hers details.
+  + **manga ["Manga Name"]**
+     * Starts a search for ["Manga Name"] and gets the 7 best matching results. From these results you can choose the one that matches the one you wanted and displays its details.
   + **rdmanime**
-  	* Displays a random anime.
+     * Displays a random anime.
 ---
 			
 ## Credits
