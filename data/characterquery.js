@@ -15,7 +15,7 @@ query ($search: String, $page: Int, $perPage: Int) {
 			first
 			last
 			alternative
-			}
+		}
 		image {
 		large
 		}

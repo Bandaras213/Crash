@@ -48,7 +48,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
-      
+
             let field1 = [];
             let NSFW = [];
             for (let a = 0; a < fetch1.data.Page.media.length; a++) {
@@ -57,18 +57,18 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 } else {
                     NSFW.push("");
                 };
-								
-              	if (fetch1.data.Page.media[a].title.romaji != null) {
-                field1.push({
-                    "name": `${fetch1.data.Page.media[a].title.romaji} (${bot.caps(fetch1.data.Page.media[a].format.split("_"))}) ${NSFW[a]}`,
-                    "value": `Reaction: ${emoji[a + 1]}`
-                });
-                }else {
-                field1.push({
-                  	"name": `${fetch1.data.Page.media[a].title.english} (${bot.caps(fetch1.data.Page.media[a].format.split(" "))}) ${NSFW[a]}`,
-                  	"value": `Reaction: ${emoji[a + 1]}`
-                });
-              };
+
+                if (fetch1.data.Page.media[a].title.romaji != null) {
+                    field1.push({
+                        "name": `${fetch1.data.Page.media[a].title.romaji} (${bot.caps(fetch1.data.Page.media[a].format.split("_"))}) ${NSFW[a]}`,
+                        "value": `Reaction: ${emoji[a + 1]}`
+                    });
+                } else {
+                    field1.push({
+                        "name": `${fetch1.data.Page.media[a].title.english} (${bot.caps(fetch1.data.Page.media[a].format.split(" "))}) ${NSFW[a]}`,
+                        "value": `Reaction: ${emoji[a + 1]}`
+                    });
+                };
             };
 
             let embed
@@ -224,6 +224,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
             let em1
             switch (fetch1.data.Page.media.length) {
+                case 0:
+                em1 = await message.channel.send(`${user}, Couldn't find any Results for "${args.join(" ")}"!`);
+                return;
                 case 1:
                     em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
                     await em1.react(emoji[1]);
@@ -335,7 +338,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 let avgRating = fetch1.data.Page.media[i].averageScore;
                 let startdate = fetch1.data.Page.media[i].startDate;
                 let enddate = fetch1.data.Page.media[i].endDate;
-                let season = fetch1.data.Page.media[i].season;
+                //let season = fetch1.data.Page.media[i].season;
                 let source = fetch1.data.Page.media[i].source;
                 let status = fetch1.data.Page.media[i].status;
                 let posterIMG = fetch1.data.Page.media[i].coverImage.large;
@@ -344,8 +347,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 let volumes = fetch1.data.Page.media[i].volumes;
                 let genre = fetch1.data.Page.media[i].genres;
                 let nsfw = fetch1.data.Page.media[i].isAdult;
-              	let staffdatas = fetch1.data.Page.media[i].staff.edges;
-              	let charactersdatas = fetch1.data.Page.media[i].characters.nodes;
+                let staffdatas = fetch1.data.Page.media[i].staff.edges;
+                let charactersdatas = fetch1.data.Page.media[i].characters.nodes;
 
                 if (startdate === null && enddate === null) {
                     start = "No Startdate in the Database.";
@@ -358,7 +361,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     start = "Not Running or no Data in Database.";
                 } else {
                     startfilter = startdate;
-                    start = startfilter.day + "." + startfilter.month + "." + startfilter.year;
+                    if (startfilter.day == null || startfilter.month == null) {
+                        start = startfilter.year;
+                    } else {
+                        start = startfilter.day + "." + startfilter.month + "." + startfilter.year;
+                    };
                 };
 
                 let endday = enddate.day;
@@ -369,14 +376,14 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (enddate == null) {
                     end = "(Ongoing)";
                 } else {
-                    end = "to " + enddate.day + "." + enddate.month + "." + enddate.year;
+                    end = "until " + enddate.day + "." + enddate.month + "." + enddate.year;
                 };
 
                 if (endday == null || endmonth == null) {
                     if (endyear == null) {
                         end = "(Ongoing)";
                     } else {
-                        end = "to " + endyear;
+                        end = "until " + endyear;
                     };
                 };
 
@@ -406,9 +413,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (chapters === null) {
                     chapters = "No Chapter in the Database.";
                 };
-              
-              	if (volumes == null) {
-                  	volumes = "No Volumes in the Database.";
+
+                if (volumes == null) {
+                    volumes = "No Volumes in the Database.";
                 };
 
                 if (coverIMG === null) {
@@ -426,70 +433,71 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (genre == null) {
                     genres = "No Data in Database.";
                 };
-              	
-              	let chardata = []
-              	
-              	for (let c = 0; c < charactersdatas.length; ++c) {
-                  if (charactersdatas[c].name.last == null) {
-                    	chardata.push("["+charactersdatas[c].name.first+"]"+"("+charactersdatas[c].siteUrl+")");
-                  }else{
-                  		chardata.push("["+charactersdatas[c].name.first+" "+charactersdatas[c].name.last+"]"+"("+charactersdatas[c].siteUrl+")")};
+
+                let chardata = []
+
+                for (let c = 0; c < charactersdatas.length; ++c) {
+                    if (charactersdatas[c].name.last == null) {
+                        chardata.push("[" + charactersdatas[c].name.first + "]" + "(" + charactersdatas[c].siteUrl + ")");
+                    } else {
+                        chardata.push("[" + charactersdatas[c].name.first + " " + charactersdatas[c].name.last + "]" + "(" + charactersdatas[c].siteUrl + ")")
+                    };
                 };
-              
+
                 let mainchar
                 if (chardata.length == 0) {
                     mainchar = "No Characters in the Database."
-                }else {
-              			mainchar = chardata.join(", ")
+                } else {
+                    mainchar = chardata.join(", ")
                 };
-                
+
                 let staffdata = []
-                
+
                 for (let m = 0; m < staffdatas.length; ++m) {
-                  	staffdata.push(staffdatas[m].role+": "+"["+staffdatas[m].node.name.first+" "+staffdatas[m].node.name.last+"]"+"("+staffdatas[m].node.siteUrl+")")
+                    staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")")
                 };
-              
-              	let staff = staffdata.join("\n")
-                
+
+                let staff = staffdata.join("\n")
+
                 let embed
                 if (status == "Finished") {
-                embed = new Discord.RichEmbed()
-                    .setTitle(canonTitle)
-                    .setColor(color)
-                    .setDescription(synopsis.replace(/<[^>]*>/g, ' ').replace(/\s{2,}/g, ' ').trim())
-                    .setFooter(canonTitle)
-                    .setImage(coverIMG)
-                    .setThumbnail(posterIMG)
-                    .setTimestamp()
-                    .setURL(url)
-                    .addField('Type:', `${bot.caps(format.split("_"))}`)
-                    .addField('Genres:', `${genres}`)
-                    .addField('Status:', `${status}`)
-                    .addField('Released:', `Started ${start} ${end}`)
-                    .addField('Chapter:', chapters)
-                    .addField('Volumes:', `${volumes}`)
-                		.addField('Main Characters:', `${mainchar}`)
-                    .addField('Community Rating:', avgRating)
-                    .addField('Source:', `${sourcefilter}`)
-                		.addField('Staff:', `${staff}`)
-                }else {
-                embed = new Discord.RichEmbed()
-                    .setTitle(canonTitle)
-                    .setColor(color)
-                    .setDescription(synopsis.replace(/<[^>]*>/g, ' ').replace(/\s{2,}/g, ' ').trim())
-                    .setFooter(canonTitle)
-                    .setImage(coverIMG)
-                    .setThumbnail(posterIMG)
-                    .setTimestamp()
-                    .setURL(url)
-                    .addField('Type:', `${bot.caps(format.split("_"))}`)
-                    .addField('Genres:', `${genres}`)
-                    .addField('Status:', `${status}`)
-                    .addField('Released:', `Started ${start} ${end}`)
-                    .addField('Main Characters:', `${mainchar}`)
-                    .addField('Community Rating:', avgRating)
-                    .addField('Source:', `${sourcefilter}`)
-                    .addField('Staff:', `${staff}`)
+                    embed = new Discord.RichEmbed()
+                        .setTitle(canonTitle)
+                        .setColor(color)
+                        .setDescription(synopsis.replace(/<[^>]*>/g, ' ').replace(/\s{2,}/g, ' ').trim())
+                        .setFooter(canonTitle)
+                        .setImage(coverIMG)
+                        .setThumbnail(posterIMG)
+                        .setTimestamp()
+                        .setURL(url)
+                        .addField('Type:', `${bot.caps(format.split("_"))}`)
+                        .addField('Genres:', `${genres}`)
+                        .addField('Main Characters:', `${mainchar}`)
+                        .addField('Status:', `${status}`)
+                        .addField('Released:', `${start} ${end}`)
+                        .addField('Chapter:', chapters)
+                        .addField('Volumes:', `${volumes}`)
+                        .addField('Community Rating:', avgRating)
+                        .addField('Source:', `${sourcefilter}`)
+                        .addField('Staff:', `${staff}`)
+                } else {
+                    embed = new Discord.RichEmbed()
+                        .setTitle(canonTitle)
+                        .setColor(color)
+                        .setDescription(synopsis.replace(/<[^>]*>/g, ' ').replace(/\s{2,}/g, ' ').trim())
+                        .setFooter(canonTitle)
+                        .setImage(coverIMG)
+                        .setThumbnail(posterIMG)
+                        .setTimestamp()
+                        .setURL(url)
+                        .addField('Type:', `${bot.caps(format.split("_"))}`)
+                        .addField('Genres:', `${genres}`)
+                        .addField('Main Characters:', `${mainchar}`)
+                        .addField('Status:', `${status}`)
+                        .addField('Released:', `Started ${start} ${end}`)
+                        .addField('Community Rating:', avgRating)
+                        .addField('Source:', `${sourcefilter}`)
+                        .addField('Staff:', `${staff}`)
                 };
 
                 if (nsfw == false) {

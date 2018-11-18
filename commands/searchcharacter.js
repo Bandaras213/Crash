@@ -16,59 +16,64 @@ var emoji = [
 
 module.exports = async (bot, message, args, Discord, moment) => {
 
-	let charactername = args.join(' ');
-	let user = message.member.user;
-	let i;
-  let color = Math.floor(Math.random() * 16777214) + 1;
-  let uid = message.author.id;
-	message.delete();
+    let charactername = args.join(' ');
+    let user = message.member.user;
+    let i;
+    let color = Math.floor(Math.random() * 16777214) + 1;
+    let uid = message.author.id;
+    message.delete();
 
-	if (args.length == 0) {
-		return message.channel.send(`${user}, I need a Name to search for! (Usage: €betacharacter Name)`);
-	};
-  
-	await query
+    if (args.length == 0) {
+        return message.channel.send(`${user}, I need a Name to search for! (Usage: €betacharacter Name)`);
+    };
 
-	let variables = {
-		search: charactername,
-		page: 1,
-		perPage: 7
-	};
+    await query;
 
-	let databody = {
-		query: query,
-		variables: variables
-	};
+    let variables = {
+        search: charactername,
+        page: 1,
+        perPage: 7
+    };
 
-	await fetch('https://graphql.anilist.co', {
-	method: 'post',
-	body: JSON.stringify(databody),
-	headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }})
-	.then(fetch1 => fetch1.json())
-	.then(async fetch1 => {
-    
-	let field1 = [];
-	
-	for (let a = 0; a < fetch1.data.Page.characters.length; a++) {
-  let name = fetch1.data.Page.characters[a].name.first;
-	if (fetch1.data.Page.characters[a].name.last != null) {
-		name += ` ${fetch1.data.Page.characters[a].name.last}`;
-	};
-    
-  let titlecheck
-  if (fetch1.data.Page.characters[a].media.nodes[0].title.romaji == null) {
-    	titlecheck = fetch1.data.Page.characters[a].media.nodes[0].title.english
-  }else {titlecheck = fetch1.data.Page.characters[a].media.nodes[0].title.romaji};
-	field1.push({
-		"name": `${name} (${titlecheck})`,
-		"value": `Reaction: ${emoji[a + 1]}`
-		});
-	};
-  
-    if (field1.length == 0) {
-      	return message.channel.send(`${user}, Couldn't find a matching character`)};
-	
-	let embed
+    let databody = {
+        query: query,
+        variables: variables
+    };
+
+    await fetch('https://graphql.anilist.co', {
+        method: 'post',
+        body: JSON.stringify(databody),
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+    })
+        .then(fetch1 => fetch1.json())
+        .then(async fetch1 => {
+
+            let field1 = [];
+
+            for (let a = 0; a < fetch1.data.Page.characters.length; a++) {
+                let name = fetch1.data.Page.characters[a].name.first;
+                if (fetch1.data.Page.characters[a].name.last != null) {
+                    name += ` ${fetch1.data.Page.characters[a].name.last}`;
+                };
+
+                let titlecheck;
+                if (fetch1.data.Page.characters[a].media.nodes[0].title.romaji == null) {
+                    titlecheck = fetch1.data.Page.characters[a].media.nodes[0].title.english;
+                } else {
+                    titlecheck = fetch1.data.Page.characters[a].media.nodes[0].title.romaji;
+                };
+                
+                field1.push({
+                    "name": `${name} (${titlecheck})`,
+                    "value": `Reaction: ${emoji[a + 1]}`
+                });
+            };
+
+            if (field1.length == 0) {
+                return message.channel.send(`${user}, Couldn't find a matching character`);
+            };
+
+            let embed
             switch (fetch1.data.Page.characters.length) {
                 case 1:
                     embed = {
@@ -87,7 +92,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             }
                         ]
                     };
-                    break
+                    break;
                 case 2:
                     embed = {
                         "color": 65280,
@@ -106,7 +111,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             }
                         ]
                     };
-                    break
+                    break;
                 case 3:
                     embed = {
                         "color": 65280,
@@ -126,7 +131,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             }
                         ]
                     };
-                    break
+                    break;
                 case 4:
                     embed = {
                         "color": 65280,
@@ -147,7 +152,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             }
                         ]
                     };
-                    break
+                    break;
                 case 5:
                     embed = {
                         "color": 65280,
@@ -169,7 +174,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             }
                         ]
                     };
-                    break
+                    break;
                 case 6:
                     embed = {
                         "color": 65280,
@@ -192,7 +197,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             }
                         ]
                     };
-                    break
+                    break;
                 case 7:
                     embed = {
                         "color": 65280,
@@ -216,11 +221,14 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             }
                         ]
                     };
-                    break
+                    break;
             };
 
             let em1
             switch (fetch1.data.Page.characters.length) {
+                case 0:
+                em1 = await message.channel.send(`${user}, Couldn't find any Results for "${args.join(" ")}"!`);
+                return;
                 case 1:
                     em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
                     await em1.react(emoji[1]);
@@ -294,84 +302,82 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     case emoji[1]:
                         em1.clearReactions();
                         i = 0
-                        break
+                        break;
                     case emoji[2]:
                         em1.clearReactions();
                         i = 1
-                        break
+                        break;
                     case emoji[3]:
                         em1.clearReactions();
                         i = 2
-                        break
+                        break;
                     case emoji[4]:
                         em1.clearReactions();
                         i = 3
-                        break
+                        break;
                     case emoji[5]:
                         em1.clearReactions();
                         i = 4
-                        break
+                        break;
                     case emoji[6]:
                         em1.clearReactions();
                         i = 5
-                        break
+                        break;
                     case emoji[7]:
                         em1.clearReactions();
                         i = 6
-                        break
+                        break;
                 };
 
-	let alternative = fetch1.data.Page.characters[i].name.alternative;
-	let url = fetch1.data.Page.characters[i].siteUrl;
-	let imageUrl = fetch1.data.Page.characters[i].image.large;
-	let description = fetch1.data.Page.characters[i].description;
-	let isindatas = fetch1.data.Page.characters[i].media.nodes;
-  let siteUrl = fetch1.data.Page.characters[i].media.nodes;
-  let format = fetch1.data.Page.characters[i].media.nodes;
+                let alternative = fetch1.data.Page.characters[i].name.alternative;
+                let url = fetch1.data.Page.characters[i].siteUrl;
+                let imageUrl = fetch1.data.Page.characters[i].image.large;
+                let description = fetch1.data.Page.characters[i].description;
+                let isindatas = fetch1.data.Page.characters[i].media.nodes;
+                let siteUrl = fetch1.data.Page.characters[i].media.nodes;
+                let format = fetch1.data.Page.characters[i].media.nodes;
 
-	const anilistLogo = "https://anilist.co/img/logo_al.png";
-	
-	description = description.replace(/<[^>]*>/g, ' ').replace(/&#039;/g, "'").replace(/&quot;/g, '"').replace(/\s{2,}/g, ' ').replace(/__/g, "").trim().split("~!");
-  description = description[0].toString()
-              
-  let name = fetch1.data.Page.characters[i].name.first;
-	if (fetch1.data.Page.characters[i].name.last != null) {
-	name += ` ${fetch1.data.Page.characters[i].name.last}`;
-  };
-    
-  let subname
-  if (alternative == null || alternative == "") {
-    	subname = name
-  }else {
-    	subname = name+", "+alternative.toString().split(",").join(", ")};
-    
-	let isindata = [];
+                const anilistLogo = "https://anilist.co/img/logo_al.png";
 
-	for (let b = 0; b < isindatas.length; ++b) {
-	isindata.push("["+isindatas[b].title.romaji+"]"+"("+siteUrl[b].siteUrl+")"+" ("+bot.caps(format[b].format)+")");
-	};
+                description = description.replace(/<[^>]*>/g, ' ').replace(/&#039;/g, "'").replace(/&quot;/g, '"').replace(/\s{2,}/g, ' ').replace(/__/g, "").trim().split("~!");
+                description = description[0].toString();
 
-	let isin = isindata.join("\n");
-      
-	let embed = new Discord.RichEmbed()
-		.setTitle(subname)
-		.setAuthor(name, anilistLogo)
-		.setColor(0x00AE86)
-		.setThumbnail(imageUrl)
-		.setURL(url)
-		.setFooter(name, anilistLogo)
-		.setDescription(description.substring(0, 2043)+" ...")
-  	.addField("Character In:", isin)
-		
-	await em1.edit(`${user}, here is the result for ${name}`, { embed });
-	
-  
-  });
-	collector.on('end', collected => {
-		if (collected.size == 0) {
-		em1.delete();
-		message.channel.send(`${user}, You didn't react fast enough, try again!`);
-		};
-		});
-	});
+                let name = fetch1.data.Page.characters[i].name.first;
+                if (fetch1.data.Page.characters[i].name.last != null) {
+                    name += ` ${fetch1.data.Page.characters[i].name.last}`;
+                };
+
+                let subname;
+                if (alternative == null || alternative == "") {
+                    subname = name;
+                } else {
+                    subname = name + ", " + alternative.toString().split(",").join(", ");
+                };
+
+                let isindata = [];
+                for (let b = 0; b < isindatas.length; ++b) {
+                    isindata.push("[" + isindatas[b].title.romaji + "]" + "(" + siteUrl[b].siteUrl + ")" + " (" + bot.caps(format[b].format) + ")");
+                };
+
+                let isin = isindata.join("\n");
+                let embed = new Discord.RichEmbed()
+                    .setTitle(subname)
+                    .setAuthor(name, anilistLogo)
+                    .setColor(0x00AE86)
+                    .setThumbnail(imageUrl)
+                    .setURL(url)
+                    .setFooter(name, anilistLogo)
+                    .setDescription(description.substring(0, 2043) + " ...")
+                    .addField("Character In:", isin);
+
+                await em1.edit(`${user}, here is the result for ${name}`, { embed });
+            });
+
+            collector.on('end', collected => {
+                if (collected.size == 0) {
+                    em1.delete();
+                    message.channel.send(`${user}, You didn't react fast enough, try again!`);
+                };
+            });
+        });
 };

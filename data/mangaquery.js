@@ -15,10 +15,10 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 		title {
 			romaji
 			english
-			}
+		}
 		coverImage {
 			large
-			}
+		}
 		bannerImage
 		status
 		description
@@ -27,12 +27,12 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 			day
 			month
 			year
-			}
+		}
 		endDate {
 			day
 			month
 			year
-			}
+		}
 		chapters
 		volumes
 		countryOfOrigin
@@ -48,7 +48,7 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 		name {
 			first
 			last
-			}
+		}
 		siteUrl
 		}
 		}
@@ -59,13 +59,12 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 				name {
 					first
 					last
-					}
-				siteUrl
 				}
-			role
+				siteUrl
 			}
-		}
+			role
 		}
 	}
-}
-`;
+	}
+	}
+}`;
