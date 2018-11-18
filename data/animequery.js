@@ -7,7 +7,7 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 		lastPage
 		hasNextPage
 		perPage
-		}
+	}
 	media (id: $id, search: $search, type: ANIME) {
 		id
 		siteUrl
@@ -15,10 +15,10 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 		title {
 			romaji
 			english
-			}
+		}
 		coverImage {
 			large
-			}
+		}
 		bannerImage
 		status
 		description
@@ -27,18 +27,18 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 			day
 			month
 			year
-			}
+		}
 		endDate {
 			day
 			month
 			year
-			}
+		}
 		nextAiringEpisode{
 			id
 			airingAt
 			timeUntilAiring
 			episode
-			}
+		}
 		season
 		episodes
 		duration
@@ -48,7 +48,7 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 		trailer {
 			id
 			site
-			}
+		}
 		genres
 		meanScore
 		popularity
@@ -59,7 +59,7 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 		name {
 			first
 			last
-			}
+		}
 		siteUrl
 		}
 		}
@@ -70,19 +70,18 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 				name {
 					first
 					last
-					}
-				siteUrl
 				}
-			role
+				siteUrl
 			}
+			role
+		}
 		}
 		studios {
 			nodes {
 				id
 				name
-				}
 			}
 		}
 	}
 }
-`;
+}`;

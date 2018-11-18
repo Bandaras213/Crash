@@ -8,7 +8,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
         name: `${bot.user.tag}`,
         icon_url: bot.user.avatarURL
       },
-      title: `${bot.user.username} command Help`,
+      title: `${bot.user.username} commands Help`,
       url: "http://github.com/Bandaras213/Crash/wiki/Commands",
       description: "These are all Commands with a Description.",
       fields: [{
@@ -17,21 +17,20 @@ module.exports = async (bot, message, args, Discord, moment) => {
       },
       {
         name: `${prefix}anime [Anime Name]`,
-        value: "Starts a search for Anime and let's you choose one of the results."
+        value: "Starts a Anime search and let's you choose one of the results."
       },
       {
         name: `${prefix}manga [Manga Name]`,
-        value: "Starts a search for Manga and let's you choose one of the results."
+        value: "Starts a Manga search and let's you choose one of the results."
       },
       {
-        name : `${prefix}character [Character Name]`,
-        value: "Starts a search for Character and let's you choose one of the results."
+        name: `${prefix}character [Character Name]`,
+        value: "Starts a Character search and let's you choose one of the results."
       },
       {
         name: `${prefix}rdmanime`,
         value: "Searches for a random Anime."
-      }
-      ],
+      }],
       timestamp: new Date(),
       footer: {
         icon_url: bot.user.avatarURL,
