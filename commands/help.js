@@ -17,15 +17,15 @@ module.exports = async (bot, message, args, Discord, moment) => {
       },
       {
         name: `${prefix}anime [Anime Name]`,
-        value: "Starts a search for Anime and let's you choose one of the results."
+        value: "Starts a Anime search and let's you choose one of the results."
       },
       {
         name: `${prefix}manga [Manga Name]`,
-        value: "Starts a search for Manga and let's you choose one of the results."
+        value: "Starts a Manga search and let's you choose one of the results."
       },
       {
-        name : `${prefix}character [Character Name]`,
-        value: "Starts a search for Character and let's you choose one of the results."
+        name: `${prefix}character [Character Name]`,
+        value: "Starts a Character search and let's you choose one of the results."
       },
       {
         name: `${prefix}rdmanime`,

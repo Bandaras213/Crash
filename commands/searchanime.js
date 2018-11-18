@@ -28,7 +28,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
         return message.channel.send(`${user}, I need a Title to search for! (Usage: €betaanime Title)`);
     };
 
-    await query
+    await query;
 
     let variables = {
         search: animename,
@@ -48,7 +48,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
-      
+
             let field1 = [];
             let NSFW = [];
             for (let a = 0; a < fetch1.data.Page.media.length; a++) {
@@ -64,7 +64,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 });
             };
 
-            let embed
+            let embed;
             switch (fetch1.data.Page.media.length) {
                 case 1:
                     embed = {
@@ -83,7 +83,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             }
                         ]
                     };
-                    break
+                    break;
                 case 2:
                     embed = {
                         "color": 65280,
@@ -102,7 +102,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             }
                         ]
                     };
-                    break
+                    break;
                 case 3:
                     embed = {
                         "color": 65280,
@@ -122,7 +122,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             }
                         ]
                     };
-                    break
+                    break;
                 case 4:
                     embed = {
                         "color": 65280,
@@ -143,7 +143,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             }
                         ]
                     };
-                    break
+                    break;
                 case 5:
                     embed = {
                         "color": 65280,
@@ -165,7 +165,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             }
                         ]
                     };
-                    break
+                    break;
                 case 6:
                     embed = {
                         "color": 65280,
@@ -188,7 +188,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             }
                         ]
                     };
-                    break
+                    break;
                 case 7:
                     embed = {
                         "color": 65280,
@@ -212,7 +212,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             }
                         ]
                     };
-                    break
+                    break;
             };
 
             let em1
@@ -290,35 +290,35 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     case emoji[1]:
                         em1.clearReactions();
                         i = 0
-                        break
+                        break;
                     case emoji[2]:
                         em1.clearReactions();
                         i = 1
-                        break
+                        break;
                     case emoji[3]:
                         em1.clearReactions();
                         i = 2
-                        break
+                        break;
                     case emoji[4]:
                         em1.clearReactions();
                         i = 3
-                        break
+                        break;
                     case emoji[5]:
                         em1.clearReactions();
                         i = 4
-                        break
+                        break;
                     case emoji[6]:
                         em1.clearReactions();
                         i = 5
-                        break
+                        break;
                     case emoji[7]:
                         em1.clearReactions();
                         i = 6
-                        break
+                        break;
                 };
 
                 //data
-                let id = fetch1.data.Page.media[i].id
+                //let id = fetch1.data.Page.media[i].id
                 let url = fetch1.data.Page.media[i].siteUrl;
 
                 //data.atributes
@@ -339,10 +339,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 let video = fetch1.data.Page.media[i].trailer;
                 let nsfw = fetch1.data.Page.media[i].isAdult;
                 let nextepi = fetch1.data.Page.media[i].nextAiringEpisode;
-              	let staffdatas = fetch1.data.Page.media[i].staff.edges;
-              	let charactersdatas = fetch1.data.Page.media[i].characters.nodes;
+                let staffdatas = fetch1.data.Page.media[i].staff.edges;
+                let charactersdatas = fetch1.data.Page.media[i].characters.nodes;
 
-                let dateairing
+                let dateairing;
                 if (nextepi == null) {
                     nextepi = "No new Episodes to Air.";
                 } else {
@@ -434,9 +434,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     let minutes = Math.floor((n / 60 - hours) * 60);
 
                     if (hours === 0) {
-                        time = minutes + " minute(s)"
+                        time = minutes + " minute(s)";
                     } else if (minutes === 0) {
-                        time = hours + " hour(s)"
+                        time = hours + " hour(s)";
                     } else {
                         time = hours + " hour(s) and " + minutes + " minute(s)";
                     };
@@ -479,39 +479,39 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (genre == null) {
                     genres = "No Data in Database.";
                 };
-              	
-              	let chardata = []
-                
-              	for (let c = 0; c < charactersdatas.length; ++c) {
-                  if (charactersdatas[c].name.last == null) {
-                    	chardata.push("["+charactersdatas[c].name.first+"]"+"("+charactersdatas[c].siteUrl+")");
-                  }else{
-                  		chardata.push("["+charactersdatas[c].name.first+" "+charactersdatas[c].name.last+"]"+"("+charactersdatas[c].siteUrl+")")};
+
+                let chardata = []
+
+                for (let c = 0; c < charactersdatas.length; ++c) {
+                    if (charactersdatas[c].name.last == null) {
+                        chardata.push("[" + charactersdatas[c].name.first + "]" + "(" + charactersdatas[c].siteUrl + ")");
+                    } else {
+                        chardata.push("[" + charactersdatas[c].name.first + " " + charactersdatas[c].name.last + "]" + "(" + charactersdatas[c].siteUrl + ")")
+                    };
                 };
-              
-              	let mainchar = chardata.join(", ")
-                
+
+                let mainchar = chardata.join(", ");
                 let studiosdata = []
-                
                 for (let s = 0; s < fetch1.data.Page.media[i].studios.nodes.length; ++s) {
-                  	studiosdata.push(fetch1.data.Page.media[i].studios.nodes[s].name)
+                    studiosdata.push(fetch1.data.Page.media[i].studios.nodes[s].name);
                 };
-              
-              	let studios = studiosdata.join(", ")
-                
-                let staffdata = []
-                
+
+                let studios = studiosdata.join(", ");
+                let staffdata = [];
                 for (let m = 0; m < staffdatas.length; ++m) {
-                		if (staffdatas[m].role == "Original Creator") {
-                  			staffdata.push(staffdatas[m].role+": "+"["+staffdatas[m].node.name.first+" "+staffdatas[m].node.name.last+"]"+"("+staffdatas[m].node.siteUrl+")")};
+                    if (staffdatas[m].role == "Original Creator") {
+                        staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")")
+                    };
                     if (staffdatas[m].role == "Director") {
-                        staffdata.push(staffdatas[m].role+": "+"["+staffdatas[m].node.name.first+" "+staffdatas[m].node.name.last+"]"+"("+staffdatas[m].node.siteUrl+")")};
+                        staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")")
+                    };
                     if (staffdatas[m].role == "Music") {
-                        staffdata.push(staffdatas[m].role+": "+"["+staffdatas[m].node.name.first+" "+staffdatas[m].node.name.last+"]"+"("+staffdatas[m].node.siteUrl+")")};
+                        staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")")
+                    };
                 };
-              
-              	let staff = staffdata.join("\n")
-                
+
+                let staff = staffdata.join("\n");
+
                 const embed = new Discord.RichEmbed()
                     .setTitle(canonTitle)
                     .setColor(color)
@@ -524,17 +524,17 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     .addField('Preview Trailer:', `[Click Me](https://www.youtube.com/watch?v=` + `${video})`)
                     .addField('Type:', `${bot.caps(format.split("_"))}`)
                     .addField('Genres:', `${genres}`)
+                    .addField('Main Characters:', `${mainchar}`)
                     .addField('Status:', `${status}`)
                     .addField('Aired:', `From ${season} ${start} ${end}`)
-                		.addField('Studios:', `${studios}`)
                     .addField('Next Episode:', `${nextepi}`)
                     .addField('Episodes:', episodes)
                     .addField('Episode Length:', `${episodemin}`)
                     .addField('Estimated Total Runtime:', `${time}`)
-                		.addField('Main Characters:', `${mainchar}`)
                     .addField('Community Rating:', avgRating)
                     .addField('Source:', `${sourcefilter}`)
-                		.addField('Staff:', `${staff}`)
+                    .addField('Studios:', `${studios}`)
+                    .addField('Staff:', `${staff}`)
 
                 if (nsfw == false) {
                     await em1.edit(`${user}, here is the result for ${canonTitle}`, { embed });
