@@ -254,11 +254,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                     .setThumbnail(posterIMG)
                                     .setTimestamp()
                                     .setURL(url)
+                                    .addField('Type:', bot.caps(type))
                                     .addField('Genre:', genreval)
                                     .addField('Chapters:', chapters)
                                     .addField('Status:', status)
                                     .addField('Published:', `${subtype} ${start} - ${end}`)
-                                    .addField('Type:', bot.caps(type))
                                     .addField('Community Rating:', avgRating);
 
                                 await em1.edit(`${user}, here is your result for ${canonTitle}`, { embed });
@@ -270,7 +270,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (collected.size == 0) {
                     em1.delete();
                     message.channel.send(`${user}, you didn't react fast enough, try again!`);
-                } else { return }
+                } else {
+                    return;
+                };
             });
         });
 };

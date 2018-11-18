@@ -74,6 +74,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
         .setFooter(name, anilistLogo);
 
       description = description.replace(/<[^>]*>/g, ' ').replace(/&#039;/g, "'").replace(/&quot;/g, '"').replace(/\s{2,}/g, ' ').trim();
+
       await message.channel.send({ embed });
       await message.channel.send(description.substring(0, 1999));
       await message.channel.send(description.substring(2000));

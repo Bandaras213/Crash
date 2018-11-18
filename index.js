@@ -8,12 +8,12 @@ bot.log = require('./functions/log.js');
 bot.caps = require('./functions/capitalize.js');
 
 if (process.env.TOKEN == null) {
-  token = bot.config.token
+  token = bot.config.token;
 } else {
-  token = process.env.TOKEN
+  token = process.env.TOKEN;
 };
 
-bot.token = token
+bot.token = token;
 
 bot.on('ready', () => require('./events/ready.js')(bot));
 bot.on('message', message => require('./events/message.js')(bot, message, Discord, moment));
