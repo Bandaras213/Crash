@@ -121,8 +121,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         },
                         "fields": [
                             field1[0],
+                            field1[1],
                             field1[2],
-                            field1[3],
                             {
                                 "name": "None of the above (Abort Command)",
                                 "value": `Reaction: ${emoji[0]}`

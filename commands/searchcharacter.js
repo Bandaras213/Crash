@@ -50,15 +50,18 @@ module.exports = async (bot, message, args, Discord, moment) => {
 	let field1 = [];
 	
 	for (let a = 0; a < fetch1.data.Page.characters.length; a++) {
-  let name = fetch1.data.Page.characters[a].name.first;
+  let name = fetch1.data.Page.characters[a].name.first
 	if (fetch1.data.Page.characters[a].name.last != null) {
 		name += ` ${fetch1.data.Page.characters[a].name.last}`;
 	};
+    console.log(JSON.stringify(fetch1.data.Page.characters[a], null, 2))
     
   let titlecheck
   if (fetch1.data.Page.characters[a].media.nodes[0].title.romaji == null) {
-    	titlecheck = fetch1.data.Page.characters[a].media.nodes[0].title.english
-  }else {titlecheck = fetch1.data.Page.characters[a].media.nodes[0].title.romaji};
+  		titlecheck = fetch1.data.Page.characters[a].media.nodes[0].title.english
+  }else {
+    	titlecheck = fetch1.data.Page.characters[a].media.nodes[0].title.romaji};
+    	
 	field1.push({
 		"name": `${name} (${titlecheck})`,
 		"value": `Reaction: ${emoji[a + 1]}`
@@ -118,8 +121,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         },
                         "fields": [
                             field1[0],
+                            field1[1],
                             field1[2],
-                            field1[3],
                             {
                                 "name": "None of the above (Abort Command)",
                                 "value": `Reaction: ${emoji[0]}`
