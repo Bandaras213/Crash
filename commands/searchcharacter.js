@@ -56,10 +56,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     name += ` ${fetch1.data.Page.characters[a].name.last}`;
                 };
 
-                let titlecheck
+                let titlecheck;
                 if (fetch1.data.Page.characters[a].media.nodes[0].title.romaji == null) {
                     titlecheck = fetch1.data.Page.characters[a].media.nodes[0].title.english;
-                } else { titlecheck = fetch1.data.Page.characters[a].media.nodes[0].title.romaji };
+                } else {
+                    titlecheck = fetch1.data.Page.characters[a].media.nodes[0].title.romaji;
+                };
+                
                 field1.push({
                     "name": `${name} (${titlecheck})`,
                     "value": `Reaction: ${emoji[a + 1]}`
@@ -223,6 +226,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
             let em1
             switch (fetch1.data.Page.characters.length) {
+                case 0:
+                em1 = await message.channel.send(`${user}, Couldn't find any Results for "${args.join(" ")}"!`);
+                return;
                 case 1:
                     em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
                     await em1.react(emoji[1]);
