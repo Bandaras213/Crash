@@ -222,11 +222,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     break
             };
 
-            let em1
+            let em1;
             switch (fetch1.data.Page.media.length) {
                 case 0:
-                em1 = await message.channel.send(`${user}, Couldn't find any Results for "${args.join(" ")}"!`);
-                return;
+                    em1 = await message.channel.send(`${user}, Couldn't find any Results for "${args.join(" ")}"!`);
+                    return;
                 case 1:
                     em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
                     await em1.react(emoji[1]);
@@ -351,22 +351,25 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 let charactersdatas = fetch1.data.Page.media[i].characters.nodes;
 
                 if (startdate === null && enddate === null) {
-                    start = "No Startdate in the Database.";
-                    end = "No Enddate in the Database.";
+                    start = "Unknown";
+                    end = "Unknown.";
                 };
 
-                let startfilter;
                 let start;
                 if (startdate === null) {
-                    start = "Not Running or no Data in Database.";
+                    start = "Unknown";
+                };
+
+                if (startdate.day == null && startdate.month == null && startdate.year == null) {
+                    start = "Unknown";
                 } else {
-                    startfilter = startdate;
-                    if (startfilter.day == null || startfilter.month == null) {
-                        start = startfilter.year;
+                    if (startdate.day == null || startdate.month == null) {
+                        start = startdate.year;
                     } else {
-                        start = startfilter.day + "." + startfilter.month + "." + startfilter.year;
+                        start = startdate.day + "." + startdate.month + "." + startdate.year;
                     };
                 };
+
 
                 let endday = enddate.day;
                 let endmonth = enddate.month;
@@ -376,14 +379,14 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (enddate == null) {
                     end = "(Ongoing)";
                 } else {
-                    end = "until " + enddate.day + "." + enddate.month + "." + enddate.year;
+                    end = "to " + enddate.day + "." + enddate.month + "." + enddate.year;
                 };
 
                 if (endday == null || endmonth == null) {
                     if (endyear == null) {
                         end = "(Ongoing)";
                     } else {
-                        end = "until " + endyear;
+                        end = "to " + endyear;
                     };
                 };
 
@@ -494,7 +497,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         .addField('Genres:', `${genres}`)
                         .addField('Main Characters:', `${mainchar}`)
                         .addField('Status:', `${status}`)
-                        .addField('Released:', `Started ${start} ${end}`)
+                        .addField('Released:', `From ${start} ${end}`)
                         .addField('Community Rating:', avgRating)
                         .addField('Source:', `${sourcefilter}`)
                         .addField('Staff:', `${staff}`)

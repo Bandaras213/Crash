@@ -215,11 +215,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     break;
             };
 
-            let em1
+            let em1;
             switch (fetch1.data.Page.media.length) {
                 case 0:
-                em1 = await message.channel.send(`${user}, Couldn't find any Results for "${args.join(" ")}"!`);
-                return;
+                    em1 = await message.channel.send(`${user}, Couldn't find any Results for "${args.join(" ")}"!`);
+                    return;
                 case 1:
                     em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
                     await em1.react(emoji[1]);
@@ -357,17 +357,23 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 };
 
                 if (startdate === null && enddate === null) {
-                    start = "No Startdate in the Database.";
-                    end = "No Enddate in the Database.";
+                    start = "Unknown";
+                    end = "Unknown.";
                 };
 
-                let startfilter;
                 let start;
                 if (startdate === null) {
-                    start = "Not Running or no Data in Database.";
+                    start = "Unknown";
+                };
+
+                if (startdate.day == null && startdate.month == null && startdate.year == null) {
+                    start = "Unknown";
                 } else {
-                    startfilter = startdate;
-                    start = startfilter.day + "." + startfilter.month + "." + startfilter.year;
+                    if (startdate.day == null || startdate.month == null) {
+                        start = startdate.year;
+                    } else {
+                        start = startdate.day + "." + startdate.month + "." + startdate.year;
+                    };
                 };
 
                 let endday = enddate.day;
