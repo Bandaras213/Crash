@@ -20,7 +20,7 @@ query ($search: String, $page: Int, $perPage: Int) {
 		large
 		}
 		description(asHtml: false)
-		media(page: 1, perPage: 7) {
+		media(page: 2, perPage: 7) {
 			nodes {
 				title {
 					romaji
