@@ -25,7 +25,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
 
     if (args.length == 0) {
-        return message.channel.send(`${user}, I need a Title to search for! (Usage: €betamanga Title)`);
+        return message.channel.send(`${user}, I need a Title to search for! (Usage: €manga Title)`);
     };
 
     await query;
@@ -342,9 +342,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (fetch1.data.Page.media[i].title.romaji == null && fetch1.data.Page.media[i].title.english == null) {
                     mangatitle = "Unknown.";
                 };
-
-                let color = Math.floor(Math.random() * 16777214) + 1;
-
+              
                 let description;
                 if (fetch1.data.Page.media[i].description == null) {
                     description = "No Description found.";
@@ -395,7 +393,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 } else {
                     genres = genre1.join(", ");
                 };
-
                 let mainchar;
                 let chardata = [];
                 if (fetch1.data.Page.media[i].characters.nodes.length == 0) {

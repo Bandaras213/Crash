@@ -1,5 +1,5 @@
 const fetch = require('node-fetch')
-const query = require("../data/characterquery.js")
+const query = require("../data/characterquery.js");
 
 var emoji = [
     "❌", //X
@@ -40,7 +40,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     await message.delete();
 
     if (args.length == 0) {
-        return message.channel.send(`${user}, I need a Name to search for! (Usage: €betacharacter Name)`);
+        return message.channel.send(`${user}, I need a Name to search for! (Usage: €character Name)`);
     };
 
     await query;
@@ -488,8 +488,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
                 var isin;
                 var isindata = [];
-                var isinrip = fetch1.data.Page.characters[i].media.edges;
-                if (isinrip.length < 1) {
+                var isinrip = fetch1.data.Page.characters[i].media.edges;if (isinrip.length < 1) {
                     isin = "No Media in Database.";
                 } else {
                     for (let b = 0; b < isindatas.length; ++b) {
