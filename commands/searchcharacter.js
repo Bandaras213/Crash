@@ -25,8 +25,14 @@ var value1 = [
 ];
 
 module.exports = async (bot, message, args, Discord, moment) => {
-
-    let charactername = args.join(' ');
+		
+  	var nameundso = args.join(' ');
+  	var charactername
+    var characterid
+  	if (isNaN(nameundso)) {
+      	charactername = nameundso
+    }else {
+      	characterid = nameundso};
     let user = message.member.user;
     let i;
     //let color = Math.floor(Math.random() * 16777214) + 1;
@@ -40,6 +46,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     await query;
 
     let variables = {
+      	id: characterid,
         search: charactername,
         page: 1,
         perPage: 20,
@@ -481,10 +488,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
                 var isin;
                 var isindata = [];
-                for (let d = 0; d < fetch1.data.Page.characters.length; d++) {
-                    var isinrip = fetch1.data.Page.characters[d].media.edges;
-                };
-                if (isinrip.length < 1) {
+                var isinrip = fetch1.data.Page.characters[i].media.edges;if (isinrip.length < 1) {
                     isin = "No Media in Database.";
                 } else {
                     for (let b = 0; b < isindatas.length; ++b) {

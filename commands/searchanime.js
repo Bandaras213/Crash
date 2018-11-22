@@ -335,7 +335,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (fetch1.data.Page.media[i].title.romaji == null && fetch1.data.Page.media[i].title.english == null) {
                     animetitle = "Unknown.";
                 };
-
+              
                 let description;
                 if (fetch1.data.Page.media[i].description == null) {
                     description = "No Description found.";
