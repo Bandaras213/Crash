@@ -8,7 +8,7 @@ query ($search: String, $page: Int, $perPage: Int) {
 		hasNextPage
 		perPage
 	}
-	characters(search: $search) {
+	characters(id: $id, search: $search) {
 		id
 		siteUrl
 		name {
