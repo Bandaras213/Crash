@@ -62,7 +62,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     "name": `${fetch1.data.Page.media[a].title.romaji} (${bot.caps(fetch1.data.Page.media[a].format.split("_"))}) ${NSFW[a]}`,
                     "value": `Reaction: ${emoji[a + 1]}`
                 });
-            };
+            };console.log(field1[0]) 
 
             let embed;
             switch (fetch1.data.Page.media.length) {
@@ -319,218 +319,223 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         i = 6
                         break;
                 };
+              
+				//anime id and nsfw
+       	let id = fetch1.data.Page.media[i].id
+        let nsfw = fetch1.data.Page.media[i].isAdult;
 
-                //data
-                //let id = fetch1.data.Page.media[i].id
-                let url = fetch1.data.Page.media[i].siteUrl;
+        //data.atributes
+				let animetitle
+				if (fetch1.data.Page.media[i].title.romaji == null) {
+						animetitle = fetch1.data.Page.media[i].title.english
+        }else {
+          	animetitle = fetch1.data.Page.media[i].title.romaji};
+            
+        if (fetch1.data.Page.media[i].title.romaji == null && fetch1.data.Page.media[i].title.english == null) {
+          	animetitle = "Unknown"};
+				
+				let color = Math.floor(Math.random() * 16777214) + 1;
+				
+				let description
+				if (fetch1.data.Page.media[i].description == null) {
+						description = "No Description found."
+				}else {
+						description = fetch1.data.Page.media[i].description.replace(/<[^>]*>/g, ' ').replace(/\s{2,}/g, ' ').trim()};
+						
+        let coverIMG
+        if (fetch1.data.Page.media[i].coverImage.large == null) {
+						coverIMG = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848"
+				}else {
+						coverIMG = fetch1.data.Page.media[i].coverImage.large};
+				
+				let posterIMG
+				if (fetch1.data.Page.media[i].bannerImage == null) {
+            posterIMG = '';
+        }else {
+            posterIMG = fetch1.data.Page.media[i].bannerImage};
+                  
+        let animeurl
+        if (fetch1.data.Page.media[i].siteUrl == null) {
+            animeurl = "https://anilist.co"
+        }else {
+            animeurl = fetch1.data.Page.media[i].siteUrl};
+                
+        let video
+        if (fetch1.data.Page.media[i].trailer == null) {
+            video = "No video found."
+        }else {
+            video = `[Click Me](https://www.youtube.com/watch?v=` + `fetch1.data.Page.media[i].trailer.id)`};
+              
+        let format
+				if (fetch1.data.Page.media[i].format == null) {
+						format = "unknown."
+				}else {
+						format = fetch1.data.Page.media[i].format};
 
-                //data.atributes
-                let format = fetch1.data.Page.media[i].format;
-                let synopsis = fetch1.data.Page.media[i].description;
-                let canonTitle = fetch1.data.Page.media[i].title.romaji;
-                let avgRating = fetch1.data.Page.media[i].averageScore;
-                let startdate = fetch1.data.Page.media[i].startDate;
-                let enddate = fetch1.data.Page.media[i].endDate;
-                let season = fetch1.data.Page.media[i].season;
-                let source = fetch1.data.Page.media[i].source;
-                let status = fetch1.data.Page.media[i].status;
-                let posterIMG = fetch1.data.Page.media[i].coverImage.large;
-                let coverIMG = fetch1.data.Page.media[i].bannerImage;
-                let episodes = fetch1.data.Page.media[i].episodes;
-                let episodemin = fetch1.data.Page.media[i].duration;
-                let genre = fetch1.data.Page.media[i].genres;
-                let video = fetch1.data.Page.media[i].trailer;
-                let nsfw = fetch1.data.Page.media[i].isAdult;
-                let nextepi = fetch1.data.Page.media[i].nextAiringEpisode;
-                let staffdatas = fetch1.data.Page.media[i].staff.edges;
-                let charactersdatas = fetch1.data.Page.media[i].characters.nodes;
-
-                let dateairing;
-                if (nextepi == null) {
-                    nextepi = "No new Episodes to Air.";
-                } else {
-                    //var timez = new Date().getTime();
-                    dateairing = new Date(nextepi.airingAt * 1000);
-                    dateairing = dateairing.toUTCString();
-                    dateairing = `${moment(dateairing).format('DD.MM.YYYY')}` + " at " + `${moment(dateairing).format('hh:mm a')}`;
-                    nextepi = "Episode " + nextepi.episode + ", Airing on: " + dateairing;
-                };
-
-                if (startdate === null && enddate === null) {
-                    start = "Unknown";
-                    end = "Unknown.";
-                };
-
-                let start;
-                if (startdate === null) {
-                    start = "Unknown";
-                };
-
-                if (startdate.day == null && startdate.month == null && startdate.year == null) {
-                    start = "Unknown";
-                } else {
-                    if (startdate.day == null || startdate.month == null) {
-                        start = startdate.year;
-                    } else {
-                        start = startdate.day + "." + startdate.month + "." + startdate.year;
-                    };
-                };
-
-                let endday = enddate.day;
-                let endmonth = enddate.month;
-                let endyear = enddate.year;
-                let end;
-
-                if (enddate == null) {
-                    end = "(Ongoing)";
-                } else {
-                    end = "to " + enddate.day + "." + enddate.month + "." + enddate.year;
-                };
-
-                if (endday == null || endmonth == null) {
-                    if (endyear == null) {
-                        end = "(Ongoing)";
-                    } else {
-                        end = "to " + endyear;
-                    };
-                };
-
-                if (avgRating === null) {
-                    avgRating = "No Data in Database.";
-                } else {
-                    avgRating = avgRating + "%";
-                };
-
-                if (season === null) {
-                    season = "No Data in Database.";
-                } else {
-                    season = bot.caps(season);
-                };
-
-                if (video == null || video == undefined || video == "") {
-                    video = "DLzxrzFCyOs"
-                } else {
-                    video = video.id;
-                };
-
-                let sourcefilter;
-                if (source == null || source == undefined) {
-                    sourcefilter = "No Data in Database.";
-                } else {
-                    sourcefilter = bot.caps(source.split("_"));
-                };
-
-                if (status === null) {
-                    status = "No Data in Database.";
-                } else {
-                    status = bot.caps(status);
-                };
-
-                if (posterIMG === null) {
-                    posterIMG = 'https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848';
-                };
-
-                let time;
-                function timeConvert(n) {
-
-                    /* var num = n;
-                    var hours = (num / 60);
-                    var rhours = Math.floor(hours);
-                    var minutes = (hours - rhours) * 60;
-                    var rminutes = Math.floor(minutes); */
-
-                    let hours = Math.floor(n / 60);
-                    let minutes = Math.floor((n / 60 - hours) * 60);
-
-                    if (hours === 0) {
-                        time = minutes + " minute(s)";
-                    } else if (minutes === 0) {
-                        time = hours + " hour(s)";
-                    } else {
-                        time = hours + " hour(s) and " + minutes + " minute(s)";
-                    };
-                };
-
-                if (time == undefined || time == null) {
-                    time = "No Data in Database.";
-                };
-
-                let runtime;
-                if (episodes === null || episodemin === null) {
-                    runtime = "Can't Calculate Runtime without Episodes or Episode length.";
-                } else {
-                    runtime = episodes * episodemin;
-                    timeConvert(runtime);
-                };
-
-                if (episodes === null) {
-                    episodes = "No Episodes in the database.";
-                };
-
-                if (episodemin === null) {
-                    episodemin = "No Data in Database.";
-                } else {
-                    episodemin = episodemin + " minutes";
-                };
-
-                if (coverIMG === null) {
-                    coverIMG = "";
-                };
-
-                let genre1 = [];
-
-                for (let b = 0; b < fetch1.data.Page.media[i].genres.length; ++b) {
-                    genre1.push(fetch1.data.Page.media[i].genres[b]);
-                };
-
-                let genres = genre1.join(", ");
-
-                if (genre == null) {
-                    genres = "No Data in Database.";
-                };
-
-                let chardata = []
-
-                for (let c = 0; c < charactersdatas.length; ++c) {
-                    if (charactersdatas[c].name.last == null) {
-                        chardata.push("[" + charactersdatas[c].name.first + "]" + "(" + charactersdatas[c].siteUrl + ")");
-                    } else {
-                        chardata.push("[" + charactersdatas[c].name.first + " " + charactersdatas[c].name.last + "]" + "(" + charactersdatas[c].siteUrl + ")")
-                    };
-                };
-
-                let mainchar = chardata.join(", ");
-                let studiosdata = []
-                for (let s = 0; s < fetch1.data.Page.media[i].studios.nodes.length; ++s) {
-                    studiosdata.push(fetch1.data.Page.media[i].studios.nodes[s].name);
-                };
-
-                let studios = studiosdata.join(", ");
-                let staffdata = [];
-                for (let m = 0; m < staffdatas.length; ++m) {
-                    if (staffdatas[m].role == "Original Creator") {
-                        staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")")
-                    };
-                    if (staffdatas[m].role == "Director") {
-                        staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")")
-                    };
-                    if (staffdatas[m].role == "Music") {
-                        staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")")
-                    };
-                };
-
-                let staff = staffdata.join("\n");
+				let genres
+        let genre1 = [];
+				if (fetch1.data.Page.media[i].genres.length == 0) {
+						genres = "No Genres found."
+        }else {
+            for (let b = 0; b < fetch1.data.Page.media[i].genres.length; ++b) {
+						genre1.push(fetch1.data.Page.media[i].genres[b])}};
+        
+        if (genre1.length == 0) {
+          	genres = "No Genres found."
+        }else {
+						genres = genre1.join(", ")};
+                
+        let mainchar
+        let chardata = [];
+        if (fetch1.data.Page.media[i].characters.nodes.length == 0) {
+            mainchar = "No characters found."
+        }else {
+						for (let c = 0; c < fetch1.data.Page.media[i].characters.nodes.length; ++c) {
+				if (fetch1.data.Page.media[i].characters.nodes[c].name.last == null) {
+            chardata.push("[" + fetch1.data.Page.media[i].characters.nodes[c].name.first + "]" + "(" + fetch1.data.Page.media[i].characters.nodes[c].siteUrl + ")");
+        }else {
+						chardata.push("[" + fetch1.data.Page.media[i].characters.nodes[c].name.first + " " + fetch1.data.Page.media[i].characters.nodes[c].name.last + "]" + "(" + fetch1.data.Page.media[i].characters.nodes[c].siteUrl + ")")}}};
+				
+        if (chardata.length == 0) {
+          	mainchar = "No characters found."
+        }else {
+        		mainchar = chardata.join(", ")};
+                
+        let animestatus
+        if (fetch1.data.Page.media[i].status == null) {
+            status = "No Status found.";
+        } else {
+          	status = bot.caps(fetch1.data.Page.media[i].status);};
+					
+				let season
+        let start
+        let end
+				let airings = [];
+				if (fetch1.data.Page.media[i].season == null) {
+						season = ""
+				}else {
+						season = bot.caps(fetch1.data.Page.media[i].season)};
+				if (fetch1.data.Page.media[i].startDate.day == null || fetch1.data.Page.media[i].startDate.month == null || fetch1.data.Page.media[i].startDate.year == null) {
+						start = "No start or end date in database."
+						airings.push(start)
+				}else {
+						start = fetch1.data.Page.media[i].startDate.day + "." + fetch1.data.Page.media[i].startDate.month + "." + fetch1.data.Page.media[i].startDate.year};
+				if (fetch1.data.Page.media[i].endDate.day == null || fetch1.data.Page.media[i].endDate.month == null || fetch1.data.Page.media[i].endDate.year == null) {
+						end = ""
+				}else {
+						end = "to " + fetch1.data.Page.media[i].endDate.day + "." + fetch1.data.Page.media[i].endDate.month + "." + fetch1.data.Page.media[i].endDate.year};
+						airings.push(season + " "+start+" " + end)
+					
+				let nextepi
+        if (fetch1.data.Page.media[i].nextAiringEpisode == null) {
+            nextepi = "No new Episodes to Air.";
+        } else {
+        let dateairing
+            dateairing = new Date(fetch1.data.Page.media[i].nextAiringEpisode.airingAt * 1000);
+            dateairing = dateairing.toUTCString();
+            dateairing = `${moment(dateairing).format('DD.MM.YYYY')}` + " at " + `${moment(dateairing).format('hh:mm a')}`;
+            nextepi = "Episode " + fetch1.data.Page.media[i].nextAiringEpisode.episode + ", Airing on: " + dateairing};
+				
+				let episodes = fetch1.data.Page.media[i].episodes
+				if (fetch1.data.Page.media[i].episodes == null) {
+            episodes = "No Episodes in the database."
+        }else {
+            episodes = fetch1.data.Page.media[i].episodes};
+              
+        let episodemin
+        let episodemins
+        if (fetch1.data.Page.media[i].duration == null) {
+            episodemin = "No Duration in Database.";
+        }else {
+            episodemin = fetch1.data.Page.media[i].duration + " minutes"
+        		episodemins = fetch1.data.Page.media[i].duration};
+        
+        let time
+        function timeConvert(n) {
+        if (isNaN(n) || n == null) {
+          	return time = "Can't Calculate time without Episodes or Episode Length."};
+        
+        let hours = Math.floor(n / 60);
+        let minutes = Math.floor((n / 60 - hours) * 60);
+          
+        if (hours === 0) {
+        time = minutes + " minute(s)";
+        } else if (minutes === 0) {
+        time = hours + " hour(s)";
+        } else {
+        time = hours + " hour(s) and " + minutes + " minute(s)";
+      };
+    };
+        let runtime;
+        if (episodes === null || episodemin === null) {
+      			runtime = "Can't Calculate Runtime without Episodes or Episode length.";
+        } else {
+            runtime = episodes * episodemins;
+            timeConvert(runtime)};
+              
+        let avgRating
+        if (fetch1.data.Page.media[i].averageScore === null) {
+            avgRating = "No Rating in Database.";
+        }else {
+            avgRating = fetch1.data.Page.media[i].averageScore + "%"};
+					
+				let sourcefilter
+				if (fetch1.data.Page.media[i].source == null || fetch1.data.Page.media[i].source == undefined) {
+            sourcefilter = "No Source in Database.";
+        }else {
+            sourcefilter = bot.caps(fetch1.data.Page.media[i].source.split("_"))};
+               
+        let studios
+        let studiosdata = [];
+        if (fetch1.data.Page.media[i].studios.nodes.length == 0) {
+            studios = "No Studios in the Database."
+        }else {
+            for (let s = 0; s < fetch1.data.Page.media[i].studios.nodes.length; ++s) {
+            studiosdata.push(fetch1.data.Page.media[i].studios.nodes[s].name)}};
+              
+        if (studiosdata.length == 0) {
+          	studios = "No Studios in the Database."
+        }else {
+          	studios = studiosdata.join(", ")};
+                
+        let staff
+        let staffdata = [];
+        if (fetch1.data.Page.media[i].staff.edges.length == 0) {
+            staff = "No Staff in Database."
+        }else {
+        let staffdatas = fetch1.data.Page.media[i].staff.edges
+            for (let m = 0; m < staffdatas.length; ++m) {
+        if (staffdatas[m].role == "Original Creator") {
+        if (staffdatas[m].node.name.last == null) {
+          	staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + "]" + "(" + staffdatas[m].node.siteUrl + ")")
+        }else {
+            staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")")}};
+        if (staffdatas[m].role == "Director") {
+        if (staffdatas[m].node.name.last == null) {
+          	staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + "]" + "(" + staffdatas[m].node.siteUrl + ")")
+        }else {
+            staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")")}};
+        if (staffdatas[m].role == "Music") {
+        if (staffdatas[m].node.name.last == null) {
+          	staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + "]" + "(" + staffdatas[m].node.siteUrl + ")")
+        }else {
+            staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")")}}}};
+				
+        if (staffdata.length == 0) {
+						staff = "No Staff in Database."
+				}else {
+						staff = staffdata.join("\n");}
 
                 const embed = new Discord.RichEmbed()
-                    .setTitle(canonTitle)
+                    .setTitle(animetitle)
                     .setColor(color)
-                    .setDescription(synopsis.replace(/<[^>]*>/g, ' ').replace(/\s{2,}/g, ' ').trim())
-                    .setFooter(canonTitle)
-                    .setImage(coverIMG)
-                    .setThumbnail(posterIMG)
+                    .setDescription(description)
+                    .setFooter(animetitle)
+                    .setImage(posterIMG)
+                    .setThumbnail(coverIMG)
                     .setTimestamp()
-                    .setURL(url)
-                    .addField('Preview Trailer:', `[Click Me](https://www.youtube.com/watch?v=` + `${video})`)
+                    .setURL(animeurl)
+                    .addField('Preview Trailer:', `${video}`)
                     .addField('Type:', `${bot.caps(format.split("_"))}`)
                     .addField('Genres:', `${genres}`)
                     .addField('Main Characters:', `${mainchar}`)
@@ -546,11 +551,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     .addField('Staff:', `${staff}`)
 
                 if (nsfw == false) {
-                    await em1.edit(`${user}, here is the result for ${canonTitle}`, { embed });
+                    await em1.edit(`${user}, here is the result for ${animetitle}`, { embed });
                 } else {
                     await em1.delete();
                     await message.channel.send(`${user}, You've selected a NSFW Anime! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                    await message.author.send(`Here is the result for ${canonTitle}`, { embed });
+                    await message.author.send(`Here is the result for ${animetitle}`, { embed });
                 };
             });
 
