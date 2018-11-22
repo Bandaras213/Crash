@@ -1,5 +1,5 @@
 module.exports = `
-query ($search: String, $page: Int, $perPage: Int) {
+query ($search: String, $id: Int, $page: Int, $perPage: Int) {
 	Page (page: $page, perPage: $perPage) {
 		pageInfo {
 		total
@@ -8,7 +8,7 @@ query ($search: String, $page: Int, $perPage: Int) {
 		hasNextPage
 		perPage
 	}
-	characters(search: $search) {
+	characters(id: $id, search: $search) {
 		id
 		siteUrl
 		name {

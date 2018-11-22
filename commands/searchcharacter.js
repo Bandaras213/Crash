@@ -15,21 +15,27 @@ var emoji = [
 ];
 
 var value1 = [
-  `Reaction: ${emoji[1]}`,
-  `Reaction: ${emoji[2]}`,
-	`Reaction: ${emoji[3]}`,
-	`Reaction: ${emoji[4]}`,
-	`Reaction: ${emoji[5]}`,
-	`Reaction: ${emoji[6]}`,
-	`Reaction: ${emoji[7]}`
+    `Reaction: ${emoji[1]}`,
+    `Reaction: ${emoji[2]}`,
+    `Reaction: ${emoji[3]}`,
+    `Reaction: ${emoji[4]}`,
+    `Reaction: ${emoji[5]}`,
+    `Reaction: ${emoji[6]}`,
+    `Reaction: ${emoji[7]}`
 ];
 
 module.exports = async (bot, message, args, Discord, moment) => {
-
-    let charactername = args.join(' ');
+		
+  	var nameundso = args.join(' ');
+  	var charactername
+    var characterid
+  	if (isNaN(nameundso)) {
+      	charactername = nameundso
+    }else {
+      	characterid = nameundso};
     let user = message.member.user;
     let i;
-    let color = Math.floor(Math.random() * 16777214) + 1;
+    //let color = Math.floor(Math.random() * 16777214) + 1;
     let uid = message.author.id;
     await message.delete();
 
@@ -40,9 +46,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
     await query;
 
     let variables = {
+      	id: characterid,
         search: charactername,
-      	page: 1,
-      	perPage: 20,
+        page: 1,
+        perPage: 20,
     };
 
     let databody = {
@@ -59,51 +66,53 @@ module.exports = async (bot, message, args, Discord, moment) => {
         .then(async fetch1 => {
 
             let fieldfilter = [];
-      			let field2 = [];
-      			let field3 = [];
+            let field2 = [];
+            let field3 = [];
 
             for (let a = 0; a < fetch1.data.Page.characters.length; a++) {
                 let name = fetch1.data.Page.characters[a].name.first;
                 if (fetch1.data.Page.characters[a].name.last != null) {
                     name += ` ${fetch1.data.Page.characters[a].name.last}`;
                 };
-              
+
                 var titlecheck;
-              	var characterRole;
-              	var namerip = fetch1.data.Page.characters[a].media.edges;
-              	if (namerip.length < 1) {
-                  	titlecheck = "No Media in Database"
-                  	characterRole = "Unknown"
-                }else {
-                  	characterRole = fetch1.data.Page.characters[a].media.edges[0].characterRole;
-                		titlecheck = fetch1.data.Page.characters[a].media.edges[0].node.title.romaji};
+                var characterRole;
+                var namerip = fetch1.data.Page.characters[a].media.edges;
+                if (namerip.length < 1) {
+                    titlecheck = "No Media in Database";
+                    characterRole = "Unknown.";
+                } else {
+                    characterRole = fetch1.data.Page.characters[a].media.edges[0].characterRole;
+                    titlecheck = fetch1.data.Page.characters[a].media.edges[0].node.title.romaji;
+                };
                 if (titlecheck == null) {
                     titlecheck = fetch1.data.Page.characters[a].media.edges[0].node.title.english;
                 };
 
-              	if (characterRole === "MAIN") {
-                field2.push(`${name.replace("&#039;", "'")} (${titlecheck})`)
-								field2.push(`${a}`);
-            		}else {
-              	field3.push(`${name.replace("&#039;", "'")} (${titlecheck})`)
-								field3.push(`${a}`);
-              };
+                if (characterRole === "MAIN") {
+                    field2.push(`${name.replace("&#039;", "'")} (${titlecheck})`);
+                    field2.push(`${a}`);
+                } else {
+                    field3.push(`${name.replace("&#039;", "'")} (${titlecheck})`);
+                    field3.push(`${a}`);
+                };
             };
-      
-      			fieldfilter = field2.concat(field3)
-      			
-      			var index1 = fieldfilter.filter((_,i) => i % 2 == 1); 
-      			var field1 = fieldfilter.filter((_,i) => i % 2 == 0); 
-      			if (field1.length > 7) {
-              	field1.length = 7
-            }else {
-              	field1.length};
+
+            fieldfilter = field2.concat(field3);
+
+            var index1 = fieldfilter.filter((_, i) => i % 2 == 1);
+            var field1 = fieldfilter.filter((_, i) => i % 2 == 0);
+            if (field1.length > 7) {
+                field1.length = 7;
+            } else {
+                field1.length;
+            };
 
             if (field1.length == 0) {
                 return message.channel.send(`${user}, Couldn't find a matching character for '**${charactername}**'`);
             };
 
-            let embed
+            let embed;
 
             switch (field1.length) {
                 case 1:
@@ -116,13 +125,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             "text": `Please choose by using the Reactions below!`,
                         },
                         "fields": [
-                          	{
-                            		"name": field1[0],
-                          			"value": value1[0]
+                            {
+                                "name": field1[0],
+                                "value": value1[0]
                             },
                             {
-                            		"name": "None of the above (Abort Command)",
-                            		"value": `Reaction: ${emoji[0]}`
+                                "name": "None of the above (Abort Command)",
+                                "value": `Reaction: ${emoji[0]}`
                             }
                         ]
                     };
@@ -138,13 +147,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         },
                         "fields": [
                             {
-																"name": field1[0],
-																"value": value1[0]
-														},
+                                "name": field1[0],
+                                "value": value1[0]
+                            },
                             {
-																"name": field1[1],
-																"value": value1[1]
-														},
+                                "name": field1[1],
+                                "value": value1[1]
+                            },
                             {
                                 "name": "None of the above (Abort Command)",
                                 "value": `Reaction: ${emoji[0]}`
@@ -163,17 +172,17 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         },
                         "fields": [
                             {
-																"name": field1[0],
-																"value": value1[0]
-														},
+                                "name": field1[0],
+                                "value": value1[0]
+                            },
                             {
-																"name": field1[1],
-																"value": value1[1]
-														},
-														{
-																"name": field1[2],
-																"value": value1[2]
-														},
+                                "name": field1[1],
+                                "value": value1[1]
+                            },
+                            {
+                                "name": field1[2],
+                                "value": value1[2]
+                            },
                             {
                                 "name": "None of the above (Abort Command)",
                                 "value": `Reaction: ${emoji[0]}`
@@ -192,21 +201,21 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         },
                         "fields": [
                             {
-																"name": field1[0],
-																"value": value1[0]
-														},
+                                "name": field1[0],
+                                "value": value1[0]
+                            },
                             {
-																"name": field1[1],
-																"value": value1[1]
-														},
-														{
-																"name": field1[2],
-																"value": value1[2]
-														},
-														{
-																"name": field1[3],
-																"value": value1[3]
-														},
+                                "name": field1[1],
+                                "value": value1[1]
+                            },
+                            {
+                                "name": field1[2],
+                                "value": value1[2]
+                            },
+                            {
+                                "name": field1[3],
+                                "value": value1[3]
+                            },
                             {
                                 "name": "None of the above (Abort Command)",
                                 "value": `Reaction: ${emoji[0]}`
@@ -225,25 +234,25 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         },
                         "fields": [
                             {
-																"name": field1[0],
-																"value": value1[0]
-														},
+                                "name": field1[0],
+                                "value": value1[0]
+                            },
                             {
-																"name": field1[1],
-																"value": value1[1]
-														},
-														{
-																"name": field1[2],
-																"value": value1[2]
-														},
-														{
-																"name": field1[3],
-																"value": value1[3]
-														},
-														{
-																"name": field1[4],
-																"value": value1[4]
-														},
+                                "name": field1[1],
+                                "value": value1[1]
+                            },
+                            {
+                                "name": field1[2],
+                                "value": value1[2]
+                            },
+                            {
+                                "name": field1[3],
+                                "value": value1[3]
+                            },
+                            {
+                                "name": field1[4],
+                                "value": value1[4]
+                            },
                             {
                                 "name": "None of the above (Abort Command)",
                                 "value": `Reaction: ${emoji[0]}`
@@ -262,29 +271,29 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         },
                         "fields": [
                             {
-																"name": field1[0],
-																"value": value1[0]
-														},
-														{
-																"name": field1[1],
-																"value": value1[1]
-														},
-														{
-																"name": field1[2],
-																"value": value1[2]
-														},
-														{
-																"name": field1[3],
-																"value": value1[3]
-														},
-														{
-																"name": field1[4],
-																"value": value1[4]
-														},
-														{
-																"name": field1[5],
-																"value": value1[5]
-														},
+                                "name": field1[0],
+                                "value": value1[0]
+                            },
+                            {
+                                "name": field1[1],
+                                "value": value1[1]
+                            },
+                            {
+                                "name": field1[2],
+                                "value": value1[2]
+                            },
+                            {
+                                "name": field1[3],
+                                "value": value1[3]
+                            },
+                            {
+                                "name": field1[4],
+                                "value": value1[4]
+                            },
+                            {
+                                "name": field1[5],
+                                "value": value1[5]
+                            },
                             {
                                 "name": "None of the above (Abort Command)",
                                 "value": `Reaction: ${emoji[0]}`
@@ -303,33 +312,33 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         },
                         "fields": [
                             {
-																"name": field1[0],
-																"value": value1[0]
-														},
-														{
-																"name": field1[1],
-																"value": value1[1]
-														},
-														{
-																"name": field1[2],
-																"value": value1[2]
-														},
-														{
-																"name": field1[3],
-																"value": value1[3]
-														},
-														{
-																"name": field1[4],
-																"value": value1[4]
-														},
-														{
-																"name": field1[5],
-																"value": value1[5]
-														},
-														{
-																"name": field1[6],
-																"value": value1[6]
-														},
+                                "name": field1[0],
+                                "value": value1[0]
+                            },
+                            {
+                                "name": field1[1],
+                                "value": value1[1]
+                            },
+                            {
+                                "name": field1[2],
+                                "value": value1[2]
+                            },
+                            {
+                                "name": field1[3],
+                                "value": value1[3]
+                            },
+                            {
+                                "name": field1[4],
+                                "value": value1[4]
+                            },
+                            {
+                                "name": field1[5],
+                                "value": value1[5]
+                            },
+                            {
+                                "name": field1[6],
+                                "value": value1[6]
+                            },
                             {
                                 "name": "None of the above (Abort Command)",
                                 "value": `Reaction: ${emoji[0]}`
@@ -416,31 +425,31 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         return em1.delete(), message.channel.send(`${user} aborted the command.`);
                     case emoji[1]:
                         em1.clearReactions();
-                        i = index1[0]
+                        i = index1[0];
                         break;
                     case emoji[2]:
                         em1.clearReactions();
-                        i = index1[1]
+                        i = index1[1];
                         break;
                     case emoji[3]:
                         em1.clearReactions();
-                        i = index1[2]
+                        i = index1[2];
                         break;
                     case emoji[4]:
                         em1.clearReactions();
-                        i = index1[3]
+                        i = index1[3];
                         break;
                     case emoji[5]:
                         em1.clearReactions();
-                        i = index1[4]
+                        i = index1[4];
                         break;
                     case emoji[6]:
                         em1.clearReactions();
-                        i = index1[5]
+                        i = index1[5];
                         break;
                     case emoji[7]:
                         em1.clearReactions();
-                        i = index1[6]
+                        i = index1[6];
                         break;
                 };
 
@@ -453,15 +462,17 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 let format = fetch1.data.Page.characters[i].media.edges;
 
                 const anilistLogo = "https://anilist.co/img/logo_al.png";
-								if (description == null) {
-                  	description = "No Description in Database"
-                }else {
-                description = description.replace(/<[^>]*>/g, ' ').replace(/&#039;/g, "'").replace(/&quot;/g, '"').replace(/\s{2,}/g, ' ').replace(/__/g, "").trim().split("~!");
-                description = description[0].toString()};
-              	if (description < 2043) {
-                  	description = description
-                }else {
-                  	description = description.substring(0, 2043) + "..."};
+                if (description == null) {
+                    description = "No Description in Database";
+                } else {
+                    description = description.replace(/<[^>]*>/g, ' ').replace(/&#039;/g, "'").replace(/&quot;/g, '"').replace(/\s{2,}/g, ' ').replace(/__/g, "").trim().split("~!");
+                    description = description[0].toString();
+                };
+                if (description < 2043) {
+                    description = description;
+                } else {
+                    description = description.substring(0, 2043) + "...";
+                };
 
                 let name = fetch1.data.Page.characters[i].name.first;
                 if (fetch1.data.Page.characters[i].name.last != null) {
@@ -474,22 +485,23 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 } else {
                     subname = name + ", " + alternative.toString().split(",").join(", ");
                 };
-            		
-              	var isin
+
+                var isin;
                 var isindata = [];
-              	for (let d = 0; d < fetch1.data.Page.characters.length; d++) {
-                var isinrip = fetch1.data.Page.characters[d].media.edges};
-              	if (isinrip.length < 1) {
-                  	isin = "No Media in Database."
-                }else {
-                for (let b = 0; b < isindatas.length; ++b) {
-                    isindata.push("[" + isindatas[b].node.title.romaji + "]" + "(" + siteUrl[b].node.siteUrl + ")" + " (" + bot.caps(format[b].node.format) + ")");
-                }};
-								if (isindata.length == 0) {
-                  	isin = "No Media in Database"
-                }else {
-                		isin = isindata.join("\n")};
-              
+                var isinrip = fetch1.data.Page.characters[i].media.edges;
+                if (isinrip.length < 1) {
+                    isin = "No Media in Database.";
+                } else {
+                    for (let b = 0; b < isindatas.length; ++b) {
+                        isindata.push("[" + isindatas[b].node.title.romaji + "]" + "(" + siteUrl[b].node.siteUrl + ")" + " (" + bot.caps(format[b].node.format) + ")");
+                    }
+                };
+                if (isindata.length == 0) {
+                    isin = "No Media in Database.";
+                } else {
+                    isin = isindata.join("\n");
+                };
+
                 let embed = new Discord.RichEmbed()
                     .setTitle(subname.replace("&#039;", "'"))
                     .setAuthor(name.replace("&#039;", "'"), anilistLogo)
