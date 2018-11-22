@@ -74,7 +74,6 @@ module.exports = async (bot, message, args, Discord) => {
             .then(fetch1 => fetch1.json())
             .then(async fetch1 => {
 
-                console.log(fetch1)
                 let alternative = fetch1.data.Page.characters[0].name.alternative;
                 let url = fetch1.data.Page.characters[0].siteUrl;
                 let imageUrl = fetch1.data.Page.characters[0].image.large;
@@ -165,7 +164,6 @@ module.exports = async (bot, message, args, Discord) => {
             .then(fetch1 => fetch1.json())
             .then(async fetch1 => {
 
-                console.log(fetch1)
                 let alternative = fetch1.data.Page.characters[0].name.alternative;
                 let url = fetch1.data.Page.characters[0].siteUrl;
                 let imageUrl = fetch1.data.Page.characters[0].image.large;

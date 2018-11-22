@@ -19,7 +19,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     let manganame = args.join(' ');
     let user = message.member.user;
     let i;
-    //let color = Math.floor(Math.random() * 16777214) + 1;
+    let color = Math.floor(Math.random() * 16777214) + 1;
     let uid = message.author.id;
     message.delete();
 
@@ -342,8 +342,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (fetch1.data.Page.media[i].title.romaji == null && fetch1.data.Page.media[i].title.english == null) {
                     mangatitle = "Unknown.";
                 };
-
-                let color = Math.floor(Math.random() * 16777214) + 1;
 
                 let description;
                 if (fetch1.data.Page.media[i].description == null) {
