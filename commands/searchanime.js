@@ -62,7 +62,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     "name": `${fetch1.data.Page.media[a].title.romaji} (${bot.caps(fetch1.data.Page.media[a].format.split("_"))}) ${NSFW[a]}`,
                     "value": `Reaction: ${emoji[a + 1]}`
                 });
-            };
+            };console.log(field1[0]) 
 
             let embed;
             switch (fetch1.data.Page.media.length) {

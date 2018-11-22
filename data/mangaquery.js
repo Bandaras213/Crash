@@ -42,7 +42,7 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 		meanScore
 		popularity
 		isAdult
-		characters(page: 1, role: MAIN) {
+		characters(page: $page, role: MAIN) {
 		nodes {
 		id
 		name {
@@ -52,7 +52,7 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 		siteUrl
 		}
 		}
-		staff(page: 1) {
+		staff(page: $page) {
 		edges {
 			node {
 				id

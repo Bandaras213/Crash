@@ -20,14 +20,17 @@ query ($search: String, $page: Int, $perPage: Int) {
 		large
 		}
 		description(asHtml: false)
-		media(page: 2, perPage: 7) {
-			nodes {
-				title {
-					romaji
-					english
-				}
-			siteUrl
-			format
+		media(page: $page, perPage: $perPage) {
+			edges {
+				node {
+					title {
+						romaji
+						english
+					}
+				siteUrl
+				format
+			}
+			characterRole
 			}
 		}
 	}
