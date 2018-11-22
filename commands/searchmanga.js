@@ -25,7 +25,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
 
     if (args.length == 0) {
-        return message.channel.send(`${user}, I need a Title to search for! (Usage: €betamanga Title)`);
+        return message.channel.send(`${user}, I need a Title to search for! (Usage: €manga Title)`);
     };
 
     await query;

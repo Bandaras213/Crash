@@ -34,7 +34,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     await message.delete();
 
     if (args.length == 0) {
-        return message.channel.send(`${user}, I need a Name to search for! (Usage: €betacharacter Name)`);
+        return message.channel.send(`${user}, I need a Name to search for! (Usage: €character Name)`);
     };
 
     await query;
