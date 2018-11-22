@@ -327,7 +327,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         break
                 };
               
-				//anime id and nsfw
+              //anime id and nsfw
        		let id = fetch1.data.Page.media[i].id
        		let nsfw = fetch1.data.Page.media[i].isAdult;
 
@@ -463,7 +463,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
 						staff = "No Staff in Database."
 				}else {
 						staff = staffdata.join("\n");}
-
+              
                 let embed
                 if (status == "Finished") {
                     embed = new Discord.RichEmbed()

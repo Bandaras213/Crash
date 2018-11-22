@@ -80,6 +80,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (titlecheck == null) {
                     titlecheck = fetch1.data.Page.characters[a].media.edges[0].node.title.english;
                 };
+
               	if (characterRole === "MAIN") {
                 field2.push(`${name.replace("&#039;", "'")} (${titlecheck})`)
 								field2.push(`${a}`);

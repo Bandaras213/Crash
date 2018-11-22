@@ -318,7 +318,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         em1.clearReactions();
                         i = 6
                         break;
-            };
+                };
               
 				//anime id and nsfw
        	let id = fetch1.data.Page.media[i].id
