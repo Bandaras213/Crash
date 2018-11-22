@@ -1,5 +1,5 @@
 const fetch = require('node-fetch')
-const query = require("../data/characterquery.js")
+const query = require("../data/characterquery.js");
 
 var emoji = [
     "❌", //X
