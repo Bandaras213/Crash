@@ -569,8 +569,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 } else {
                     staff = staffdata.join("\n");
                 };
-              
-    						const dominantColor = await getColorFromURL(coverIMG);
+                
+                const dominantColor = await getColorFromURL(coverIMG);
               	color = rgbHex(`${dominantColor}`);
 
                 const embed = new Discord.RichEmbed()
