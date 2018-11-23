@@ -1,5 +1,7 @@
 const fetch = require('node-fetch');
 const query = require("../data/animequery.js");
+const { getColorFromURL } = require('color-thief-node');
+const rgbHex = require('rgb-hex');
 
 var emoji = [
     "❌", //X
@@ -19,7 +21,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     let animename = args.join(' ');
     let user = message.member.user;
     let i;
-    let color = Math.floor(Math.random() * 16777214) + 1;
+    let color;
     let uid = message.author.id;
     message.delete();
 
@@ -567,6 +569,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 } else {
                     staff = staffdata.join("\n");
                 };
+                
+                const dominantColor = await getColorFromURL(coverIMG);
+              	color = rgbHex(`${dominantColor}`);
 
                 const embed = new Discord.RichEmbed()
                     .setTitle(animetitle)
