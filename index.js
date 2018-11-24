@@ -24,6 +24,7 @@ bot.commands.set('benutzer', require('./commands/userinfo.js'));
 bot.commands.set('anime', require('./commands/searchanime.js'));
 bot.commands.set('character', require('./commands/searchcharacter.js'));
 bot.commands.set('manga', require('./commands/searchmanga.js'));
+bot.commands.set('user', require('./commands/searchuser.js'));
 bot.commands.set('rdmanime', require('./commands/randomanime.js'));
 bot.commands.set('help', require('./commands/help.js'));
 bot.commands.set('test', require('./commands/test.js'));
