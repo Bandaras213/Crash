@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const query = require("../data/mangaquery.js");
 const { getColorFromURL } = require('color-thief-node');
 const rgbHex = require('rgb-hex');
- 
+
 
 var emoji = [
     "❌", //X
@@ -22,7 +22,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     let manganame = args.join(' ');
     let user = message.member.user;
     let i;
-  	let color;
+    let color;
     let uid = message.author.id;
     message.delete();
 
@@ -345,7 +345,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 if (fetch1.data.Page.media[i].title.romaji == null && fetch1.data.Page.media[i].title.english == null) {
                     mangatitle = "Unknown.";
                 };
-              
+
                 let description;
                 if (fetch1.data.Page.media[i].description == null) {
                     description = "No Description found.";
@@ -461,7 +461,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 } else {
                     avgRating = fetch1.data.Page.media[i].averageScore + "%";
                 };
-                ;
+
                 let sourcefilter
                 if (fetch1.data.Page.media[i].source == null || fetch1.data.Page.media[i].source == undefined) {
                     sourcefilter = "No Source in Database.";
@@ -491,9 +491,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 } else {
                     staff = staffdata.join("\n");
                 };
-              
-               const dominantColor = await getColorFromURL(coverIMG);
-              	color = rgbHex(`${dominantColor}`);
+
+                const dominantColor = await getColorFromURL(coverIMG);
+                color = rgbHex(`${dominantColor}`);
 
                 let embed;
                 if (status == "Finished") {
