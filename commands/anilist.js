@@ -4,7 +4,7 @@ const fs = require("fs");
 const query = require("../data/userquery.js");
 const toHex = require('colornames');
 
-var emoji = [
+/* var emoji = [
     "❌", //X
     "\u0031\u20E3", //1
     "\u0032\u20E3", //2
@@ -25,7 +25,7 @@ var value1 = [
     `Reaction: ${emoji[5]}`,
     `Reaction: ${emoji[6]}`,
     `Reaction: ${emoji[7]}`
-];
+]; */
 
 module.exports = async (bot, message, args, Discord) => {
 
@@ -40,7 +40,7 @@ module.exports = async (bot, message, args, Discord) => {
     let indexuserdiscid;
     let indexmentiondiscid;
     let anilistid;
-    let anilistusername;
+    //let anilistusername;
 
     let OVERWRITE = false
 
@@ -304,9 +304,9 @@ module.exports = async (bot, message, args, Discord) => {
     };
 
     if (findmentiondiscid && args[0] != "save") {
-        indexuserdiscid = UserlistDBobj.userlist.findIndex(did => did.discid == user.id);
-        anilistid = await UserlistDBobj.userlist[indexuserdiscid].anilistid;
-        anilistusername = await UserlistDBobj.userlist[indexuserdiscid].anilistusername;
+        indexmentiondiscid = UserlistDBobj.userlist.findIndex(did => did.discid == mention.id);
+        anilistid = await UserlistDBobj.userlist[indexmentiondiscid].anilistid;
+        anilistusername = await UserlistDBobj.userlist[indexmentiondiscid].anilistusername;
 
         let variables = {
             id: anilistid,
@@ -548,7 +548,7 @@ module.exports = async (bot, message, args, Discord) => {
                     .addField('Favorite Years:', `${yearfav.join(' ')}`)
                     .addField('Last List Update:', `${lastupdated}`)
 
-                await message.channel.send(`${user}, ${username} (${userID}) is ${mention}'s Waifu!`, { embed });
+                await message.channel.send(`${user}, ${username} (${userID}) is ${mention}'s Anilist Profile!`, { embed });
             });
 
     };
@@ -565,8 +565,8 @@ module.exports = async (bot, message, args, Discord) => {
 
         args.splice(0, 1);
         let usersearchname = args.join(' ');
-        let i;
-        let uid = user.id;
+        //let i;
+        //let uid = user.id;
 
         await query;
 
@@ -593,7 +593,7 @@ module.exports = async (bot, message, args, Discord) => {
                     return message.channel.send(`${user}, Couldn't find a matching Anilist for '**${usersearchname}**'`);
                 };
 
-                let field1 = [];
+                //let field1 = [];
 
                 let username = fetch1.data.User.name;
                 let userIDS = fetch1.data.User.id
