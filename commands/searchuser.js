@@ -11,7 +11,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
 
     if (args.length == 0) {
-        return message.channel.send(`${user}, I need a Title to search for! (Usage: €user Username)`);
+        return message.channel.send(`${user}, I need a Username to search for! (Usage: €user Username)`);
     };
 
     await query;
@@ -33,6 +33,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
       //console.log(JSON.stringify(fetch1, null, 2))
+      
+      if (fetch1.data.User == null) {
+        return message.channel.send(`${user}, Couldn't find a matching Anilist for '**${args.join(" ")}**'`);
+      };
       
       let username = fetch1.data.User.name;
       let userID = fetch1.data.User.id;

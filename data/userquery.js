@@ -1,6 +1,6 @@
 module.exports = `
-query ($name: String){
-	User(name: $name){
+query ($name: String, $id: Int, $search: String){
+	User(id: $id, name: $name, search: $search){
 		id
 		name
 		about(asHtml: false)

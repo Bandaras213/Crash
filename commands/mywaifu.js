@@ -34,13 +34,13 @@ module.exports = async (bot, message, args, Discord) => {
     let WaifuDBobj = JSON.parse(fs.readFileSync(WaifuDB, 'utf8'));
     let finduserdiscid = WaifuDBobj.waifus.find(did => did.discid == user.id);
     let findmentiondiscid
-    if (mention) { findmentiondiscid = WaifuDBobj.waifus.find(did => did.discid == mention.id); }
+    if (mention) { findmentiondiscid = WaifuDBobj.waifus.find(did => did.discid == mention.id); };
     let indexuserdiscid;
     let indexmentiondiscid;
     let waifuid;
     let waifuname;
 
-    let OVERWRITE = false
+    let OVERWRITE = false;
 
     if (finduserdiscid == undefined && args[0] != "save") {
         return message.channel.send(`${user}, Looks like you don't have a Waifu! Save a Waifu by using €mywaifu save [name]!`);
