@@ -3,6 +3,8 @@ dependencies:
   bufferutil: 4.0.0
   canvas: 2.0.1
   cheerio: 0.22.0
+  color-thief-node: 1.0.2
+  colornames: 1.1.1
   discord.js: 11.4.2
   erlpack: 0.1.2
   express: 4.16.4
@@ -17,6 +19,7 @@ dependencies:
   prism-media: 0.3.1
   request: 2.88.0
   request-promise: 4.2.2
+  rgb-hex: 2.1.0
   safe-buffer: 5.1.2
   sodium: 2.0.3
   tweetnacl: 1.0.0
@@ -172,6 +175,16 @@ packages:
     requiresBuild: true
     resolution:
       integrity: sha512-aVESjDBMXGRL+aZqjFtxMVOg8KzHhNcKIscoeC8OROccmApKOriHsnySxq228Kc+3tzB9Qc6tzD4ukp9Zjwz1Q==
+  /canvas/2.1.0:
+    dependencies:
+      nan: 2.11.1
+      node-pre-gyp: 0.11.0
+    dev: false
+    engines:
+      node: '>=6'
+    requiresBuild: true
+    resolution:
+      integrity: sha512-cpQtc8fjVl4Puus/t/X1Zc0r+tVWJcsRAQvZ7pu1mSAqZgkbgoCv1CEnLTCPD0YA358G0G20kvzZMQDUpcvmFg==
   /caseless/0.12.0:
     dev: false
     resolution:
@@ -216,6 +229,16 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
+  /color-thief-node/1.0.2:
+    dependencies:
+      canvas: 2.1.0
+    dev: false
+    resolution:
+      integrity: sha512-wLR9SRNWSQXIIHQf65iy9BtUGE+X9dDI4cdU4fBeQJCdE5ViEv/XTQXs4r9sMzdhdoMqsUbWW9wbZl4XHwPIEg==
+  /colornames/1.1.1:
+    dev: false
+    resolution:
+      integrity: sha1-+IiQMGhcfE/54qVZ9Qd+t2qBb5Y=
   /combined-stream/1.0.7:
     dependencies:
       delayed-stream: 1.0.0
@@ -1195,6 +1218,12 @@ packages:
       node: '>= 4'
     resolution:
       integrity: sha512-NAqBSrijGLZdM0WZNsInLJpkJokL72XYjUpnB0iwsRgxh7dB6COrHnTBNwN0E+lHDAJzu7kLAkDeY08z2/A0hg==
+  /rgb-hex/2.1.0:
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha1-x3PF/iJoolV42SU5qCp6XOU77aY=
   /rimraf/2.6.2:
     dependencies:
       glob: 7.1.3
@@ -1474,6 +1503,8 @@ specifiers:
   bufferutil: ^4.0.0
   canvas: ^2.0.1
   cheerio: ^0.22.0
+  color-thief-node: ^1.0.1
+  colornames: ^1.1.1
   discord.js: ^11.4.2
   erlpack: ^0.1.2
   express: ^4.16.4
@@ -1488,6 +1519,7 @@ specifiers:
   prism-media: ^0.3.1
   request: ^2.88.0
   request-promise: ^4.2.2
+  rgb-hex: ^2.1.0
   safe-buffer: ^5.1.2
   sodium: ^2.0.3
   tweetnacl: ^1.0.0
