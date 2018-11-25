@@ -50,8 +50,16 @@ Avaliable types are PLAYING, STREAMING, LISTENING, WATCHING.
      * Sends a DM embed to the command user and shows all avaliable commands and Infos about them.
   + **anime ["Anime Name"]**
      * Starts a search for ["Anime Name"] and gets the 7 best matching results. From these results you can choose the one that matches the one you wanted and displays its details.
-  + **character ["Character Name"]**
-     * Starts a search for ["Character Name"] and gets the 7 best matching results. From these results you can choose the one that matches the one you wanted and displays his/hers details.
+  + **user ["Anilist Username"]**
+     * Starts a fetch for ["Anilist Username"] and gets the best matching or only matching result. If a Anilist user got found it gets the list and profile informations.
+  + **anilist ["Anilist Username"], anilist ["save Anilist Username"], anilist ["@discordname#number Anilist Username"]**
+     * Trys to get a saved Anilist for Username.
+     * With ["anilist save Anilist name"] saves the found Anilist to your discord ID.
+     * With ["anilist @discordname#number"] can be checked what's the anilist from the mentioned user.
+   + **waifu ["waifu name"], waifu ["save waifu name"], waifu ["@discordname#number waifu name"]**
+     * Trys to get a saved waifu for Username.
+     * With ["waifu save name"] gets a matching list of characters to choose from. Saves the found waifu to your discord ID.
+     * With ["waifu @discordname#number"] can be checked what's the waifu from the mentioned user.
   + **manga ["Manga Name"]**
      * Starts a search for ["Manga Name"] and gets the 7 best matching results. From these results you can choose the one that matches the one you wanted and displays its details.
   + **rdmanime**

@@ -45,7 +45,7 @@ module.exports = async (bot, message, args, Discord) => {
     let OVERWRITE = false
 
     if (finduserdiscid == undefined && args[0] != "save") {
-        return message.channel.send(`${user}, Looks like you don't have a Anilist! Save a Anilist by using €userlist save [name]!`);
+        return message.channel.send(`${user}, Looks like you don't have a Anilist! Save a Anilist by using €anilist save [name]!`);
     };
 
     if (mention && findmentiondiscid == undefined && args[0] != "save") {
@@ -55,7 +55,7 @@ module.exports = async (bot, message, args, Discord) => {
     if (finduserdiscid && mention == undefined && args[0] != "save") {
         indexuserdiscid = UserlistDBobj.userlist.findIndex(did => did.discid == user.id);
         anilistid = await UserlistDBobj.userlist[indexuserdiscid].anilistid;
-        anilistusername = await UserlistDBobj.userlist[indexuserdiscid].anilistusername;
+        //anilistusername = await UserlistDBobj.userlist[indexuserdiscid].anilistusername;
 
         let variables = {
             id: anilistid,
@@ -306,7 +306,7 @@ module.exports = async (bot, message, args, Discord) => {
     if (findmentiondiscid && args[0] != "save") {
         indexmentiondiscid = UserlistDBobj.userlist.findIndex(did => did.discid == mention.id);
         anilistid = await UserlistDBobj.userlist[indexmentiondiscid].anilistid;
-        anilistusername = await UserlistDBobj.userlist[indexmentiondiscid].anilistusername;
+        //anilistusername = await UserlistDBobj.userlist[indexmentiondiscid].anilistusername;
 
         let variables = {
             id: anilistid,
