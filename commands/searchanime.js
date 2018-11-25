@@ -66,6 +66,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 });
             };
 
+            if (field1.length == 0) {
+                return message.channel.send(`${user}, Couldn't find a matching character for '**${charactername}**'`);
+            };
+
             let embed;
             switch (fetch1.data.Page.media.length) {
                 case 1:
@@ -569,9 +573,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 } else {
                     staff = staffdata.join("\n");
                 };
-                
+
                 const dominantColor = await getColorFromURL(coverIMG);
-              	color = rgbHex(`${dominantColor}`);
+                color = rgbHex(`${dominantColor}`);
 
                 const embed = new Discord.RichEmbed()
                     .setTitle(animetitle)

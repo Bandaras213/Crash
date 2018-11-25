@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const query = require("../data/mangaquery.js");
 const { getColorFromURL } = require('color-thief-node');
 const rgbHex = require('rgb-hex');
- 
+
 
 var emoji = [
     "❌", //X
@@ -22,7 +22,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     let manganame = args.join(' ');
     let user = message.member.user;
     let i;
-  	let color;
+    let color;
     let uid = message.author.id;
     message.delete();
 
@@ -491,9 +491,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 } else {
                     staff = staffdata.join("\n");
                 };
-              
-               const dominantColor = await getColorFromURL(coverIMG);
-              	color = rgbHex(`${dominantColor}`);
+
+                const dominantColor = await getColorFromURL(coverIMG);
+                color = rgbHex(`${dominantColor}`);
 
                 let embed;
                 if (status == "Finished") {
