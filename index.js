@@ -7,10 +7,10 @@ bot.config = require('./config.json');
 bot.log = require('./functions/log.js');
 bot.caps = require('./functions/capitalize.js');
 
-if (process.env.TOKEN == null) {
+if (process.env.DISCORDTOKEN == null) {
   token = bot.config.token;
 } else {
-  token = process.env.TOKEN;
+  token = process.env.DISCORDTOKEN;
 };
 
 bot.token = token;
@@ -28,6 +28,7 @@ bot.commands.set('manga', require('./commands/searchmanga.js'));
 bot.commands.set('user', require('./commands/searchuser.js'));
 bot.commands.set('rdmanime', require('./commands/randomanime.js'));
 bot.commands.set('help', require('./commands/help.js'));
+bot.commands.set('staff', require('./commands/searchstaff.js'));
 bot.commands.set('test', require('./commands/test.js'));
 
 bot.login(bot.token);

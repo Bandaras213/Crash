@@ -37,6 +37,9 @@
     "graphql": "^14.0.2",
     "color-thief-node": "^1.0.1",
     "rgb-hex": "^2.1.0",
-    "colornames": "^1.1.1"
+    "colornames": "^1.1.1",
+    "log-4js": "^0.7.29",
+    "express-handlebars": "^3.0.0",
+    "body-parser": "^1.18.3"
   }
 }
