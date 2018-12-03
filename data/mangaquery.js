@@ -1,5 +1,5 @@
 module.exports = `
-query ($id: Int, $page: Int, $perPage: Int, $search: String) {
+query ($id: Int, $page: Int, $perPage: Int, $search: String, $genre: genre) {
 	Page (page: $page, perPage: $perPage) {
 		pageInfo {
 		total
@@ -8,7 +8,7 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 		hasNextPage
 		perPage
 		}
-	media (id: $id, search: $search, type: MANGA) {
+	media (id: $id, search: $search, genre: $genre, type: MANGA) {
 		id
 		siteUrl
 		format
