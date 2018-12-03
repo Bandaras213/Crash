@@ -60,6 +60,8 @@ Avaliable types are PLAYING, STREAMING, LISTENING, WATCHING.
      * Starts a search for ["Manga Name"] and gets the 7 best matching results. From these results you can choose the one that matches the one you wanted and displays its details.
   + **rdmanime**
      * Displays a random anime.
+  + **rdmmanga**
+     * Displays a random manga.
 ---
 			
 ## Credits

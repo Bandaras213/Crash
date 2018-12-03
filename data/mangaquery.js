@@ -1,5 +1,5 @@
 module.exports = `
-query ($id: Int, $page: Int, $perPage: Int, $search: String, $genre: genre) {
+query ($id: Int, $page: Int, $perPage: Int, $search: String, $genre: String) {
 	Page (page: $page, perPage: $perPage) {
 		pageInfo {
 		total

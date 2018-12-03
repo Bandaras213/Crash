@@ -25,6 +25,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
           value: "Searches for a random Anime."
         },
         {
+          name: `${prefix}rdmmanga`,
+          value: "Searches for a random Manga."
+        },
+        {
           name: `${prefix}manga [Manga Name]`,
           value: "Starts a Manga search and let's you choose one of the results."
         },
