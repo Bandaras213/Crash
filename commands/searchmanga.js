@@ -541,7 +541,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 } else {
                     await em1.delete();
                     await message.channel.send(`${user}, You've selected a NSFW Manga! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                    await message.author.send(`Here is the result for ${mangatitle}`, { embed });
+                    await message.author.send(`${user}, Here is the result for ${mangatitle}`, { embed });
                 };
             });
 
