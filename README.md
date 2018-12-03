@@ -11,10 +11,6 @@
 | | "ACTIVITY" | Changes the Bot activity. |
 | | "TYPE" | Changes the activity type. |
 | | "STATUS" | Changes the status type. |
-| | "KITSUUSERNAME" | Kitsu Auth Username |
-| | "KITSUPASSWORD" | Kitsu Auth Password |
-| | "KITSUCLIENTID" | Kitsu Auth Client ID |
-| | "KITSUCLIENTSECRET" | Kitsu Auth Client Secret |
 
 **Token:**
 

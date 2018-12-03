@@ -1,253 +1,377 @@
 const fetch = require('node-fetch');
+const query = require("../data/animequery.js");
+const queryg = require("../data/genres.js");
+const querypage = require("../data/pages.js");
+const { getColorFromURL } = require('color-thief-node');
+const rgbHex = require('rgb-hex');
 
 module.exports = async (bot, message, args, Discord, moment) => {
 
-    let username;
-    let password;
-    let clientid;
-    let clientsecret;
+    let animename = args.join(' ');
+    let user = message.member.user;
+    let i;
+    let color;
+    let uid = message.author.id;
+    message.delete();
 
-    if (process.env.KITSUUSERNAME) {
-        username = process.env.KITSUUSERNAME;
-    } else {
-        username = bot.config.KITSUUSERNAME;
+    await queryg;
+
+    let databody = {
+        query: queryg,
     };
 
-    if (process.env.KITSUPASSWORD) {
-        password = process.env.KITSUPASSWORD;
-    } else {
-        password = bot.config.KITSUPASSWORD;
-    };
-
-    if (process.env.KITSUCLIENTID) {
-        clientid = process.env.KITSUCLIENTID;
-    } else {
-        clientid = bot.config.KITSUCLIENTID;
-    };
-
-    if (process.env.KITSUCLIENTSECRET) {
-        clientsecret = process.env.KITSUCLIENTSECRET;
-    } else {
-        clientsecret = bot.config.KITSUCLIENTSECRET;
-    };
-
-    const authbody = {
-        grant_type: 'password',
-        username: username,
-        password: password,
-        client_id: clientid,
-        client_secret: clientsecret
-    };
-
-    await fetch('https://kitsu.io/api/oauth/token', {
+    await fetch('https://graphql.anilist.co', {
         method: 'post',
-        body: JSON.stringify(authbody),
-        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(databody),
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
     })
-        .then(tores => tores.json())
-        .then(async tores => {
+        .then(fetch2 => fetch2.json())
+        .then(async fetch2 => {
+      
+      var rannumb1 = [];
+      var rdmgenre = [];
+      while(rannumb1.length < fetch2.data.GenreCollection.length){
+        var r = Math.floor(Math.random()*fetch2.data.GenreCollection.length) + 0;
+        if(rannumb1.indexOf(r) === -1) rannumb1.push(r);
+      };
+      for (let rdm = 0; rdm < rannumb1.length; rdm++) {
+        rdmgenre.push(fetch2.data.GenreCollection[rannumb1[rdm]])
+      };
+      
+      let rdmgenrenmb = Math.floor(Math.random()*rdmgenre.length) + 0;
+      let rdmnumbers = [];
+        rdmnumbers.push(rdmgenre[rdmgenrenmb])
+      
+      await querypage;
 
-            let toktype = tores.token_type;
-            let acctok = tores.access_token;
-            let user = message.member.user;
-            let color = Math.floor(Math.random() * 16777214) + 1;
-            message.delete();
+    let variables = {
+        genre: rdmnumbers[0],
+        page: 1,
+        perPage: 50
+    };
 
-            await fetch('https://kitsu.io/api/edge/anime/', {
-                method: 'GET',
-                headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}` }
-            })
-                .then(idmax => idmax.json())
-                .then(async idmax => {
+    let databody = {
+        query: querypage,
+        variables: variables
+    };
 
-                    let ida = idmax.links.last;
-                    let idb = ida.split("=");
-                    let idc = idb.pop();
-                    let idnum = Math.floor(Math.random() * idc) + 1;
+    await fetch('https://graphql.anilist.co', {
+        method: 'post',
+        body: JSON.stringify(databody),
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+    })
+        .then(fetch3 => fetch3.json())
+        .then(async fetch3 => {
+      
+      let rdmpage = Math.floor(Math.random() * fetch3.data.Page.pageInfo.lastPage);
+        rdmnumbers.push(rdmpage)
+      
+      
+    await query;
 
-                    await fetch('https://kitsu.io/api/edge/anime/' + idnum, {
-                        method: 'GET',
-                        headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}` }
-                    })
-                        .then(filter0 => filter0.json())
-                        .then(async filter0 => {
-                            let newid = filter0.data.id;
+    let variables = {
+        genre: rdmnumbers[0],
+        page: rdmnumbers[1],
+        perPage: 50,
+    };
 
-                            await fetch('https://kitsu.io/api/edge/anime/' + newid, {
-                                method: 'GET',
-                                headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}` }
-                            })
-                                .then(res0 => res0.json())
-                                .then(async res0 => {
+    let databody = {
+        query: query,
+        variables: variables
+    };
 
-                                    //data
-                                    let id = res0.data.id;
-                                    //let type = res0.data.type
-                                    let url = "https://kitsu.io/anime/" + id;
+    await fetch('https://graphql.anilist.co', {
+        method: 'post',
+        body: JSON.stringify(databody),
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+    })
+        .then(fetch1 => fetch1.json())
+        .then(async fetch1 => {
+      
+    let i = Math.floor(Math.random() * 49) + 1;
 
-                                    //data.atributes
-                                    let synopsis = res0.data.attributes.synopsis;
-                                    let canonTitle = res0.data.attributes.canonicalTitle;
-                                    let avgRating = res0.data.attributes.averageRating;
-                                    let startdate = res0.data.attributes.startDate;
-                                    let enddate = res0.data.attributes.endDate;
-                                    let ager = res0.data.attributes.ageRating;
-                                    let agerg = res0.data.attributes.ageRatingGuide;
-                                    let subtype = res0.data.attributes.subtype;
-                                    let status = res0.data.attributes.status;
-                                    let posterIMG = res0.data.attributes.posterImage.medium;
-                                    let coverIMG = res0.data.attributes.coverImage;
-                                    let episodes = res0.data.attributes.episodeCount;
-                                    let episodemin = res0.data.attributes.episodeLength;
-                                    let categories = res0.data.relationships.categories.links.related;
-                                    let videoid = res0.data.attributes.youtubeVideoId;
-                                    let nsfw = res0.data.attributes.nsfw;
+                //anime id and nsfw
+                //let id = fetch1.data.Page.media[i].id
+                let nsfw = fetch1.data.Page.media[i].isAdult;
 
+                //data.atributes
+                let animetitle;
+                if (fetch1.data.Page.media[i].title.romaji == null) {
+                    animetitle = fetch1.data.Page.media[i].title.english;
+                } else {
+                    animetitle = fetch1.data.Page.media[i].title.romaji;
+                };
 
-                                    if (startdate === null && enddate === null) {
-                                        start = "No Startdate in the Database.";
-                                        end = "No Enddate in the Database.";
-                                    };
+                if (fetch1.data.Page.media[i].title.romaji == null && fetch1.data.Page.media[i].title.english == null) {
+                    animetitle = "Unknown.";
+                };
 
-                                    let startfilter;
-                                    let start;
-                                    if (startdate === null) {
-                                        start = "Not Running or no Data in Database.";
-                                    } else {
-                                        startfilter = startdate.split("-");
-                                        start = startfilter[2] + "." + startfilter[1] + "." + startfilter[0];
-                                    };
+                let description;
+                if (fetch1.data.Page.media[i].description == null) {
+                    description = "No Description found.";
+                } else {
+                    description = fetch1.data.Page.media[i].description.replace(/<[^>]*>/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                };
 
-                                    let endfilter;
-                                    let end;
-                                    if (enddate === null) {
-                                        end = "Running";
-                                    } else {
-                                        endfilter = enddate.split("-");
-                                        end = endfilter[2] + "." + endfilter[1] + "." + endfilter[0];
-                                    };
+                let coverIMG;
+                if (fetch1.data.Page.media[i].coverImage.large == null) {
+                    coverIMG = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848";
+                } else {
+                    coverIMG = fetch1.data.Page.media[i].coverImage.large;
+                };
 
-                                    if (avgRating === null) {
-                                        avgRating = "No Data in Database.";
-                                    } else {
-                                        avgRating = avgRating + "%";
-                                    };
+                let posterIMG;
+                if (fetch1.data.Page.media[i].bannerImage == null) {
+                    posterIMG = '';
+                } else {
+                    posterIMG = fetch1.data.Page.media[i].bannerImage;
+                };
 
-                                    if (videoid == null || videoid == undefined) {
-                                        videoid = "DLzxrzFCyOs";
-                                    };
+                let animeurl;
+                if (fetch1.data.Page.media[i].siteUrl == null) {
+                    animeurl = "https://anilist.co";
+                } else {
+                    animeurl = fetch1.data.Page.media[i].siteUrl;
+                };
 
-                                    if (ager === null) {
-                                        ager = "No data in database.";
-                                    };
+                let video;
+                if (fetch1.data.Page.media[i].trailer == null) {
+                    video = "No Video found.";
+                } else {
+                    video = `[Click Me](https://www.youtube.com/watch?v=` + `${fetch1.data.Page.media[i].trailer.id})`;
+                };
 
-                                    if (agerg === null) {
-                                        agerg = "No Data in Database.";
-                                    };
+                let format;
+                if (fetch1.data.Page.media[i].format == null) {
+                    format = "Unknown.";
+                } else {
+                    format = fetch1.data.Page.media[i].format;
+                };
 
-                                    if (subtype === null) {
-                                        subtype = "No Data in Database.";
-                                    } else {
-                                        subtype = bot.caps(subtype);
-                                    };
+                let genres;
+                let genre1 = [];
+                if (fetch1.data.Page.media[i].genres.length == 0) {
+                    genres = "No Genres found.";
+                } else {
+                    for (let b = 0; b < fetch1.data.Page.media[i].genres.length; ++b) {
+                        genre1.push(fetch1.data.Page.media[i].genres[b]);
+                    };
+                };
 
-                                    if (status === null) {
-                                        status = "No Data in Database.";
-                                    } else {
-                                        status = bot.caps(status);
-                                    };
+                if (genre1.length == 0) {
+                    genres = "No Genres found.";
+                } else {
+                    genres = genre1.join(", ");
+                };
 
-                                    if (posterIMG === null) {
-                                        posterIMG = 'https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848';
-                                    };
+                let mainchar;
+                let chardata = [];
+                if (fetch1.data.Page.media[i].characters.nodes.length == 0) {
+                    mainchar = "No Characters found.";
+                } else {
+                    for (let c = 0; c < fetch1.data.Page.media[i].characters.nodes.length; ++c) {
+                        if (fetch1.data.Page.media[i].characters.nodes[c].name.last == null) {
+                            chardata.push("[" + fetch1.data.Page.media[i].characters.nodes[c].name.first + "]" + "(" + fetch1.data.Page.media[i].characters.nodes[c].siteUrl + ")");
+                        } else {
+                            chardata.push("[" + fetch1.data.Page.media[i].characters.nodes[c].name.first + " " + fetch1.data.Page.media[i].characters.nodes[c].name.last + "]" + "(" + fetch1.data.Page.media[i].characters.nodes[c].siteUrl + ")");
+                        };
+                    };
+                };
 
-                                    let time;
-                                    function timeConvert(n) {
+                if (chardata.length == 0) {
+                    mainchar = "No Characters found.";
+                } else {
+                    mainchar = chardata.join(", ");
+                };
 
-                                        let hours = Math.floor(n / 60);
-                                        let minutes = Math.floor((n / 60 - hours) * 60);
+                let status
+                if (fetch1.data.Page.media[i].status == null) {
+                    status = "No Status found.";
+                } else {
+                    status = bot.caps(fetch1.data.Page.media[i].status);
+                };
 
-                                        if (hours === 0) {
-                                            time = minutes + " minute(s).";
-                                        } else {
-                                            time = "Approximately " + hours + " hour(s) and " + minutes + " minute(s).";
-                                        };
-                                    };
+                let season;
+                let start;
+                let end;
+                let airings = [];
+                if (fetch1.data.Page.media[i].season == null) {
+                    season = "";
+                } else {
+                    season = bot.caps(fetch1.data.Page.media[i].season);
+                };
 
-                                    if (time == undefined || time == null) {
-                                        time = "No Data in Database.";
-                                    };
+                if (fetch1.data.Page.media[i].startDate.day == null || fetch1.data.Page.media[i].startDate.month == null || fetch1.data.Page.media[i].startDate.year == null) {
+                    start = "No Start or End date in Database.";
+                    airings.push(start);
+                } else {
+                    start = fetch1.data.Page.media[i].startDate.day + "." + fetch1.data.Page.media[i].startDate.month + "." + fetch1.data.Page.media[i].startDate.year;
+                };
 
-                                    let runtime;
-                                    if (episodes === null || episodemin === null) {
-                                        runtime = "Can't Calculate Runtime without Episodes or Episode length.";
-                                    } else {
-                                        runtime = episodes * episodemin;
-                                        timeConvert(runtime);
-                                    };
+                if (fetch1.data.Page.media[i].endDate.day == null || fetch1.data.Page.media[i].endDate.month == null || fetch1.data.Page.media[i].endDate.year == null) {
+                    end = "";
+                } else {
+                    end = "to " + fetch1.data.Page.media[i].endDate.day + "." + fetch1.data.Page.media[i].endDate.month + "." + fetch1.data.Page.media[i].endDate.year;
+                };
 
-                                    if (episodes === null) {
-                                        episodes = "No Episodes in the Kitsu.io database.";
-                                    };
+                airings.push(season + " " + start + " " + end);
 
-                                    if (episodemin === null) {
-                                        episodemin = "No Data in Database.";
-                                    } else {
-                                        episodemin = episodemin + " Min";
-                                    };
+                let nextepi;
+                if (fetch1.data.Page.media[i].nextAiringEpisode == null) {
+                    nextepi = "No new Episodes to Air.";
+                } else {
+                    let dateairing;
+                    dateairing = new Date(fetch1.data.Page.media[i].nextAiringEpisode.airingAt * 1000);
+                    dateairing = dateairing.toUTCString();
+                    dateairing = `${moment(dateairing).format('DD.MM.YYYY')}` + " at " + `${moment(dateairing).format('hh:mm a')}`;
+                    nextepi = "Episode " + fetch1.data.Page.media[i].nextAiringEpisode.episode + ", Airing on: " + dateairing;
+                };
 
-                                    if (coverIMG === null) {
-                                        coverIMG = "";
-                                    } else {
-                                        coverIMG = coverIMG.original;
-                                    };
+                let episodes = fetch1.data.Page.media[i].episodes;
+                if (fetch1.data.Page.media[i].episodes == null) {
+                    episodes = "No Episodes in the Database.";
+                } else {
+                    episodes = fetch1.data.Page.media[i].episodes;
+                };
 
-                                    await fetch(`${categories}`, {
-                                        method: 'GET',
-                                        headers: { 'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json', 'Authorization': `${toktype} ${acctok}` }
-                                    })
-                                        .then(res9 => res9.json())
-                                        .then(async res9 => {
-                                            var categoryval = [];
-                                            for (var owo = 0; owo < res9.data.length; owo++) {
-                                                categoryval.push(res9.data[owo].attributes.title);
-                                            };
+                let episodemin;
+                let episodemins;
+                if (fetch1.data.Page.media[i].duration == null) {
+                    episodemin = "No Duration in Database.";
+                } else {
+                    episodemin = fetch1.data.Page.media[i].duration + " minutes";
+                    episodemins = fetch1.data.Page.media[i].duration;
+                };
 
-                                            if (categoryval == null || categoryval == "") {
-                                                categoryval = "No Categories in Database.";
-                                            } else {
-                                                categoryval = categoryval.join(", ");
-                                            };
+                let time;
+                function timeConvert(n) {
+                    if (isNaN(n) || n == null) {
+                        return time = "Can't Calculate time without Episodes or Episode Length.";
+                    };
 
-                                            const embed = new Discord.RichEmbed()
-                                                .setTitle(canonTitle)
-                                                .setColor(color)
-                                                .setDescription(synopsis)
-                                                .setFooter(canonTitle)
-                                                .setImage(coverIMG)
-                                                .setThumbnail(posterIMG)
-                                                .setTimestamp()
-                                                .setURL(url)
-                                                .addField('Type:', `${subtype}`)
-                                                .addField('Status:', status)
-                                                .addField('Preview Trailer:', `[Click Me](https://www.youtube.com/watch?v=` + `${videoid})`)
-                                                .addField('Categories:', categoryval)
-                                                .addField('Aired:', `From ${start} to ${end}`)
-                                                .addField('Episodes:', episodes)
-                                                .addField('Episode Length:', `${episodemin}`)
-                                                .addField('Total Runtime:', `${time}`)
-                                                .addField('Community Rating:', avgRating)
-                                                .addField('Age Category:', `${ager} ${agerg}`);
+                    let hours = Math.floor(n / 60);
+                    let minutes = Math.floor((n / 60 - hours) * 60);
 
-                                            if (nsfw == false) {
-                                                await message.channel.send(`${user}, Here is your random Result! It's: ${canonTitle}`, { embed });
-                                            } else {
-                                                await message.channel.send(`${user}, Your random selection was a NSFW Anime! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                                                await message.author.send(`Here is your random Result! It's: ${canonTitle}`, { embed });
-                                            };
-                                        });
-                                });
-                        });
-                });
-        });
+                    if (hours === 0) {
+                        time = minutes + " minute(s)";
+                    } else if (minutes === 0) {
+                        time = hours + " hour(s)";
+                    } else {
+                        time = hours + " hour(s) and " + minutes + " minute(s)";
+                    };
+                };
+
+                let runtime;
+                if (episodes === null || episodemin === null) {
+                    runtime = "Can't Calculate Runtime without Episodes or Episode length.";
+                } else {
+                    runtime = episodes * episodemins;
+                    timeConvert(runtime);
+                };
+
+                let avgRating;
+                if (fetch1.data.Page.media[i].averageScore === null) {
+                    avgRating = "No Rating in Database.";
+                } else {
+                    avgRating = fetch1.data.Page.media[i].averageScore + "%";
+                };
+
+                let sourcefilter
+                if (fetch1.data.Page.media[i].source == null || fetch1.data.Page.media[i].source == undefined) {
+                    sourcefilter = "No Source in Database.";
+                } else {
+                    sourcefilter = bot.caps(fetch1.data.Page.media[i].source.split("_"));
+                };
+
+                let studios;
+                let studiosdata = [];
+                if (fetch1.data.Page.media[i].studios.nodes.length == 0) {
+                    studios = "No Studios in the Database.";
+                } else {
+                    for (let s = 0; s < fetch1.data.Page.media[i].studios.nodes.length; ++s) {
+                        studiosdata.push(fetch1.data.Page.media[i].studios.nodes[s].name);
+                    }
+                };
+
+                if (studiosdata.length == 0) {
+                    studios = "No Studios in the Database.";
+                } else {
+                    studios = studiosdata.join(", ");
+                };
+
+                let staff;
+                let staffdata = [];
+                if (fetch1.data.Page.media[i].staff.edges.length == 0) {
+                    staff = "No Staff in Database.";
+                } else {
+                    let staffdatas = fetch1.data.Page.media[i].staff.edges;
+                    for (let m = 0; m < staffdatas.length; ++m) {
+                        if (staffdatas[m].role == "Original Creator") {
+                            if (staffdatas[m].node.name.last == null) {
+                                staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + "]" + "(" + staffdatas[m].node.siteUrl + ")");
+                            } else {
+                                staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")");
+                            };
+                        };
+
+                        if (staffdatas[m].role == "Director") {
+                            if (staffdatas[m].node.name.last == null) {
+                                staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + "]" + "(" + staffdatas[m].node.siteUrl + ")");
+                            } else {
+                                staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")");
+                            };
+                        };
+
+                        if (staffdatas[m].role == "Music") {
+                            if (staffdatas[m].node.name.last == null) {
+                                staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + "]" + "(" + staffdatas[m].node.siteUrl + ")");
+                            } else {
+                                staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")");
+                            };
+                        };
+                    };
+                };
+
+                if (staffdata.length == 0) {
+                    staff = "No Staff in Database.";
+                } else {
+                    staff = staffdata.join("\n");
+                };
+
+                const dominantColor = await getColorFromURL(coverIMG);
+                color = rgbHex(`${dominantColor}`);
+
+                const embed = new Discord.RichEmbed()
+                    .setTitle(animetitle)
+                    .setColor(color)
+                    .setDescription(description)
+                    .setFooter(animetitle)
+                    .setImage(posterIMG)
+                    .setThumbnail(coverIMG)
+                    .setTimestamp()
+                    .setURL(animeurl)
+                    .addField('Preview Trailer:', `${video}`)
+                    .addField('Type:', `${bot.caps(format.split("_"))}`)
+                    .addField('Genres:', `${genres}`)
+                    .addField('Main Characters:', `${mainchar}`)
+                    .addField('Status:', `${status}`)
+                    .addField('Aired:', `From ${season} ${start} ${end}`)
+                    .addField('Next Episode:', `${nextepi}`)
+                    .addField('Episodes:', episodes)
+                    .addField('Episode Length:', `${episodemin}`)
+                    .addField('Estimated Total Runtime:', `${time}`)
+                    .addField('Community Rating:', avgRating)
+                    .addField('Source:', `${sourcefilter}`)
+                    .addField('Studios:', `${studios}`)
+                    .addField('Staff:', `${staff}`);
+
+                if (nsfw == false) {
+                    await message.channel.send(`${user}, here is the result for ${animetitle}`, { embed });
+                } else {
+                    await message.channel.send(`${user}, You've selected a NSFW Anime! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
+                    await message.author.send(`Here is the result for ${animetitle}`, { embed });
+                };
+            });
+            });
+            });
 };

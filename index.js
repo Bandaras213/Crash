@@ -29,6 +29,7 @@ bot.commands.set('user', require('./commands/searchuser.js'));
 bot.commands.set('rdmanime', require('./commands/randomanime.js'));
 bot.commands.set('help', require('./commands/help.js'));
 bot.commands.set('staff', require('./commands/searchstaff.js'));
+bot.commands.set('poll', require('./commands/poll.js'));
 bot.commands.set('test', require('./commands/test.js'));
 
 bot.login(bot.token);
