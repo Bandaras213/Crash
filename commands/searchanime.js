@@ -23,6 +23,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     let i;
     let color;
     let uid = message.author.id;
+    const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
     message.delete();
 
 
@@ -67,7 +68,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             };
 
             if (field1.length == 0) {
-                return message.channel.send(`${user}, Couldn't find a matching character for '**${charactername}**'`);
+                return message.channel.send(`${user}, Couldn't find a matching Anime for '**${animename}**'`);
             };
 
             let embed;
@@ -326,11 +327,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         break;
                 };
 
-                //anime id and nsfw
-                //let id = fetch1.data.Page.media[i].id
                 let nsfw = fetch1.data.Page.media[i].isAdult;
 
-                //data.atributes
                 let animetitle;
                 if (fetch1.data.Page.media[i].title.romaji == null) {
                     animetitle = fetch1.data.Page.media[i].title.english;
@@ -581,7 +579,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     .setTitle(animetitle)
                     .setColor(color)
                     .setDescription(description)
-                    .setFooter(animetitle)
+                    .setFooter(animetitle, anilistLogo)
                     .setImage(posterIMG)
                     .setThumbnail(coverIMG)
                     .setTimestamp()
@@ -606,7 +604,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 } else {
                     await em1.delete();
                     await message.channel.send(`${user}, You've selected a NSFW Anime! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                    await message.author.send(`Here is the result for ${animetitle}`, { embed });
+                    await message.author.send(`${user}, Here is the result for ${animetitle}`, { embed });
                 };
             });
 

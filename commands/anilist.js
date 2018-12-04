@@ -4,29 +4,6 @@ const fs = require("fs");
 const query = require("../data/userquery.js");
 const toHex = require('colornames');
 
-/* var emoji = [
-    "❌", //X
-    "\u0031\u20E3", //1
-    "\u0032\u20E3", //2
-    "\u0033\u20E3", //3
-    "\u0034\u20E3", //4
-    "\u0035\u20E3", //5
-    "\u0036\u20E3", //6
-    "\u0037\u20E3", //7
-    "\u0038\u20E3", //8
-    "\u0039\u20E3" //9
-];
-
-var value1 = [
-    `Reaction: ${emoji[1]}`,
-    `Reaction: ${emoji[2]}`,
-    `Reaction: ${emoji[3]}`,
-    `Reaction: ${emoji[4]}`,
-    `Reaction: ${emoji[5]}`,
-    `Reaction: ${emoji[6]}`,
-    `Reaction: ${emoji[7]}`
-]; */
-
 module.exports = async (bot, message, args, Discord) => {
 
     let user = message.author;
@@ -40,7 +17,7 @@ module.exports = async (bot, message, args, Discord) => {
     let indexuserdiscid;
     let indexmentiondiscid;
     let anilistid;
-    //let anilistusername;
+    const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
 
     let OVERWRITE = false
 
@@ -55,11 +32,9 @@ module.exports = async (bot, message, args, Discord) => {
     if (finduserdiscid && mention == undefined && args[0] != "save") {
         indexuserdiscid = UserlistDBobj.userlist.findIndex(did => did.discid == user.id);
         anilistid = await UserlistDBobj.userlist[indexuserdiscid].anilistid;
-        //anilistusername = await UserlistDBobj.userlist[indexuserdiscid].anilistusername;
-
+        
         let variables = {
             id: anilistid,
-            //name: anilistusername,
             page: 1,
             perPage: 1,
         };
@@ -277,10 +252,11 @@ module.exports = async (bot, message, args, Discord) => {
                 lastupdated = `${moment(lastupdated).format('DD.MM.YYYY')}` + " at " + `${moment(lastupdated).format('hh:mm a')}`;
 
                 const embed = new Discord.RichEmbed()
+                    .setAuthor(username + "'s List Infos", anilistLogo)
                     .setTitle(username)
                     .setColor(color)
                     .setDescription(about)
-                    .setFooter(`Information about ${username}`)
+                    .setFooter(`Information about ${username}`, anilistLogo)
                     .setImage(bannerIMG)
                     .setThumbnail(avatar)
                     .setTimestamp()
@@ -306,11 +282,9 @@ module.exports = async (bot, message, args, Discord) => {
     if (findmentiondiscid && args[0] != "save") {
         indexmentiondiscid = UserlistDBobj.userlist.findIndex(did => did.discid == mention.id);
         anilistid = await UserlistDBobj.userlist[indexmentiondiscid].anilistid;
-        //anilistusername = await UserlistDBobj.userlist[indexmentiondiscid].anilistusername;
 
         let variables = {
             id: anilistid,
-            //name: anilistusername,
             page: 1,
             perPage: 5,
         };
@@ -527,10 +501,11 @@ module.exports = async (bot, message, args, Discord) => {
                 lastupdated = `${moment(lastupdated).format('DD.MM.YYYY')}` + " at " + `${moment(lastupdated).format('hh:mm a')}`;
 
                 const embed = new Discord.RichEmbed()
+                    .setAuthor(username + "'s List Info", anilistLogo)
                     .setTitle(username)
                     .setColor(color)
                     .setDescription(about)
-                    .setFooter(`Information about ${username}`)
+                    .setFooter(`Information about ${username}`, anilistLogo)
                     .setImage(bannerIMG)
                     .setThumbnail(avatar)
                     .setTimestamp()
@@ -565,8 +540,6 @@ module.exports = async (bot, message, args, Discord) => {
 
         args.splice(0, 1);
         let usersearchname = args.join(' ');
-        //let i;
-        //let uid = user.id;
 
         await query;
 
@@ -592,8 +565,6 @@ module.exports = async (bot, message, args, Discord) => {
                 if (fetch1.data.User == null) {
                     return message.channel.send(`${user}, Couldn't find a matching Anilist for '**${usersearchname}**'`);
                 };
-
-                //let field1 = [];
 
                 let username = fetch1.data.User.name;
                 let userIDS = fetch1.data.User.id
@@ -797,10 +768,11 @@ module.exports = async (bot, message, args, Discord) => {
                 lastupdated = `${moment(lastupdated).format('DD.MM.YYYY')}` + " at " + `${moment(lastupdated).format('hh:mm a')}`;
 
                 const embed = new Discord.RichEmbed()
+                    .setAuthor(username + "'s List Info", anilistLogo)
                     .setTitle(usersearchname)
                     .setColor(color)
                     .setDescription(about)
-                    .setFooter(`Information about ${usersearchname}`)
+                    .setFooter(`Information about ${usersearchname}`, anilistLogo)
                     .setImage(bannerIMG)
                     .setThumbnail(avatar)
                     .setTimestamp()

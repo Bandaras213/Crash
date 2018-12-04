@@ -12,7 +12,6 @@ dependencies:
   express-handlebars: 3.0.0
   graphql: 14.0.2
   libsodium-wrappers: 0.7.3
-  log-4js: 0.7.29
   long: 4.0.0
   moment: 2.22.2
   ms: 2.1.1
@@ -97,10 +96,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-jp/uFnooOiO+L211eZOoSyzpOITMXx1rBITauYykG3BRYPu8h0UcxsPNB04RR5vo4Tyz3+ay17tR6JVf9qzYWg==
-  /async/0.2.10:
-    dev: false
-    resolution:
-      integrity: sha1-trvgsGdLnXGXCMo43owjfLUmw9E=
   /async/2.6.1:
     dependencies:
       lodash: 4.17.11
@@ -789,10 +784,6 @@ packages:
     dev: false
     resolution:
       integrity: sha1-5HnICFjfDBsR3dppQPlgEfzaSpo=
-  /isarray/0.0.1:
-    dev: false
-    resolution:
-      integrity: sha1-ihis/Kmo9Bd+Cav8YDiTmwXR7t8=
   /isarray/1.0.0:
     dev: false
     resolution:
@@ -894,17 +885,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
-  /log-4js/0.7.29:
-    dependencies:
-      async: 0.2.10
-      readable-stream: 1.0.34
-      semver: 4.3.6
-      underscore: 1.8.2
-    dev: false
-    engines:
-      node: '>=0.8'
-    resolution:
-      integrity: sha1-Pg2WzzHuE+B/MJUyuA3iBJXDJPY=
   /long/4.0.0:
     dev: false
     resolution:
@@ -1265,15 +1245,6 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==
-  /readable-stream/1.0.34:
-    dependencies:
-      core-util-is: 1.0.2
-      inherits: 2.0.3
-      isarray: 0.0.1
-      string_decoder: 0.10.31
-    dev: false
-    resolution:
-      integrity: sha1-Elgg40vIQtLyqq+v5MKRbuMsFXw=
   /readable-stream/2.3.6:
     dependencies:
       core-util-is: 1.0.2
@@ -1389,11 +1360,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
-  /semver/4.3.6:
-    dev: false
-    hasBin: true
-    resolution:
-      integrity: sha1-MAvG4OhjdPe6YQaLWx7NV/xlMto=
   /semver/5.6.0:
     dev: false
     hasBin: true
@@ -1514,10 +1480,6 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-nOqH59deCq9SRHlxq1Aw85Jnt4w6KvLKqWVik6oA9ZklXLNIOlqg4F2yrT1MVaTjAqvVwdfeZ7w7aCvJD7ugkw==
-  /string_decoder/0.10.31:
-    dev: false
-    resolution:
-      integrity: sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ=
   /string_decoder/1.1.1:
     dependencies:
       safe-buffer: 5.1.2
@@ -1603,10 +1565,6 @@ packages:
     optional: true
     resolution:
       integrity: sha512-8CJsbKOtEbnJsTyv6LE6m6ZKniqMiFWmm9sRbopbkGs3gMPPfd3Fh8iIA4Ykv5MgaTbqHr4BaoGLJLZNhsrW1Q==
-  /underscore/1.8.2:
-    dev: false
-    resolution:
-      integrity: sha1-ZN8utZCJnelQeC83NRkLpC6/MR0=
   /unpipe/1.0.0:
     dev: false
     engines:
@@ -1694,7 +1652,6 @@ specifiers:
   express-handlebars: ^3.0.0
   graphql: ^14.0.2
   libsodium-wrappers: ^0.7.3
-  log-4js: ^0.7.29
   long: ^4.0.0
   moment: ^2.22.2
   ms: ^2.1.1

@@ -36,7 +36,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
     };
     let user = message.member.user;
     let i;
-    //let color = Math.floor(Math.random() * 16777214) + 1;
     let uid = message.author.id;
     await message.delete();
 
@@ -462,7 +461,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 let siteUrl = fetch1.data.Page.characters[i].media.edges;
                 let format = fetch1.data.Page.characters[i].media.edges;
 
-                const anilistLogo = "https://anilist.co/img/logo_al.png";
+                const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
                 if (description == null) {
                     description = "No Description in Database";
                 } else {

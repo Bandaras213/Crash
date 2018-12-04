@@ -1,7 +1,7 @@
 {
   "name": "Crash",
-  "version": "0.0.1",
-  "description": "crash bot don't know",
+  "version": "1.0.0",
+  "description": "Crashbot a easy to use Anilist bot",
   "main": "node index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -38,7 +38,6 @@
     "color-thief-node": "^1.0.1",
     "rgb-hex": "^2.1.0",
     "colornames": "^1.1.1",
-    "log-4js": "^0.7.29",
     "express-handlebars": "^3.0.0",
     "body-parser": "^1.18.3"
   }
