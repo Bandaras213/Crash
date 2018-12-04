@@ -31,7 +31,7 @@ Avaliable types are PLAYING, STREAMING, LISTENING, WATCHING.
   - **Log**
 	+ Logs messages and catches errors.
   - **Caps**
-  + Capitalizes the first letter of a word
+        + Capitalizes the first letter of a word
 
 - ## Events
 	+ **Ready**
