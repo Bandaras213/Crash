@@ -1,4 +1,4 @@
-export default async (bot, message, args, Discord, moment) => {
+module.exports = async (bot, message, args, Discord, moment) => {
   let prefix = bot.config.prefix;
 
   message.author.send({
