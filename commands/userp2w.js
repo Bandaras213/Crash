@@ -248,7 +248,7 @@ module.exports = async (bot, message, args, Discord) => {
                 .addField('Episode Length:', `${episodemin}`)
                 .addField('Estimated Total Runtime:', `${time}`)
                 .addField('Community Rating:', avgRating)
-                .addField('Source:', `${sourcefilter}`)
+                .addField('Source:', `${sourcefilter}`);
 
             if (nsfw == false) {
                 await message.channel.send(`${user}, Your Random Plan 2 Watch Anime is: ${animetitle}`, { embed });

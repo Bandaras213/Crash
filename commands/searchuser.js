@@ -32,7 +32,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
     })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
-            //console.log(JSON.stringify(fetch1, null, 2))
 
             if (fetch1.data.User == null) {
                 return message.channel.send(`${user}, Couldn't find a matching Anilist for '**${args.join(" ")}**'`);
@@ -258,7 +257,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 .addField('Manga Scores (Score: Amount):', `${mangascore.join(' ')}`)
                 .addField('Favorite Genres:', `${genrefav.join(' ')}`)
                 .addField('Favorite Years:', `${yearfav.join(' ')}`)
-                .addField('Last List Update:', `${lastupdated}`)
+                .addField('Last List Update:', `${lastupdated}`);
 
             await message.channel.send(`${user}, here is the result for ${username}`, { embed });
         });

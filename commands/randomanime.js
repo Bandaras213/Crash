@@ -90,12 +90,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         .then(async fetch1 => {
 
                             let i = Math.floor(Math.random() * 49) + 1;
-
-                            //anime id and nsfw
-                            //let id = fetch1.data.Page.media[i].id
                             let nsfw = fetch1.data.Page.media[i].isAdult;
 
-                            //data.atributes
                             let animetitle;
                             if (fetch1.data.Page.media[i].title.romaji == null) {
                                 animetitle = fetch1.data.Page.media[i].title.english;

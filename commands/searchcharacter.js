@@ -36,7 +36,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
     };
     let user = message.member.user;
     let i;
-    //let color = Math.floor(Math.random() * 16777214) + 1;
     let uid = message.author.id;
     await message.delete();
 

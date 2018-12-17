@@ -330,11 +330,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         break;
                 };
 
-                //anime id and nsfw
-                //let id = fetch1.data.Page.media[i].id;
                 let nsfw = fetch1.data.Page.media[i].isAdult;
 
-                //data.atributes
                 let mangatitle;
                 if (fetch1.data.Page.media[i].title.romaji == null) {
                     mangatitle = fetch1.data.Page.media[i].title.english;

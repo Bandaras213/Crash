@@ -7,10 +7,8 @@ const rgbHex = require('rgb-hex');
 
 module.exports = async (bot, message, args, Discord, moment) => {
 
-    //let manganame = args.join(' ');
     let user = message.member.user;
     let color;
-    //let uid = message.author.id;
     message.delete();
 
     await queryg;
@@ -88,12 +86,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         .then(async fetch1 => {
 
                             let i = Math.floor(Math.random() * 49) + 1;
-
-                            //anime id and nsfw
-                            //let id = fetch1.data.Page.media[i].id;
                             let nsfw = fetch1.data.Page.media[i].isAdult;
 
-                            //data.atributes
                             let mangatitle;
                             if (fetch1.data.Page.media[i].title.romaji == null) {
                                 mangatitle = fetch1.data.Page.media[i].title.english;
