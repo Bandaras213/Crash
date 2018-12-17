@@ -6,6 +6,7 @@ var bot = new Discord.Client();
 bot.config = require('./config.json');
 bot.log = require('./functions/log.js');
 bot.caps = require('./functions/capitalize.js');
+bot.allcaps = require('./functions/allcaps.js');
 
 if (process.env.DISCORDTOKEN == null) {
   token = bot.config.token;
@@ -32,5 +33,11 @@ bot.commands.set('help', require('./commands/help.js'));
 bot.commands.set('staff', require('./commands/searchstaff.js'));
 bot.commands.set('poll', require('./commands/poll.js'));
 bot.commands.set('test', require('./commands/test.js'));
+bot.commands.set('p2w', require('./commands/userp2w.js'));
+//bot.commands.set('', require('./commands/.js'));
+//bot.commands.set('', require('./commands/.js'));
+//bot.commands.set('', require('./commands/.js'));
+//bot.commands.set('', require('./commands/.js'));
+
 
 bot.login(bot.token);

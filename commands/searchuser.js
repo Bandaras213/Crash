@@ -7,7 +7,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
     let nameofuser = args.join(' ');
     let user = message.member.user;
     let uid = message.author.id;
-    const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
     message.delete();
 
 
@@ -33,7 +32,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
     })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
-          
+            //console.log(JSON.stringify(fetch1, null, 2))
+
             if (fetch1.data.User == null) {
                 return message.channel.send(`${user}, Couldn't find a matching Anilist for '**${args.join(" ")}**'`);
             };
@@ -242,7 +242,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 .setTitle(username)
                 .setColor(color)
                 .setDescription(about)
-                .setFooter(`Information about ${username}`, anilistLogo)
+                .setFooter(`Information about ${username}`)
                 .setImage(bannerIMG)
                 .setThumbnail(avatar)
                 .setTimestamp()

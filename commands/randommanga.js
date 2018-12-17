@@ -7,9 +7,10 @@ const rgbHex = require('rgb-hex');
 
 module.exports = async (bot, message, args, Discord, moment) => {
 
+    //let manganame = args.join(' ');
     let user = message.member.user;
     let color;
-    const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
+    //let uid = message.author.id;
     message.delete();
 
     await queryg;
@@ -88,8 +89,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
                             let i = Math.floor(Math.random() * 49) + 1;
 
+                            //anime id and nsfw
+                            //let id = fetch1.data.Page.media[i].id;
                             let nsfw = fetch1.data.Page.media[i].isAdult;
 
+                            //data.atributes
                             let mangatitle;
                             if (fetch1.data.Page.media[i].title.romaji == null) {
                                 mangatitle = fetch1.data.Page.media[i].title.english;
@@ -253,11 +257,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             let embed;
                             if (status == "Finished") {
                                 embed = new Discord.RichEmbed()
-                                    .setAuthor("Random Manga from Genre:" + " " + rdmnumbers[0], anilistLogo)
                                     .setTitle(mangatitle)
                                     .setColor(color)
                                     .setDescription(description)
-                                    .setFooter(mangatitle, anilistLogo)
+                                    .setFooter(mangatitle)
                                     .setImage(posterIMG)
                                     .setThumbnail(coverIMG)
                                     .setTimestamp()
@@ -274,11 +277,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                     .addField('Staff:', `${staff}`);
                             } else {
                                 embed = new Discord.RichEmbed()
-                                    .setAuthor("Random Manga from Genre:" + " " + rdmnumbers[0], anilistLogo)
                                     .setTitle(mangatitle)
                                     .setColor(color)
                                     .setDescription(description)
-                                    .setFooter(mangatitle, anilistLogo)
+                                    .setFooter(mangatitle)
                                     .setImage(posterIMG)
                                     .setThumbnail(coverIMG)
                                     .setTimestamp()

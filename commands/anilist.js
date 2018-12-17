@@ -17,7 +17,6 @@ module.exports = async (bot, message, args, Discord) => {
     let indexuserdiscid;
     let indexmentiondiscid;
     let anilistid;
-    const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
 
     let OVERWRITE = false
 
@@ -32,7 +31,7 @@ module.exports = async (bot, message, args, Discord) => {
     if (finduserdiscid && mention == undefined && args[0] != "save") {
         indexuserdiscid = UserlistDBobj.userlist.findIndex(did => did.discid == user.id);
         anilistid = await UserlistDBobj.userlist[indexuserdiscid].anilistid;
-        
+
         let variables = {
             id: anilistid,
             page: 1,
@@ -252,11 +251,10 @@ module.exports = async (bot, message, args, Discord) => {
                 lastupdated = `${moment(lastupdated).format('DD.MM.YYYY')}` + " at " + `${moment(lastupdated).format('hh:mm a')}`;
 
                 const embed = new Discord.RichEmbed()
-                    .setAuthor(username + "'s List Infos", anilistLogo)
                     .setTitle(username)
                     .setColor(color)
                     .setDescription(about)
-                    .setFooter(`Information about ${username}`, anilistLogo)
+                    .setFooter(`Information about ${username}`)
                     .setImage(bannerIMG)
                     .setThumbnail(avatar)
                     .setTimestamp()
@@ -501,11 +499,10 @@ module.exports = async (bot, message, args, Discord) => {
                 lastupdated = `${moment(lastupdated).format('DD.MM.YYYY')}` + " at " + `${moment(lastupdated).format('hh:mm a')}`;
 
                 const embed = new Discord.RichEmbed()
-                    .setAuthor(username + "'s List Info", anilistLogo)
                     .setTitle(username)
                     .setColor(color)
                     .setDescription(about)
-                    .setFooter(`Information about ${username}`, anilistLogo)
+                    .setFooter(`Information about ${username}`)
                     .setImage(bannerIMG)
                     .setThumbnail(avatar)
                     .setTimestamp()
@@ -768,11 +765,10 @@ module.exports = async (bot, message, args, Discord) => {
                 lastupdated = `${moment(lastupdated).format('DD.MM.YYYY')}` + " at " + `${moment(lastupdated).format('hh:mm a')}`;
 
                 const embed = new Discord.RichEmbed()
-                    .setAuthor(username + "'s List Info", anilistLogo)
                     .setTitle(usersearchname)
                     .setColor(color)
                     .setDescription(about)
-                    .setFooter(`Information about ${usersearchname}`, anilistLogo)
+                    .setFooter(`Information about ${usersearchname}`)
                     .setImage(bannerIMG)
                     .setThumbnail(avatar)
                     .setTimestamp()
