@@ -32,7 +32,6 @@ module.exports = async (bot, message, args, Discord) => {
     if (finduserdiscid && mention == undefined && args[0] != "save") {
         indexuserdiscid = UserlistDBobj.userlist.findIndex(did => did.discid == user.id);
         anilistid = await UserlistDBobj.userlist[indexuserdiscid].anilistid;
-        
         let variables = {
             id: anilistid,
             page: 1,

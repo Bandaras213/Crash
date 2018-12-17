@@ -328,7 +328,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 };
 
                 let nsfw = fetch1.data.Page.media[i].isAdult;
-
                 let animetitle;
                 if (fetch1.data.Page.media[i].title.romaji == null) {
                     animetitle = fetch1.data.Page.media[i].title.english;

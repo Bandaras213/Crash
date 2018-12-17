@@ -70,7 +70,7 @@ module.exports = async (bot, message, args, Discord) => {
     })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
-
+      
             let i = Math.floor(Math.random() * fetch1.data.MediaListCollection.lists[listindex].entries.length) + 0;
 
             let nsfw = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.isAdult;

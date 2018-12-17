@@ -122,7 +122,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             } else {
                                 posterIMG = fetch1.data.Page.media[i].bannerImage;
                             };
-
+                      
                             let animeurl;
                             if (fetch1.data.Page.media[i].siteUrl == null) {
                                 animeurl = "https://anilist.co";

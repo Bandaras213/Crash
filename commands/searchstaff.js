@@ -35,14 +35,14 @@ module.exports = async (bot, message, args, Discord, moment) => {
       if (fetch1.data.Staff == null) {
         return message.channel.send(`${user}, Couldn't find a matching Staffmember for '**${args.join(" ")}**'`);
       };
-
+    
       let name = fetch1.data.Staff.name.first;
       if (fetch1.data.Staff.name.last != null) {
         name += ` ${fetch1.data.Staff.name.last}`;
       };
       
       let namenative = fetch1.data.Staff.name.native;
-      let stafflanguage = fetch1.data.Staff.language;
+      //let stafflanguage = fetch1.data.Staff.language;
       let staffimage = fetch1.data.Staff.image.large;
       let description = fetch1.data.Staff.description;
       let staffurl = fetch1.data.Staff.siteUrl;
