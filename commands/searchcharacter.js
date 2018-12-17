@@ -36,7 +36,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
     };
     let user = message.member.user;
     let i;
-    //let color = Math.floor(Math.random() * 16777214) + 1;
     let uid = message.author.id;
     await message.delete();
 
@@ -462,12 +461,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 let siteUrl = fetch1.data.Page.characters[i].media.edges;
                 let format = fetch1.data.Page.characters[i].media.edges;
 
-                const anilistLogo = "https://anilist.co/img/logo_al.png";
+                const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
                 if (description == null) {
                     description = "No Description in Database";
                 } else {
-                    description = description.replace(/<[^>]*>/g, ' ').replace(/&#039;/g, "'").replace(/&quot;/g, '"').replace(/\s{2,}/g, ' ').replace(/__/g, "").trim().split("~!");
-                    description = description[0].toString();
+                    description = description.replace(/&#039;/g, "'").replace(/&quot;/g, '"').replace(/\s{2,}/g, ' ').replace(/__/g, "**").replace(/~!(.*?)!~/g, "").trim();
                 };
                 if (description < 2043) {
                     description = description;
@@ -494,15 +492,19 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     isin = "No Media in Database.";
                 } else {
                     for (let b = 0; b < isindatas.length; ++b) {
-                        isindata.push("[" + isindatas[b].node.title.romaji + "]" + "(" + siteUrl[b].node.siteUrl + ")" + " (" + bot.caps(format[b].node.format) + ")");
+                     let formati = format[b].node.format;
+                        isindata.push("[" + isindatas[b].node.title.romaji + "]" + "(" + siteUrl[b].node.siteUrl + ")" + " (" + bot.caps(formati) + ")");
                     };
                 };
 
-                if (isindata.length == 0) {
-                    isin = "No Media in Database.";
-                } else {
-                    isin = isindata.join("\n");
-                };
+                if (isindata.length < 1) {
+                    isin = "No Media in Database."};
+              
+                if (isindata.length > 7) {
+                    isindata.length = 7
+                    isin = isindata.join("\n")
+                }else {
+                  isin = isindata.join("\n")};
 
                 let embed = new Discord.RichEmbed()
                     .setTitle(subname.replace("&#039;", "'"))

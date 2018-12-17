@@ -32,6 +32,8 @@ query ($userId: Int, $type: MediaType, $userName: String) {
         siteUrl
         episodes
         duration
+        chapters
+        volumes
         source
           trailer {
 			      id

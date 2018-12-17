@@ -6,6 +6,7 @@ var bot = new Discord.Client();
 bot.config = require('./config.json');
 bot.log = require('./functions/log.js');
 bot.caps = require('./functions/capitalize.js');
+bot.allcaps = require('./functions/allcaps.js');
 
 if (process.env.DISCORDTOKEN == null) {
   token = bot.config.token;
@@ -38,5 +39,23 @@ bot.commands.set('p2w', require('./commands/userp2w.js'));
 //bot.commands.set('', require('./commands/.js'));
 //bot.commands.set('', require('./commands/.js'));
 
-
 bot.login(bot.token);
+
+
+//Webserver
+
+  const http = require('http');
+  const express = require('express');
+  const app = express();
+  app.use(express.static('webserver/script'));
+  app.use(express.static('webserver/view'));
+  app.get("/stayalive", (request, response) => {
+    response.sendStatus(200);
+  });
+  app.get('/about',function(req,res){
+  res.sendFile('./webserver/view/about.html', {root: __dirname});
+  });
+  app.listen(process.env.PORT);
+  setInterval(() => {
+    http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
+  }, 270000);

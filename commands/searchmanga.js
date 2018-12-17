@@ -24,6 +24,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     let i;
     let color;
     let uid = message.author.id;
+    const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
     message.delete();
 
 
@@ -330,11 +331,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         break;
                 };
 
-                //anime id and nsfw
-                //let id = fetch1.data.Page.media[i].id;
                 let nsfw = fetch1.data.Page.media[i].isAdult;
 
-                //data.atributes
                 let mangatitle;
                 if (fetch1.data.Page.media[i].title.romaji == null) {
                     mangatitle = fetch1.data.Page.media[i].title.english;
@@ -430,7 +428,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     start = "No Start or End Date in Database.";
                     airings.push(start);
                 } else {
-                    start = fetch1.data.Page.media[i].startDate.day + "." + fetch1.data.Page.media[i].startDate.month + "." + fetch1.data.Page.media[i].startDate.year;
+                    start = "From " + fetch1.data.Page.media[i].startDate.day + "." + fetch1.data.Page.media[i].startDate.month + "." + fetch1.data.Page.media[i].startDate.year;
                 };
 
                 if (fetch1.data.Page.media[i].endDate.day == null || fetch1.data.Page.media[i].endDate.month == null || fetch1.data.Page.media[i].endDate.year == null) {
@@ -501,7 +499,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         .setTitle(mangatitle)
                         .setColor(color)
                         .setDescription(description)
-                        .setFooter(mangatitle)
+                        .setFooter(mangatitle, anilistLogo)
                         .setImage(posterIMG)
                         .setThumbnail(coverIMG)
                         .setTimestamp()
@@ -521,7 +519,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         .setTitle(mangatitle)
                         .setColor(color)
                         .setDescription(description)
-                        .setFooter(mangatitle)
+                        .setFooter(mangatitle, anilistLogo)
                         .setImage(posterIMG)
                         .setThumbnail(coverIMG)
                         .setTimestamp()
@@ -530,7 +528,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         .addField('Genres:', `${genres}`)
                         .addField('Main Characters:', `${mainchar}`)
                         .addField('Status:', `${status}`)
-                        .addField('Released:', `From ${start} ${end}`)
+                        .addField('Released:', `${start} ${end}`)
                         .addField('Community Rating:', avgRating)
                         .addField('Source:', `${sourcefilter}`)
                         .addField('Staff:', `${staff}`);
