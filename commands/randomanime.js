@@ -7,11 +7,9 @@ const rgbHex = require('rgb-hex');
 
 module.exports = async (bot, message, args, Discord, moment) => {
 
-    let animename = args.join(' ');
     let user = message.member.user;
-    let i;
     let color;
-    let uid = message.author.id;
+    const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
     message.delete();
 
     await queryg;
@@ -90,12 +88,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         .then(async fetch1 => {
 
                             let i = Math.floor(Math.random() * 49) + 1;
-
-                            //anime id and nsfw
-                            //let id = fetch1.data.Page.media[i].id
+                      
                             let nsfw = fetch1.data.Page.media[i].isAdult;
 
-                            //data.atributes
                             let animetitle;
                             if (fetch1.data.Page.media[i].title.romaji == null) {
                                 animetitle = fetch1.data.Page.media[i].title.english;
@@ -343,10 +338,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             color = rgbHex(`${dominantColor}`);
 
                             const embed = new Discord.RichEmbed()
+                                .setAuthor("Random Anime from Genre:" + " " + rdmnumbers[0], anilistLogo)
                                 .setTitle(animetitle)
                                 .setColor(color)
                                 .setDescription(description)
-                                .setFooter(animetitle)
+                                .setFooter(animetitle, anilistLogo)
                                 .setImage(posterIMG)
                                 .setThumbnail(coverIMG)
                                 .setTimestamp()

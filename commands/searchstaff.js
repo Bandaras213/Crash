@@ -6,6 +6,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
   let staffname = args.join(' ');
   let color = Math.floor(Math.random() * 16777214) + 1;
   let user = message.member.user;
+  const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
   message.delete();
 
   if (args.length == 0) {
@@ -35,14 +36,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
         return message.channel.send(`${user}, Couldn't find a matching Staffmember for '**${args.join(" ")}**'`);
       };
 
-      //let staffid = fetch1.data.Staff.id;
       let name = fetch1.data.Staff.name.first;
       if (fetch1.data.Staff.name.last != null) {
         name += ` ${fetch1.data.Staff.name.last}`;
       };
       
       let namenative = fetch1.data.Staff.name.native;
-      //let stafflanguage = fetch1.data.Staff.language;
+      let stafflanguage = fetch1.data.Staff.language;
       let staffimage = fetch1.data.Staff.image.large;
       let description = fetch1.data.Staff.description;
       let staffurl = fetch1.data.Staff.siteUrl;
@@ -185,10 +185,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
         .setTitle(name + "," + " " + namenative)
         .setColor(color)
         .setDescription(description)
-        .setFooter(`Information about ${name}`)
+        .setFooter(`Information about ${name}`, anilistLogo)
         .setThumbnail(staffimage)
         .setTimestamp()
         .setURL(staffurl)
+        .addField("Language:", bot.caps(stafflanguage))
         .addField("Media:", uniqstaff)
         .addField("Main Characters:", rdmcharacter1)
         .addField("Support Characters", rdmcharacter2)

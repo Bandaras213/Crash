@@ -23,6 +23,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     let i;
     let color;
     let uid = message.author.id;
+    const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
     message.delete();
 
 
@@ -327,6 +328,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 };
 
                 let nsfw = fetch1.data.Page.media[i].isAdult;
+
                 let animetitle;
                 if (fetch1.data.Page.media[i].title.romaji == null) {
                     animetitle = fetch1.data.Page.media[i].title.english;
@@ -577,7 +579,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     .setTitle(animetitle)
                     .setColor(color)
                     .setDescription(description)
-                    .setFooter(animetitle)
+                    .setFooter(animetitle, anilistLogo)
                     .setImage(posterIMG)
                     .setThumbnail(coverIMG)
                     .setTimestamp()
