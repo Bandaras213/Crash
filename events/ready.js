@@ -1,12 +1,12 @@
 const ms = require("ms");
 module.exports = (bot) => {
 
-  let activity;
   let type;
   let status;
+  let activity;
 
-  if (process.env.ACTIVITYACTIVITY != null) {
-    activity = process.env.ACTIVITYACTIVITY;
+  if (process.env.ACTIVITY != null) {
+    activity = process.env.ACTIVITY;
   } else {
     activity = bot.config.botactivity.activity;
   };
@@ -23,9 +23,6 @@ module.exports = (bot) => {
     status = bot.config.botactivity.status;
   };
 
-
-  bot.log(`Bot ${bot.user.tag} has started with ${bot.users.size} users, in ${bot.channels.size} channels of ${bot.guilds.size} servers.`, "Started");
-
   bot.user.setPresence({
     game: {
       name: activity,
@@ -34,14 +31,22 @@ module.exports = (bot) => {
     status: status
   });
 
-  const http = require('http');
-  const express = require('express');
-  const app = express();
-  app.get("/", (request, response) => {
-    response.sendStatus(200);
+  setInterval(function () {
+    let rdmactivity = [
+      "Hentaihaven.org",
+      "hanime.tv",
+      "hentai2read.com",
+      "pururin.io",
+    ];
+    let randAct = Math.floor((Math.random() * rdmactivity.length));
+      bot.user.setPresence({
+    game: {
+      name: (`${rdmactivity[randAct]}`),
+      type: `${type}`
+    },
+    status: `${status}`
   });
-  app.listen(process.env.PORT);
-  setInterval(() => {
-    http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
-  }, 270000);
+}, ms("10s"));
+
+  bot.log(`Bot ${bot.user.tag} has started with ${bot.users.size} users, in ${bot.channels.size} channels of ${bot.guilds.size} servers.`, "Started");
 };

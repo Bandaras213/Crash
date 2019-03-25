@@ -2,8 +2,8 @@
     "token": "DISCORD_TOKEN",
     "prefix": "€",
     "botactivity": {
-        "activity": "Hentaihaven.org",
-        "type": "WATCHING",
+        "activity": "Restarted",
+        "type": "Watching",
         "status": "dnd"
     }
 }

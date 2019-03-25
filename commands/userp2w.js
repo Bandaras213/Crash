@@ -15,29 +15,46 @@ module.exports = async (bot, message, args, Discord) => {
     let anilistname = UserlistDBobj.userlist.find(did => did.anilistusername == args[0]);
     let anilistuserindex;
     let listindex;
+    let mediatype;
     let variables;
     message.delete();
 
     if (args[0] == undefined) {
         return message.channel.send(`${user}, Looks like you didn't provide a Anilist Username!`);
     };
+  
+  if (args[1] != undefined) {
+    mediatype = bot.allcaps(args[1])};
+  if (mediatype != "MANGA") {
+    mediatype = "ANIME"};
 
     if (anilistname == undefined) {
         let userName = args[0]
         listindex = 3
+      if (mediatype == undefined || mediatype == "ANIME") {
+        variables = {
+          userName: userName,
+          type: "ANIME"
+        };
+      } else {
         variables = {
             userName: userName,
-            type: "ANIME"
-        };
+            type: mediatype
+        }};
     } else {
         anilistuserindex = UserlistDBobj.userlist.findIndex(did => did.anilistusername == args[0]);
         anilistid = await UserlistDBobj.userlist[anilistuserindex].anilistid;
         listindex = 1
+      if (mediatype == undefined || mediatype == "ANIME") {
         variables = {
             userId: anilistid,
             type: "ANIME"
         }
-    };
+    } else {
+      variables = {
+        userId: anilistid,
+        type: mediatype
+      }}};
 
     await p2w
 
@@ -53,9 +70,8 @@ module.exports = async (bot, message, args, Discord) => {
     })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
-
-            let i = Math.floor(Math.random() * fetch1.data.MediaListCollection.lists[listindex].entries.length) + 1;
-            console.log(JSON.stringify(fetch1.data.MediaListCollection.lists[listindex].entries[i][i], 0, 2))
+      
+            let i = Math.floor(Math.random() * fetch1.data.MediaListCollection.lists[listindex].entries.length) + 0;
 
             let nsfw = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.isAdult;
             let animetitle;
@@ -67,6 +83,17 @@ module.exports = async (bot, message, args, Discord) => {
 
             if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.romaji == null && fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.english == null) {
                 animetitle = "Unknown.";
+            };
+      
+            let mangatitle;
+            if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.romaji == null) {
+                mangatitle = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.english;
+            } else {
+                mangatitle = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.romaji;
+            };
+
+            if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.romaji == null && fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.english == null) {
+                mangatitle = "Unknown.";
             };
 
             let description;
@@ -96,6 +123,27 @@ module.exports = async (bot, message, args, Discord) => {
             } else {
                 animeurl = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.siteUrl;
             };
+      
+            let mangaurl;
+if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.siteUrl == null) {
+mangaurl = "https://anilist.co";
+} else {
+mangaurl = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.siteUrl;
+};
+
+let chapters = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.chapterd;
+if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.chapters == null) {
+chapters = "No Chapters in Database.";
+} else {
+chapters = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.chapters;
+};
+
+let volumes;
+if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.volumes == null) {
+volumes = "No Volumes in Database.";
+} else {
+volumes = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.volumes;
+};
 
             let video;
             if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.trailer == null) {
@@ -228,8 +276,12 @@ module.exports = async (bot, message, args, Discord) => {
 
             const dominantColor = await getColorFromURL(coverIMG);
             color = rgbHex(`${dominantColor}`);
+      
+            let embed;
+      
+            if (mediatype == "ANIME") {
 
-            const embed = new Discord.RichEmbed()
+            embed = new Discord.RichEmbed()
                 .setTitle(animetitle)
                 .setColor(color)
                 .setDescription(description)
@@ -256,5 +308,48 @@ module.exports = async (bot, message, args, Discord) => {
                 await message.channel.send(`${user}, Your randomly selected Plan 2 Watch Anime is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
                 await message.author.send(`${user}, Your Random Plan 2 Watch Anime is: ${animetitle}`, { embed });
             };
+          };
+      if (mediatype == "MANGA" && status == "Finished") {
+        embed = new Discord.RichEmbed()
+                                    .setTitle(mangatitle)
+                                    .setColor(color)
+                                    .setDescription(description)
+                                    .setFooter(mangatitle)
+                                    .setImage(posterIMG)
+                                    .setThumbnail(coverIMG)
+                                    .setTimestamp()
+                                    .setURL(mangaurl)
+                                    .addField('Type:', `${bot.caps(format.split("_"))}`)
+                                    .addField('Genres:', `${genres}`)
+                                    .addField('Status:', `${status}`)
+                                    .addField('Released:', `${start} ${end}`)
+                                    .addField('Chapter:', chapters)
+                                    .addField('Volumes:', `${volumes}`)
+                                    .addField('Community Rating:', avgRating)
+                                    .addField('Source:', `${sourcefilter}`)
+                            } else {
+                               embed = new Discord.RichEmbed()
+                                    .setTitle(mangatitle)
+                                    .setColor(color)
+                                    .setDescription(description)
+                                    .setFooter(mangatitle)
+                                    .setImage(posterIMG)
+                                    .setThumbnail(coverIMG)
+                                    .setTimestamp()
+                                    .setURL(mangaurl)
+                                    .addField('Type:', `${bot.caps(format.split("_"))}`)
+                                    .addField('Genres:', `${genres}`)
+                                    .addField('Status:', `${status}`)
+                                    .addField('Released:', `From ${start} ${end}`)
+                                    .addField('Community Rating:', avgRating)
+                                    .addField('Source:', `${sourcefilter}`)
+                            };
+
+                            if (nsfw == false) {
+                                await message.channel.send(`${user}, Your Random Anime is: ${mangatitle}`, { embed });
+                            } else {
+                                await message.channel.send(`${user}, Your randomly selected Anime is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
+                                await message.author.send(`${user}, Your Random Anime is: ${mangatitle}`, { embed });
+                            };
         })
 };
