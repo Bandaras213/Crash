@@ -1,5 +1,5 @@
-import ms from "ms";
-export default (bot) => {
+const ms = require("ms");
+module.exports = (bot) => {
 
   let type;
   let status;
@@ -40,14 +40,14 @@ export default (bot) => {
     ];
 
     let randAct = Math.floor((Math.random() * rdmactivity.length));
-    bot.user.setPresence({
-      game: {
-        name: (`${rdmactivity[randAct]}`),
-        type: `${type}`
-      },
-      status: `${status}`
-    });
-  }, ms("10s"));
+      bot.user.setPresence({
+    game: {
+      name: (`${rdmactivity[randAct]}`),
+      type: `${type}`
+    },
+    status: `${status}`
+  });
+}, ms("10s"));
 
   bot.log(`Bot ${bot.user.tag} has started with ${bot.users.size} users, in ${bot.channels.size} channels of ${bot.guilds.size} servers.`, "Started");
 };

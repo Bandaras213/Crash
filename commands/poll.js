@@ -1,4 +1,4 @@
-export default async (bot, message, args, Discord, moment) => {
+module.exports = async (bot, message, args, Discord, moment) => {
 
     let msgs = args.join(' ');
 
@@ -11,9 +11,7 @@ export default async (bot, message, args, Discord, moment) => {
             .setColor(message.member.displayHexColor)
             .setFooter(`You Can Now Vote Using The Reactions Below!`);
         await message.delete();
-        let msg = await message.channel.send({
-            embed
-        });
+        let msg = await message.channel.send({ embed });
         await msg.react('👍');
         await msg.react('👎');
     };

@@ -1,13 +1,11 @@
-import fetch from 'node-fetch';
-import query from "../data/mangaquery.js";
-import queryg from "../data/genres.js";
-import querypage from "../data/mpages.js";
-import {
-    getColorFromURL
-} from 'color-thief-node';
-import rgbHex from 'rgb-hex';
+const fetch = require('node-fetch');
+const query = require("../data/mangaquery.js");
+const queryg = require("../data/genres.js");
+const querypage = require("../data/mpages.js");
+const { getColorFromURL } = require('color-thief-node');
+const rgbHex = require('rgb-hex');
 
-export default async (bot, message, args, Discord, moment) => {
+module.exports = async (bot, message, args, Discord, moment) => {
 
     let user = message.member.user;
     let color;
@@ -23,10 +21,7 @@ export default async (bot, message, args, Discord, moment) => {
     await fetch('https://graphql.anilist.co', {
         method: 'post',
         body: JSON.stringify(databody),
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
     })
         .then(fetch2 => fetch2.json())
         .then(async fetch2 => {
@@ -62,10 +57,7 @@ export default async (bot, message, args, Discord, moment) => {
             await fetch('https://graphql.anilist.co', {
                 method: 'post',
                 body: JSON.stringify(databody),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
             })
                 .then(fetch3 => fetch3.json())
                 .then(async fetch3 => {
@@ -89,10 +81,7 @@ export default async (bot, message, args, Discord, moment) => {
                     await fetch('https://graphql.anilist.co', {
                         method: 'post',
                         body: JSON.stringify(databody),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        }
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
                     })
                         .then(fetch1 => fetch1.json())
                         .then(async fetch1 => {
@@ -303,14 +292,10 @@ export default async (bot, message, args, Discord, moment) => {
                             };
 
                             if (nsfw == false) {
-                                await message.channel.send(`${user}, Your Random Anime is: ${mangatitle}`, {
-                                    embed
-                                });
+                                await message.channel.send(`${user}, Your Random Anime is: ${mangatitle}`, { embed });
                             } else {
                                 await message.channel.send(`${user}, Your randomly selected Anime is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                                await message.author.send(`${user}, Your Random Anime is: ${mangatitle}`, {
-                                    embed
-                                });
+                                await message.author.send(`${user}, Your Random Anime is: ${mangatitle}`, { embed });
                             };
                         });
                 });

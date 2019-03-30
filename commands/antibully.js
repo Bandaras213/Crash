@@ -1,9 +1,7 @@
-import {
-    createCanvas,
-    loadImage
-} from 'canvas';
+const Canvas = require('canvas');
+const fs = require("fs");
 
-export default async (bot, message, args, Discord, moment) => {
+module.exports = async (bot, message, args, Discord, moment) => {
     let fonterses = bot.config.font
 
     const applyText = (canvas, text, fontsize, style) => {
@@ -28,12 +26,14 @@ export default async (bot, message, args, Discord, moment) => {
 
     if (part1 === undefined) {
         part1 = lazytext
-    } else if (part2 === undefined) { } else {
+    } else if (part2 === undefined) {
+    } else {
         part2 = parts[1].replace(/ /g, "");
     };
 
     let part3 = parts[2];
-    if (part3 === undefined) { } else {
+    if (part3 === undefined) {
+    } else {
         part3 = parts[2].replace(/ /g, "");
     };
 
@@ -76,9 +76,9 @@ export default async (bot, message, args, Discord, moment) => {
         color1 = part2;
     };
 
-    const canvas = createCanvas(400, 400);
+    const canvas = Canvas.createCanvas(400, 400);
     const ctx = canvas.getContext('2d');
-    const buffer = await loadImage('img/antibully.png');
+    const buffer = await Canvas.loadImage('img/antibully.png');
     ctx.drawImage(buffer, 0, 0, canvas.width, canvas.height);
 
     ctx.font = applyText(canvas, `${customText}`, 60, "bold");
