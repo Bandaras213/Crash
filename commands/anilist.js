@@ -26,7 +26,8 @@ module.exports = async (bot, message, args, Discord) => {
     if (mention && findmentiondiscid == undefined && args[0] != "save") {
         return message.channel.send(`${user}, Looks like ${mention} doesn't have a Anilist!`);
     };
-
+    
+    let time;
     let timeconvert = (n) => {
         if (isNaN(n) || n == null) {
             return time = "Can't Calculate Time with no Episodes watched.";
@@ -158,7 +159,6 @@ module.exports = async (bot, message, args, Discord) => {
                 };
 
                 let stats = fetch1.data.User.stats;
-                let time;
                 let animewatchtime = stats.watchedTime;
                 if (animewatchtime == null) {
                     time = "Can't Calculate Time with no Episodes watched.";
@@ -402,7 +402,6 @@ module.exports = async (bot, message, args, Discord) => {
                 };
 
                 let stats = fetch1.data.User.stats;
-                let time;
                 let animewatchtime = stats.watchedTime;
                 if (animewatchtime == null) {
                     time = "Can't Calculate Time with no Episodes watched.";
@@ -660,7 +659,6 @@ module.exports = async (bot, message, args, Discord) => {
                 };
 
                 let stats = fetch1.data.User.stats;
-                let time;
                 let animewatchtime = stats.watchedTime;
                 if (animewatchtime == null) {
                     time = "Can't Calculate Time with no Episodes watched.";
