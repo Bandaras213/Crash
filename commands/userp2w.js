@@ -2,7 +2,9 @@ const fetch = require("node-fetch");
 const moment = require("moment");
 const fs = require("fs");
 const p2w = require("../data/userp2w.js");
-const { getColorFromURL } = require('color-thief-node');
+const {
+    getColorFromURL
+} = require('color-thief-node');
 const rgbHex = require('rgb-hex');
 
 module.exports = async (bot, message, args, Discord) => {
@@ -71,7 +73,10 @@ module.exports = async (bot, message, args, Discord) => {
     await fetch('https://graphql.anilist.co', {
         method: 'post',
         body: JSON.stringify(databody),
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
     })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
@@ -240,6 +245,7 @@ module.exports = async (bot, message, args, Discord) => {
             };
 
             let time;
+
             function timeConvert(n) {
                 if (isNaN(n) || n == null) {
                     return time = "Can't Calculate time without Episodes or Episode Length.";
@@ -308,10 +314,14 @@ module.exports = async (bot, message, args, Discord) => {
                     .addField('Source:', `${sourcefilter}`)
 
                 if (nsfw == false) {
-                    await message.channel.send(`${user}, Your Random Plan 2 Watch Anime is: ${animetitle}`, { embed });
+                    await message.channel.send(`${user}, Your Random Plan 2 Watch Anime is: ${animetitle}`, {
+                        embed
+                    });
                 } else {
                     await message.channel.send(`${user}, Your randomly selected Plan 2 Watch Anime is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                    await message.author.send(`${user}, Your Random Plan 2 Watch Anime is: ${animetitle}`, { embed });
+                    await message.author.send(`${user}, Your Random Plan 2 Watch Anime is: ${animetitle}`, {
+                        embed
+                    });
                 };
             };
             if (mediatype == "MANGA" && status == "Finished") {
@@ -351,10 +361,14 @@ module.exports = async (bot, message, args, Discord) => {
             };
 
             if (nsfw == false) {
-                await message.channel.send(`${user}, Your Random Anime is: ${mangatitle}`, { embed });
+                await message.channel.send(`${user}, Your Random Anime is: ${mangatitle}`, {
+                    embed
+                });
             } else {
                 await message.channel.send(`${user}, Your randomly selected Anime is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                await message.author.send(`${user}, Your Random Anime is: ${mangatitle}`, { embed });
+                await message.author.send(`${user}, Your Random Anime is: ${mangatitle}`, {
+                    embed
+                });
             };
         })
 };

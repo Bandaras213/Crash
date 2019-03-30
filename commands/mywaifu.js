@@ -34,7 +34,9 @@ module.exports = async (bot, message, args, Discord) => {
     let WaifuDBobj = JSON.parse(fs.readFileSync(WaifuDB, 'utf8'));
     let finduserdiscid = WaifuDBobj.waifus.find(did => did.discid == user.id);
     let findmentiondiscid
-    if (mention) { findmentiondiscid = WaifuDBobj.waifus.find(did => did.discid == mention.id); };
+    if (mention) {
+        findmentiondiscid = WaifuDBobj.waifus.find(did => did.discid == mention.id);
+    };
     let indexuserdiscid;
     let indexmentiondiscid;
     let waifuid;
@@ -67,10 +69,13 @@ module.exports = async (bot, message, args, Discord) => {
         };
 
         await fetch('https://graphql.anilist.co', {
-            method: 'post',
-            body: JSON.stringify(databody),
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
-        })
+                method: 'post',
+                body: JSON.stringify(databody),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
             .then(fetch1 => fetch1.json())
             .then(async fetch1 => {
 
@@ -135,7 +140,9 @@ module.exports = async (bot, message, args, Discord) => {
                     .setDescription(description)
                     .addField("Character In:", isin);
 
-                await message.channel.send(`${user}, ${name} is your Waifu!`, { embed });
+                await message.channel.send(`${user}, ${name} is your Waifu!`, {
+                    embed
+                });
             });
 
     };
@@ -157,10 +164,13 @@ module.exports = async (bot, message, args, Discord) => {
         };
 
         await fetch('https://graphql.anilist.co', {
-            method: 'post',
-            body: JSON.stringify(databody),
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
-        })
+                method: 'post',
+                body: JSON.stringify(databody),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
             .then(fetch1 => fetch1.json())
             .then(async fetch1 => {
 
@@ -225,7 +235,9 @@ module.exports = async (bot, message, args, Discord) => {
                     .setDescription(description)
                     .addField("Character In:", isin);
 
-                await message.channel.send(`${user}, ${name} is ${mention}'s Waifu!`, { embed });
+                await message.channel.send(`${user}, ${name} is ${mention}'s Waifu!`, {
+                    embed
+                });
             });
 
     };
@@ -259,10 +271,13 @@ module.exports = async (bot, message, args, Discord) => {
         };
 
         await fetch('https://graphql.anilist.co', {
-            method: 'post',
-            body: JSON.stringify(databody),
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
-        })
+                method: 'post',
+                body: JSON.stringify(databody),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
             .then(fetch1 => fetch1.json())
             .then(async fetch1 => {
 
@@ -325,8 +340,7 @@ module.exports = async (bot, message, args, Discord) => {
                             "footer": {
                                 "text": `Please choose by using the Reactions below!`,
                             },
-                            "fields": [
-                                {
+                            "fields": [{
                                     "name": field1[0],
                                     "value": value1[0]
                                 },
@@ -346,8 +360,7 @@ module.exports = async (bot, message, args, Discord) => {
                             "footer": {
                                 "text": `Please choose by using the Reactions below!`,
                             },
-                            "fields": [
-                                {
+                            "fields": [{
                                     "name": field1[0],
                                     "value": value1[0]
                                 },
@@ -371,8 +384,7 @@ module.exports = async (bot, message, args, Discord) => {
                             "footer": {
                                 "text": `Please choose by using the Reactions below!`,
                             },
-                            "fields": [
-                                {
+                            "fields": [{
                                     "name": field1[0],
                                     "value": value1[0]
                                 },
@@ -400,8 +412,7 @@ module.exports = async (bot, message, args, Discord) => {
                             "footer": {
                                 "text": `Please choose by using the Reactions below!`,
                             },
-                            "fields": [
-                                {
+                            "fields": [{
                                     "name": field1[0],
                                     "value": value1[0]
                                 },
@@ -433,8 +444,7 @@ module.exports = async (bot, message, args, Discord) => {
                             "footer": {
                                 "text": `Please choose by using the Reactions below!`,
                             },
-                            "fields": [
-                                {
+                            "fields": [{
                                     "name": field1[0],
                                     "value": value1[0]
                                 },
@@ -470,8 +480,7 @@ module.exports = async (bot, message, args, Discord) => {
                             "footer": {
                                 "text": `Please choose by using the Reactions below!`,
                             },
-                            "fields": [
-                                {
+                            "fields": [{
                                     "name": field1[0],
                                     "value": value1[0]
                                 },
@@ -511,8 +520,7 @@ module.exports = async (bot, message, args, Discord) => {
                             "footer": {
                                 "text": `Please choose by using the Reactions below!`,
                             },
-                            "fields": [
-                                {
+                            "fields": [{
                                     "name": field1[0],
                                     "value": value1[0]
                                 },
@@ -555,25 +563,33 @@ module.exports = async (bot, message, args, Discord) => {
                         em1 = await message.channel.send(`${user}, Couldn't find any Results for "${args.join(" ")}"!`);
                         return;
                     case 1:
-                        em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
+                        em1 = await message.channel.send(`${user} is choosing a Character.`, {
+                            embed
+                        });
                         await em1.react(emoji[1]);
                         await em1.react(emoji[0]);
                         break;
                     case 2:
-                        em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
+                        em1 = await message.channel.send(`${user} is choosing a Character.`, {
+                            embed
+                        });
                         await em1.react(emoji[1]);
                         await em1.react(emoji[2]);
                         await em1.react(emoji[0]);
                         break;
                     case 3:
-                        em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
+                        em1 = await message.channel.send(`${user} is choosing a Character.`, {
+                            embed
+                        });
                         await em1.react(emoji[1]);
                         await em1.react(emoji[2]);
                         await em1.react(emoji[3]);
                         await em1.react(emoji[0]);
                         break;
                     case 4:
-                        em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
+                        em1 = await message.channel.send(`${user} is choosing a Character.`, {
+                            embed
+                        });
                         await em1.react(emoji[1]);
                         await em1.react(emoji[2]);
                         await em1.react(emoji[3]);
@@ -581,7 +597,9 @@ module.exports = async (bot, message, args, Discord) => {
                         await em1.react(emoji[0]);
                         break;
                     case 5:
-                        em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
+                        em1 = await message.channel.send(`${user} is choosing a Character.`, {
+                            embed
+                        });
                         await em1.react(emoji[1]);
                         await em1.react(emoji[2]);
                         await em1.react(emoji[3]);
@@ -590,7 +608,9 @@ module.exports = async (bot, message, args, Discord) => {
                         await em1.react(emoji[0]);
                         break;
                     case 6:
-                        em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
+                        em1 = await message.channel.send(`${user} is choosing a Character.`, {
+                            embed
+                        });
                         await em1.react(emoji[1]);
                         await em1.react(emoji[2]);
                         await em1.react(emoji[3]);
@@ -600,7 +620,9 @@ module.exports = async (bot, message, args, Discord) => {
                         await em1.react(emoji[0]);
                         break;
                     case 7:
-                        em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
+                        em1 = await message.channel.send(`${user} is choosing a Character.`, {
+                            embed
+                        });
                         await em1.react(emoji[1]);
                         await em1.react(emoji[2]);
                         await em1.react(emoji[3]);
@@ -616,7 +638,10 @@ module.exports = async (bot, message, args, Discord) => {
                     return emoji.includes(reaction.emoji.name) === true && user.id === uid;
                 };
 
-                const collector = await em1.createReactionCollector(filter, { max: 1, time: 15000 });
+                const collector = await em1.createReactionCollector(filter, {
+                    max: 1,
+                    time: 15000
+                });
 
                 collector.on('collect', async (reaction, reactionCollector) => {
                     let chosen = reaction.emoji.name;
@@ -715,19 +740,20 @@ module.exports = async (bot, message, args, Discord) => {
                         .setDescription(description)
                         .addField("Character In:", isin);
 
-                    await em1.edit(`${user}, ${name} is now your waifu!`, { embed });
+                    await em1.edit(`${user}, ${name} is now your waifu!`, {
+                        embed
+                    });
 
                     if (OVERWRITE === true) {
                         indexuserdiscid = WaifuDBobj.waifus.findIndex(did => did.discid == user.id);
                         WaifuDBobj.waifus[indexuserdiscid].waifuid = `${fetch1.data.Page.characters[i].id}`
                         WaifuDBobj.waifus[indexuserdiscid].waifuname = name
                     } else {
-                        WaifuDBobj["waifus"].push(
-                            {
-                                discid: user.id,
-                                waifuid: `${fetch1.data.Page.characters[i].id}`,
-                                waifuname: name
-                            });
+                        WaifuDBobj["waifus"].push({
+                            discid: user.id,
+                            waifuid: `${fetch1.data.Page.characters[i].id}`,
+                            waifuname: name
+                        });
                     };
 
                     fs.writeFile(WaifuDB, JSON.stringify(WaifuDBobj, null, 2), 'utf8', (err) => {

@@ -26,14 +26,12 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
     if (part1 === undefined) {
         part1 = lazytext
-    } else if (part2 === undefined) {
-    } else {
+    } else if (part2 === undefined) {} else {
         part2 = parts[1].replace(/ /g, "");
     };
 
     let part3 = parts[2];
-    if (part3 === undefined) {
-    } else {
+    if (part3 === undefined) {} else {
         part3 = parts[2].replace(/ /g, "");
     };
 

@@ -1,6 +1,8 @@
 const fetch = require('node-fetch');
 const query = require("../data/animequery.js");
-const { getColorFromURL } = require('color-thief-node');
+const {
+    getColorFromURL
+} = require('color-thief-node');
 const rgbHex = require('rgb-hex');
 
 var emoji = [
@@ -47,7 +49,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
     await fetch('https://graphql.anilist.co', {
         method: 'post',
         body: JSON.stringify(databody),
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
     })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
@@ -228,25 +233,33 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     em1 = await message.channel.send(`${user}, Couldn't find any Results for "${args.join(" ")}"!`);
                     return;
                 case 1:
-                    em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+                    em1 = await message.channel.send(`${user} is choosing a Anime.`, {
+                        embed
+                    });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[0]);
                     break;
                 case 2:
-                    em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+                    em1 = await message.channel.send(`${user} is choosing a Anime.`, {
+                        embed
+                    });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[2]);
                     await em1.react(emoji[0]);
                     break;
                 case 3:
-                    em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+                    em1 = await message.channel.send(`${user} is choosing a Anime.`, {
+                        embed
+                    });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[2]);
                     await em1.react(emoji[3]);
                     await em1.react(emoji[0]);
                     break;
                 case 4:
-                    em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+                    em1 = await message.channel.send(`${user} is choosing a Anime.`, {
+                        embed
+                    });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[2]);
                     await em1.react(emoji[3]);
@@ -254,7 +267,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     await em1.react(emoji[0]);
                     break;
                 case 5:
-                    em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+                    em1 = await message.channel.send(`${user} is choosing a Anime.`, {
+                        embed
+                    });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[2]);
                     await em1.react(emoji[3]);
@@ -263,7 +278,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     await em1.react(emoji[0]);
                     break;
                 case 6:
-                    em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+                    em1 = await message.channel.send(`${user} is choosing a Anime.`, {
+                        embed
+                    });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[2]);
                     await em1.react(emoji[3]);
@@ -273,7 +290,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     await em1.react(emoji[0]);
                     break;
                 case 7:
-                    em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+                    em1 = await message.channel.send(`${user} is choosing a Anime.`, {
+                        embed
+                    });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[2]);
                     await em1.react(emoji[3]);
@@ -289,7 +308,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 return emoji.includes(reaction.emoji.name) === true && user.id === uid;
             };
 
-            const collector = await em1.createReactionCollector(filter, { max: 1, time: 15000 });
+            const collector = await em1.createReactionCollector(filter, {
+                max: 1,
+                time: 15000
+            });
 
             collector.on('collect', async (reaction, reactionCollector) => {
                 let chosen = reaction.emoji.name;
@@ -599,11 +621,15 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     .addField('Staff:', `${staff}`);
 
                 if (nsfw == false) {
-                    await em1.edit(`${user}, here is the result for ${animetitle}`, { embed });
+                    await em1.edit(`${user}, here is the result for ${animetitle}`, {
+                        embed
+                    });
                 } else {
                     await em1.delete();
                     await message.channel.send(`${user}, You've selected a NSFW Anime! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                    await message.author.send(`${user}, Here is the result for ${animetitle}`, { embed });
+                    await message.author.send(`${user}, Here is the result for ${animetitle}`, {
+                        embed
+                    });
                 };
             });
 
