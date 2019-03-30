@@ -48,13 +48,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
     };
 
     await fetch('https://graphql.anilist.co', {
-            method: 'post',
-            body: JSON.stringify(databody),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
+        method: 'post',
+        body: JSON.stringify(databody),
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
 
@@ -558,15 +558,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 };
 
                 if (nsfw == false) {
-                    await em1.edit(`${user}, here is the result for ${mangatitle}`, {
-                        embed
-                    });
+                    await em1.edit(`${user}, here is the result for ${mangatitle}`, { embed });
                 } else {
                     await em1.delete();
                     await message.channel.send(`${user}, You've selected a NSFW Manga! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                    await message.author.send(`${user}, Here is the result for ${mangatitle}`, {
-                        embed
-                    });
+                    await message.author.send(`${user}, Here is the result for ${mangatitle}`, { embed });
                 };
             });
 

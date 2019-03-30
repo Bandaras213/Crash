@@ -372,14 +372,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                 .addField('Staff:', `${staff}`);
 
                             if (nsfw == false) {
-                                await message.channel.send(`${user}, Your Random Anime is: ${animetitle}`, {
-                                    embed
-                                });
+                                await message.channel.send(`${user}, Your Random Anime is: ${animetitle}`, { embed });
                             } else {
                                 await message.channel.send(`${user}, Your randomly selected Anime is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                                await message.author.send(`${user}, Your Random Anime is: ${animetitle}`, {
-                                    embed
-                                });
+                                await message.author.send(`${user}, Your Random Anime is: ${animetitle}`, { embed });
                             };
                         });
                 });

@@ -283,8 +283,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 .addField('Favorite Years:', `${yearfav.join(' ')}`)
                 .addField('Last List Update:', `${lastupdated}`);
 
-            await message.channel.send(`${user}, here is the result for ${username}`, {
-                embed
-            });
+            await message.channel.send(`${user}, here is the result for ${username}`, { embed });
         });
 };

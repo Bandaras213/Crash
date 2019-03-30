@@ -58,13 +58,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
     };
 
     await fetch('https://graphql.anilist.co', {
-            method: 'post',
-            body: JSON.stringify(databody),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
+        method: 'post',
+        body: JSON.stringify(databody),
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
 
@@ -128,13 +128,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             "text": `Please choose by using the Reactions below!`,
                         },
                         "fields": [{
-                                "name": field1[0],
-                                "value": value1[0]
-                            },
-                            {
-                                "name": "None of the above (Abort Command)",
-                                "value": `Reaction: ${emoji[0]}`
-                            }
+                            "name": field1[0],
+                            "value": value1[0]
+                        },
+                        {
+                            "name": "None of the above (Abort Command)",
+                            "value": `Reaction: ${emoji[0]}`
+                        }
                         ]
                     };
                     break;
@@ -148,17 +148,17 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             "text": `Please choose by using the Reactions below!`,
                         },
                         "fields": [{
-                                "name": field1[0],
-                                "value": value1[0]
-                            },
-                            {
-                                "name": field1[1],
-                                "value": value1[1]
-                            },
-                            {
-                                "name": "None of the above (Abort Command)",
-                                "value": `Reaction: ${emoji[0]}`
-                            }
+                            "name": field1[0],
+                            "value": value1[0]
+                        },
+                        {
+                            "name": field1[1],
+                            "value": value1[1]
+                        },
+                        {
+                            "name": "None of the above (Abort Command)",
+                            "value": `Reaction: ${emoji[0]}`
+                        }
                         ]
                     };
                     break;
@@ -172,21 +172,21 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             "text": `Please choose by using the Reactions below!`,
                         },
                         "fields": [{
-                                "name": field1[0],
-                                "value": value1[0]
-                            },
-                            {
-                                "name": field1[1],
-                                "value": value1[1]
-                            },
-                            {
-                                "name": field1[2],
-                                "value": value1[2]
-                            },
-                            {
-                                "name": "None of the above (Abort Command)",
-                                "value": `Reaction: ${emoji[0]}`
-                            }
+                            "name": field1[0],
+                            "value": value1[0]
+                        },
+                        {
+                            "name": field1[1],
+                            "value": value1[1]
+                        },
+                        {
+                            "name": field1[2],
+                            "value": value1[2]
+                        },
+                        {
+                            "name": "None of the above (Abort Command)",
+                            "value": `Reaction: ${emoji[0]}`
+                        }
                         ]
                     };
                     break;
@@ -200,25 +200,25 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             "text": `Please choose by using the Reactions below!`,
                         },
                         "fields": [{
-                                "name": field1[0],
-                                "value": value1[0]
-                            },
-                            {
-                                "name": field1[1],
-                                "value": value1[1]
-                            },
-                            {
-                                "name": field1[2],
-                                "value": value1[2]
-                            },
-                            {
-                                "name": field1[3],
-                                "value": value1[3]
-                            },
-                            {
-                                "name": "None of the above (Abort Command)",
-                                "value": `Reaction: ${emoji[0]}`
-                            }
+                            "name": field1[0],
+                            "value": value1[0]
+                        },
+                        {
+                            "name": field1[1],
+                            "value": value1[1]
+                        },
+                        {
+                            "name": field1[2],
+                            "value": value1[2]
+                        },
+                        {
+                            "name": field1[3],
+                            "value": value1[3]
+                        },
+                        {
+                            "name": "None of the above (Abort Command)",
+                            "value": `Reaction: ${emoji[0]}`
+                        }
                         ]
                     };
                     break;
@@ -232,29 +232,29 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             "text": `Please choose by using the Reactions below!`,
                         },
                         "fields": [{
-                                "name": field1[0],
-                                "value": value1[0]
-                            },
-                            {
-                                "name": field1[1],
-                                "value": value1[1]
-                            },
-                            {
-                                "name": field1[2],
-                                "value": value1[2]
-                            },
-                            {
-                                "name": field1[3],
-                                "value": value1[3]
-                            },
-                            {
-                                "name": field1[4],
-                                "value": value1[4]
-                            },
-                            {
-                                "name": "None of the above (Abort Command)",
-                                "value": `Reaction: ${emoji[0]}`
-                            }
+                            "name": field1[0],
+                            "value": value1[0]
+                        },
+                        {
+                            "name": field1[1],
+                            "value": value1[1]
+                        },
+                        {
+                            "name": field1[2],
+                            "value": value1[2]
+                        },
+                        {
+                            "name": field1[3],
+                            "value": value1[3]
+                        },
+                        {
+                            "name": field1[4],
+                            "value": value1[4]
+                        },
+                        {
+                            "name": "None of the above (Abort Command)",
+                            "value": `Reaction: ${emoji[0]}`
+                        }
                         ]
                     };
                     break;
@@ -268,33 +268,33 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             "text": `Please choose by using the Reactions below!`,
                         },
                         "fields": [{
-                                "name": field1[0],
-                                "value": value1[0]
-                            },
-                            {
-                                "name": field1[1],
-                                "value": value1[1]
-                            },
-                            {
-                                "name": field1[2],
-                                "value": value1[2]
-                            },
-                            {
-                                "name": field1[3],
-                                "value": value1[3]
-                            },
-                            {
-                                "name": field1[4],
-                                "value": value1[4]
-                            },
-                            {
-                                "name": field1[5],
-                                "value": value1[5]
-                            },
-                            {
-                                "name": "None of the above (Abort Command)",
-                                "value": `Reaction: ${emoji[0]}`
-                            }
+                            "name": field1[0],
+                            "value": value1[0]
+                        },
+                        {
+                            "name": field1[1],
+                            "value": value1[1]
+                        },
+                        {
+                            "name": field1[2],
+                            "value": value1[2]
+                        },
+                        {
+                            "name": field1[3],
+                            "value": value1[3]
+                        },
+                        {
+                            "name": field1[4],
+                            "value": value1[4]
+                        },
+                        {
+                            "name": field1[5],
+                            "value": value1[5]
+                        },
+                        {
+                            "name": "None of the above (Abort Command)",
+                            "value": `Reaction: ${emoji[0]}`
+                        }
                         ]
                     };
                     break;
@@ -308,37 +308,37 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             "text": `Please choose by using the Reactions below!`,
                         },
                         "fields": [{
-                                "name": field1[0],
-                                "value": value1[0]
-                            },
-                            {
-                                "name": field1[1],
-                                "value": value1[1]
-                            },
-                            {
-                                "name": field1[2],
-                                "value": value1[2]
-                            },
-                            {
-                                "name": field1[3],
-                                "value": value1[3]
-                            },
-                            {
-                                "name": field1[4],
-                                "value": value1[4]
-                            },
-                            {
-                                "name": field1[5],
-                                "value": value1[5]
-                            },
-                            {
-                                "name": field1[6],
-                                "value": value1[6]
-                            },
-                            {
-                                "name": "None of the above (Abort Command)",
-                                "value": `Reaction: ${emoji[0]}`
-                            }
+                            "name": field1[0],
+                            "value": value1[0]
+                        },
+                        {
+                            "name": field1[1],
+                            "value": value1[1]
+                        },
+                        {
+                            "name": field1[2],
+                            "value": value1[2]
+                        },
+                        {
+                            "name": field1[3],
+                            "value": value1[3]
+                        },
+                        {
+                            "name": field1[4],
+                            "value": value1[4]
+                        },
+                        {
+                            "name": field1[5],
+                            "value": value1[5]
+                        },
+                        {
+                            "name": field1[6],
+                            "value": value1[6]
+                        },
+                        {
+                            "name": "None of the above (Abort Command)",
+                            "value": `Reaction: ${emoji[0]}`
+                        }
                         ]
                     };
                     break;
@@ -531,9 +531,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     .setDescription(description)
                     .addField("Character In:", isin);
 
-                await em1.edit(`${user}, here is the result for ${name}`, {
-                    embed
-                });
+                await em1.edit(`${user}, here is the result for ${name}`, { embed });
             });
 
             collector.on('end', collected => {

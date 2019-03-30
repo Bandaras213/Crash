@@ -296,9 +296,7 @@ module.exports = async (bot, message, args, Discord) => {
                     .addField('Favorite Years:', `${yearfav.join(' ')}`)
                     .addField('Last List Update:', `${lastupdated}`);
 
-                await message.channel.send(`${user}, ${username} (${userID}) is your Anilist!`, {
-                    embed
-                });
+                await message.channel.send(`${user}, ${username} (${userID}) is your Anilist!`, { embed });
             });
 
     };
@@ -562,9 +560,7 @@ module.exports = async (bot, message, args, Discord) => {
                     .addField('Favorite Years:', `${yearfav.join(' ')}`)
                     .addField('Last List Update:', `${lastupdated}`)
 
-                await message.channel.send(`${user}, ${username} (${userID}) is ${mention}'s Anilist Profile!`, {
-                    embed
-                });
+                await message.channel.send(`${user}, ${username} (${userID}) is ${mention}'s Anilist Profile!`, { embed });
             });
 
     };
@@ -846,9 +842,7 @@ module.exports = async (bot, message, args, Discord) => {
                     .addField('Favorite Years:', `${yearfav.join(' ')}`)
                     .addField('Last List Update:', `${lastupdated}`);
 
-                await message.channel.send(`${user}, ${usersearchname} (${userIDS}) is now your Anilist!`, {
-                    embed
-                });
+                await message.channel.send(`${user}, ${usersearchname} (${userIDS}) is now your Anilist!`, { embed });
 
                 if (OVERWRITE === true) {
                     indexuserdiscid = UserlistDBobj.userlist.findIndex(did => did.discid == user.id);

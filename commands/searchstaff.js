@@ -25,13 +25,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
   };
 
   await fetch('https://graphql.anilist.co', {
-      method: 'post',
-      body: JSON.stringify(databody),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    })
+    method: 'post',
+    body: JSON.stringify(databody),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  })
     .then(fetch1 => fetch1.json())
     .then(async fetch1 => {
 
@@ -205,8 +205,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
         .addField("Media:", uniqstaff)
         .addField("Main Characters:", rdmcharacter1)
         .addField("Support Characters", rdmcharacter2)
-      await message.channel.send(`${user}, here is the result for ${staffname}`, {
-        embed
-      });
+      await message.channel.send(`${user}, here is the result for ${staffname}`, { embed });
     });
 };
