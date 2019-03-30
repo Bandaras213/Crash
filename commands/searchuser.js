@@ -142,7 +142,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
             let stats = fetch1.data.User.stats;
             let time;
-            function timeConvert(n) {
+            let timeconvert = (n) => {
                 if (isNaN(n) || n == null) {
                     return time = "Can't Calculate Time with no Episodes watched.";
                 };
@@ -153,7 +153,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             if (animewatchtime == null) {
                 time = "Can't Calculate Time with no Episodes watched.";
             } else {
-                timeConvert(animewatchtime);
+                timeconvert(animewatchtime);
             };
 
             let anistats = stats.animeStatusDistribution;

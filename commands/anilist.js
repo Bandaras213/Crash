@@ -8,7 +8,6 @@ module.exports = async (bot, message, args, Discord) => {
 
     let user = message.author;
     let mention = message.mentions.users.first();
-
     let UserlistDB = "data/userlists.json";
     let UserlistDBobj = JSON.parse(fs.readFileSync(UserlistDB, 'utf8'));
     let finduserdiscid = UserlistDBobj.userlist.find(did => did.discid == user.id);
@@ -18,7 +17,6 @@ module.exports = async (bot, message, args, Discord) => {
     let indexmentiondiscid;
     let anilistid;
     const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
-
     let OVERWRITE = false
 
     if (finduserdiscid == undefined && args[0] != "save") {
@@ -27,6 +25,13 @@ module.exports = async (bot, message, args, Discord) => {
 
     if (mention && findmentiondiscid == undefined && args[0] != "save") {
         return message.channel.send(`${user}, Looks like ${mention} doesn't have a Anilist!`);
+    };
+
+    let timeconvert = (n) => {
+        if (isNaN(n) || n == null) {
+            return time = "Can't Calculate Time with no Episodes watched.";
+        };
+        return time = Math.floor(n / 24 / 60) + " " + "Days" + " " + Math.floor(n / 60 % 24) + " " + 'Hours' + " " + Math.floor(n % 60) + " " + 'Minutes';
     };
 
     if (finduserdiscid && mention == undefined && args[0] != "save") {
@@ -145,27 +150,20 @@ module.exports = async (bot, message, args, Discord) => {
                     favoritcharacter = "No Favorit Characters on" + " " + `${username}` + "'s " + "Profile.";
                 } else {
                     if (favoritcharacters.length > 3) {
-                        favoritcharacters.length = 3
-                        favoritcharacter = favoritcharacters.join(' ')
+                        favoritcharacters.length = 3;
+                        favoritcharacter = favoritcharacters.join(' ');
                     } else {
-                        favoritcharacter = favoritcharacters.join(' ')
-                    }
+                        favoritcharacter = favoritcharacters.join(' ');
+                    };
                 };
 
                 let stats = fetch1.data.User.stats;
                 let time;
-                function timeConvert(n) {
-                    if (isNaN(n) || n == null) {
-                        return time = "Can't Calculate Time with no Episodes watched.";
-                    };
-                    return time = Math.floor(n / 24 / 60) + " " + "Days" + " " + Math.floor(n / 60 % 24) + " " + 'Hours' + " " + Math.floor(n % 60) + " " + 'Minutes';
-                }
-
                 let animewatchtime = stats.watchedTime;
                 if (animewatchtime == null) {
                     time = "Can't Calculate Time with no Episodes watched.";
                 } else {
-                    timeConvert(animewatchtime);
+                    timeconvert(animewatchtime);
                 };
 
                 let anistats = stats.animeStatusDistribution;
@@ -396,27 +394,20 @@ module.exports = async (bot, message, args, Discord) => {
                     favoritcharacter = "No Favorit Characters on" + " " + `${username}` + "'s " + "Profile.";
                 } else {
                     if (favoritcharacters.length > 3) {
-                        favoritcharacters.length = 3
-                        favoritcharacter = favoritcharacters.join(' ')
+                        favoritcharacters.length = 3;
+                        favoritcharacter = favoritcharacters.join(' ');
                     } else {
-                        favoritcharacter = favoritcharacters.join(' ')
-                    }
+                        favoritcharacter = favoritcharacters.join(' ');
+                    };
                 };
 
                 let stats = fetch1.data.User.stats;
                 let time;
-                function timeConvert(n) {
-                    if (isNaN(n) || n == null) {
-                        return time = "Can't Calculate Time with no Episodes watched.";
-                    };
-                    return time = Math.floor(n / 24 / 60) + " " + "Days" + " " + Math.floor(n / 60 % 24) + " " + 'Hours' + " " + Math.floor(n % 60) + " " + 'Minutes';
-                }
-
                 let animewatchtime = stats.watchedTime;
                 if (animewatchtime == null) {
                     time = "Can't Calculate Time with no Episodes watched.";
                 } else {
-                    timeConvert(animewatchtime)
+                    timeconvert(animewatchtime);
                 };
 
                 let anistats = stats.animeStatusDistribution;
@@ -670,18 +661,11 @@ module.exports = async (bot, message, args, Discord) => {
 
                 let stats = fetch1.data.User.stats;
                 let time;
-                function timeConvert(n) {
-                    if (isNaN(n) || n == null) {
-                        return time = "Can't Calculate Time with no Episodes watched.";
-                    };
-                    return time = Math.floor(n / 24 / 60) + " " + "Days" + " " + Math.floor(n / 60 % 24) + " " + 'Hours' + " " + Math.floor(n % 60) + " " + 'Minutes';
-                };
-
                 let animewatchtime = stats.watchedTime;
                 if (animewatchtime == null) {
                     time = "Can't Calculate Time with no Episodes watched.";
                 } else {
-                    timeConvert(animewatchtime);
+                    timeconvert(animewatchtime);
                 };
 
                 let anistats = stats.animeStatusDistribution;

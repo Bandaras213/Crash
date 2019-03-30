@@ -477,7 +477,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 };
 
                 let time;
-                function timeConvert(n) {
+                let timeconvert = (n) => {
                     if (isNaN(n) || n == null) {
                         return time = "Can't Calculate time without Episodes or Episode Length.";
                     };
@@ -499,7 +499,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     runtime = "Can't Calculate Runtime without Episodes or Episode length.";
                 } else {
                     runtime = episodes * episodemins;
-                    timeConvert(runtime);
+                    timeconvert(runtime);
                 };
 
                 let avgRating;
