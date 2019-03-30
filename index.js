@@ -43,18 +43,20 @@ bot.login(bot.token);
 
 //Webserver
 
-  const http = require('http');
-  const express = require('express');
-  const app = express();
-  app.use(express.static('webserver/script'));
-  app.use(express.static('webserver/view'));
-  app.get("/stayalive", (request, response) => {
-    response.sendStatus(200);
+const http = require('http');
+const express = require('express');
+const app = express();
+app.use(express.static('webserver/script'));
+app.use(express.static('webserver/view'));
+app.get("/stayalive", (request, response) => {
+  response.sendStatus(200);
+});
+app.get('/about', function (req, res) {
+  res.sendFile('./webserver/view/about.html', {
+    root: __dirname
   });
-  app.get('/about',function(req,res){
-  res.sendFile('./webserver/view/about.html', {root: __dirname});
-  });
-  app.listen(process.env.PORT);
-  setInterval(() => {
-    http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
-  }, 270000);
+});
+app.listen(process.env.PORT);
+setInterval(() => {
+  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
+}, 270000);

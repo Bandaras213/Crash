@@ -19,4 +19,3 @@ module.exports = (str) => {
         return undefined;
     };
 };
- 
