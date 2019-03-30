@@ -1,3 +1,3 @@
-export default async (bot, error) => {
+module.exports = async (bot, error) => {
     bot.log(error, "Error");
 };

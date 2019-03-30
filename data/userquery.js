@@ -1,4 +1,4 @@
-export default `
+module.exports = `
 query ($name: String, $id: Int, $search: String){
 	User(id: $id, name: $name, search: $search){
 		id

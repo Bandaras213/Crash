@@ -1,4 +1,4 @@
-export default `
+module.exports = `
 query ($userId: Int, $type: MediaType, $userName: String) {
   MediaListCollection (userId: $userId, type: $type, userName: $userName, sort: [STATUS]) {
     lists {
