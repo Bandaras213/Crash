@@ -1,4 +1,4 @@
-module.exports = (str) => {
+export default (str) => {
 
     if (typeof str == "string") {
 
@@ -19,4 +19,3 @@ module.exports = (str) => {
         return undefined;
     };
 };
- 

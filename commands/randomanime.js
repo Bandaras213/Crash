@@ -1,11 +1,13 @@
-const fetch = require('node-fetch');
-const query = require("../data/animequery.js");
-const queryg = require("../data/genres.js");
-const querypage = require("../data/pages.js");
-const { getColorFromURL } = require('color-thief-node');
-const rgbHex = require('rgb-hex');
+import fetch from 'node-fetch';
+import query from "../data/animequery.js";
+import queryg from "../data/genres.js";
+import querypage from "../data/pages.js";
+import {
+    getColorFromURL
+} from 'color-thief-node';
+import rgbHex from 'rgb-hex';
 
-module.exports = async (bot, message, args, Discord, moment) => {
+export default async (bot, message, args, Discord, moment) => {
 
     let user = message.member.user;
     let color;
@@ -19,10 +21,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
     };
 
     await fetch('https://graphql.anilist.co', {
-        method: 'post',
-        body: JSON.stringify(databody),
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
-    })
+            method: 'post',
+            body: JSON.stringify(databody),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
         .then(fetch2 => fetch2.json())
         .then(async fetch2 => {
 
@@ -55,10 +60,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
             };
 
             await fetch('https://graphql.anilist.co', {
-                method: 'post',
-                body: JSON.stringify(databody),
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
-            })
+                    method: 'post',
+                    body: JSON.stringify(databody),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
                 .then(fetch3 => fetch3.json())
                 .then(async fetch3 => {
 
@@ -80,15 +88,18 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     };
 
                     await fetch('https://graphql.anilist.co', {
-                        method: 'post',
-                        body: JSON.stringify(databody),
-                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
-                    })
+                            method: 'post',
+                            body: JSON.stringify(databody),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            }
+                        })
                         .then(fetch1 => fetch1.json())
                         .then(async fetch1 => {
 
                             let i = Math.floor(Math.random() * 49) + 1;
-                      
+
                             let nsfw = fetch1.data.Page.media[i].isAdult;
 
                             let animetitle;
@@ -122,7 +133,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             } else {
                                 posterIMG = fetch1.data.Page.media[i].bannerImage;
                             };
-                      
+
                             let animeurl;
                             if (fetch1.data.Page.media[i].siteUrl == null) {
                                 animeurl = "https://anilist.co";
@@ -240,6 +251,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                             };
 
                             let time;
+
                             function timeConvert(n) {
                                 if (isNaN(n) || n == null) {
                                     return time = "Can't Calculate time without Episodes or Episode Length.";
@@ -363,10 +375,14 @@ module.exports = async (bot, message, args, Discord, moment) => {
                                 .addField('Staff:', `${staff}`);
 
                             if (nsfw == false) {
-                                await message.channel.send(`${user}, Your Random Anime is: ${animetitle}`, { embed });
+                                await message.channel.send(`${user}, Your Random Anime is: ${animetitle}`, {
+                                    embed
+                                });
                             } else {
                                 await message.channel.send(`${user}, Your randomly selected Anime is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                                await message.author.send(`${user}, Your Random Anime is: ${animetitle}`, { embed });
+                                await message.author.send(`${user}, Your Random Anime is: ${animetitle}`, {
+                                    embed
+                                });
                             };
                         });
                 });

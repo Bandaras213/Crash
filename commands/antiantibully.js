@@ -1,17 +1,19 @@
-const Canvas = require('canvas');
-const fs = require("fs");
+import {
+    createCanvas,
+    loadImage
+} from 'canvas';
 
-module.exports = async (bot, message, args, Discord, moment) => {
-let fonterses = bot.config.font
+export default async (bot, message, args, Discord, moment) => {
+    let fonterses = bot.config.font
 
-const applyText = (canvas, text, fontsize, style) => {
-    const ctx = canvas.getContext('2d');
+    const applyText = (canvas, text, fontsize, style) => {
+        const ctx = canvas.getContext('2d');
 
-    do {
-        ctx.font = `${style} ${fontsize -= 2}px ${fonterses}`;
-    } while (ctx.measureText(text).width > 380);
-    return ctx.font;
-};
+        do {
+            ctx.font = `${style} ${fontsize -= 2}px ${fonterses}`;
+        } while (ctx.measureText(text).width > 380);
+        return ctx.font;
+    };
 
     let user = message.member.user
     const mes = await message.channel.send(`Akari wants to bully some nerds.`);
@@ -26,14 +28,12 @@ const applyText = (canvas, text, fontsize, style) => {
 
     if (part1 === undefined) {
         part1 = lazytext
-    } else if (part2 === undefined) {
-    } else {
+    } else if (part2 === undefined) {} else {
         part2 = parts[1].replace(/ /g, "");
     };
 
     let part3 = parts[2];
-    if (part3 === undefined) {
-    } else {
+    if (part3 === undefined) {} else {
         part3 = parts[2].replace(/ /g, "");
     };
 
@@ -76,9 +76,9 @@ const applyText = (canvas, text, fontsize, style) => {
         color1 = part2;
     };
 
-    const canvas = Canvas.createCanvas(400, 400);
+    const canvas = createCanvas(400, 400);
     const ctx = canvas.getContext('2d');
-    const buffer = await Canvas.loadImage('img/antiantibully.png');
+    const buffer = await loadImage('img/antiantibully.png');
     ctx.drawImage(buffer, 0, 0, canvas.width, canvas.height);
 
     ctx.font = applyText(canvas, `${customText}`, 60, "bold");
