@@ -1,8 +1,11 @@
-const Discord = require("discord.js");
-const moment = require('moment');
+import Discord, {
+  Client,
+  Collection
+} from "discord.js";
+import moment from 'moment';
 let token
 
-var bot = new Discord.Client();
+var bot = new Client();
 bot.config = require('./config.json');
 bot.log = require('./functions/log.js');
 bot.caps = require('./functions/capitalize.js');
@@ -20,7 +23,7 @@ bot.on('ready', () => require('./events/ready.js')(bot));
 bot.on('message', message => require('./events/message.js')(bot, message, Discord, moment));
 bot.on("error", error => require('./events/error.js')(bot, error));
 
-bot.commands = new Discord.Collection();
+bot.commands = new Collection();
 bot.commands.set('waifu', require('./commands/mywaifu.js'));
 bot.commands.set('anilist', require('./commands/anilist.js'));
 bot.commands.set('anime', require('./commands/searchanime.js'));
@@ -43,18 +46,24 @@ bot.login(bot.token);
 
 //Webserver
 
-  const http = require('http');
-  const express = require('express');
-  const app = express();
-  app.use(express.static('webserver/script'));
-  app.use(express.static('webserver/view'));
-  app.get("/stayalive", (request, response) => {
-    response.sendStatus(200);
+import {
+  get
+} from 'http';
+import express, {
+  static
+} from 'express';
+const app = express();
+app.use(static('webserver/script'));
+app.use(static('webserver/view'));
+app.get("/stayalive", (request, response) => {
+  response.sendStatus(200);
+});
+app.get('/about', function (req, res) {
+  res.sendFile('./webserver/view/about.html', {
+    root: __dirname
   });
-  app.get('/about',function(req,res){
-  res.sendFile('./webserver/view/about.html', {root: __dirname});
-  });
-  app.listen(process.env.PORT);
-  setInterval(() => {
-    http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
-  }, 270000);
+});
+app.listen(process.env.PORT);
+setInterval(() => {
+  get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
+}, 270000);

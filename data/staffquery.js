@@ -1,4 +1,4 @@
-module.exports = `
+export default `
 query ($search: String) {
   Staff(search: $search) {
     id
