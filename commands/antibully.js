@@ -2,16 +2,16 @@ const Canvas = require('canvas');
 const fs = require("fs");
 
 module.exports = async (bot, message, args, Discord, moment) => {
-let fonterses = bot.config.font
+    let fonterses = bot.config.font
 
-const applyText = (canvas, text, fontsize, style) => {
-    const ctx = canvas.getContext('2d');
+    const applyText = (canvas, text, fontsize, style) => {
+        const ctx = canvas.getContext('2d');
 
-    do {
-        ctx.font = `${style} ${fontsize -= 2}px ${fonterses}`;
-    } while (ctx.measureText(text).width > 380);
-    return ctx.font;
-};
+        do {
+            ctx.font = `${style} ${fontsize -= 2}px ${fonterses}`;
+        } while (ctx.measureText(text).width > 380);
+        return ctx.font;
+    };
 
     let user = message.member.user
     const mes = await message.channel.send(`Akari saw how you bullied ${user}...`);
@@ -91,7 +91,7 @@ const applyText = (canvas, text, fontsize, style) => {
     ctx.fillText(`${customText}`, 200, 375);
 
     const attachment = new Discord.Attachment(canvas.toBuffer(), `antibullyranger.png`);
-    setTimeout(function () {
+    setTimeout(() => {
         mes.delete();
         message.channel.send(`${user} summoned the Anti Bully Ranger`, (attachment));
     }, 3500);

@@ -31,22 +31,23 @@ module.exports = (bot) => {
     status: status
   });
 
-  setInterval(function () {
+  setInterval(() => {
     let rdmactivity = [
       "Hentaihaven.org",
       "hanime.tv",
       "hentai2read.com",
       "pururin.io",
     ];
+
     let randAct = Math.floor((Math.random() * rdmactivity.length));
-      bot.user.setPresence({
-    game: {
-      name: (`${rdmactivity[randAct]}`),
-      type: `${type}`
-    },
-    status: `${status}`
-  });
-}, ms("10s"));
+    bot.user.setPresence({
+      game: {
+        name: (`${rdmactivity[randAct]}`),
+        type: `${type}`
+      },
+      status: `${status}`
+    });
+  }, ms("10s"));
 
   bot.log(`Bot ${bot.user.tag} has started with ${bot.users.size} users, in ${bot.channels.size} channels of ${bot.guilds.size} servers.`, "Started");
 };
