@@ -1,7 +1,7 @@
-const fetch = require('node-fetch');
-const query = require("../data/staffquery.js");
+import fetch from 'node-fetch';
+import query from "../data/staffquery.js";
 
-module.exports = async (bot, message, args, Discord, moment) => {
+export default async (bot, message, args, Discord, moment) => {
 
   let staffname = args.join(' ');
   let color = Math.floor(Math.random() * 16777214) + 1;
@@ -27,7 +27,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
   await fetch('https://graphql.anilist.co', {
     method: 'post',
     body: JSON.stringify(databody),
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
   })
     .then(fetch1 => fetch1.json())
     .then(async fetch1 => {
@@ -69,34 +72,44 @@ module.exports = async (bot, message, args, Discord, moment) => {
       let staffmediasort9 = [];
       for (let d = 0; d < staffmedia.length; d += 2) {
         switch (staffmedia[d]) {
-          case staffmedia[0]: staffmediasort0.push(staffmedia[d]);
+          case staffmedia[0]:
+            staffmediasort0.push(staffmedia[d]);
             staffmediasort0.push(staffmedia[d + 1]);
             break;
-          case staffmedia[1]: staffmediasort1.push(staffmedia[d]);
+          case staffmedia[1]:
+            staffmediasort1.push(staffmedia[d]);
             staffmediasort1.push(staffmedia[d + 1]);
             break;
-          case staffmedia[2]: staffmediasort2.push(staffmedia[d]);
+          case staffmedia[2]:
+            staffmediasort2.push(staffmedia[d]);
             staffmediasort2.push(staffmedia[d + 1]);
             break;
-          case staffmedia[3]: staffmediasort3.push(staffmedia[d]);
+          case staffmedia[3]:
+            staffmediasort3.push(staffmedia[d]);
             staffmediasort3.push(staffmedia[d + 1])
             break;
-          case staffmedia[4]: staffmediasort4.push(staffmedia[d]);
+          case staffmedia[4]:
+            staffmediasort4.push(staffmedia[d]);
             staffmediasort4.push(staffmedia[d + 1]);
             break;
-          case staffmedia[5]: staffmediasort5.push(staffmedia[d]);
+          case staffmedia[5]:
+            staffmediasort5.push(staffmedia[d]);
             staffmediasort5.push(staffmedia[d + 1]);
             break;
-          case staffmedia[6]: staffmediasort6.push(staffmedia[d]);
+          case staffmedia[6]:
+            staffmediasort6.push(staffmedia[d]);
             staffmediasort6.push(staffmedia[d + 1]);
             break;
-          case staffmedia[7]: staffmediasort7.push(staffmedia[d]);
+          case staffmedia[7]:
+            staffmediasort7.push(staffmedia[d]);
             staffmediasort7.push(staffmedia[d + 1]);
             break;
-          case staffmedia[8]: staffmediasort8.push(staffmedia[d]);
+          case staffmedia[8]:
+            staffmediasort8.push(staffmedia[d]);
             staffmediasort8.push(staffmedia[d + 1]);
             break;
-          case staffmedia[9]: staffmediasort9.push(staffmedia[d]);
+          case staffmedia[9]:
+            staffmediasort9.push(staffmedia[d]);
             staffmediasort9.push(staffmedia[d + 1]);
             break;
         };

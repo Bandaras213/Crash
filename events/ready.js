@@ -1,5 +1,5 @@
-const ms = require("ms");
-module.exports = (bot) => {
+import ms from "ms";
+export default (bot) => {
 
   let type;
   let status;

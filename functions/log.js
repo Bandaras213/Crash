@@ -1,4 +1,4 @@
-module.exports = (msg, title) => {
+export default (msg, title) => {
     if (!title) title = "Log";
     if (title === "Error") {
         return console.error(`[${title}] ${JSON.stringify(msg, Object.getOwnPropertyNames(msg))}`);

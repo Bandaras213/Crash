@@ -1,4 +1,4 @@
-module.exports = (str) => {
+export default (str) => {
 
     if (typeof str == "string") {
 

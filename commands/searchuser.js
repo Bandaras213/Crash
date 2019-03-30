@@ -1,8 +1,8 @@
-const fetch = require('node-fetch');
-const query = require("../data/userquery.js");
-const toHex = require('colornames');
+import fetch from 'node-fetch';
+import query from "../data/userquery.js";
+import toHex from 'colornames';
 
-module.exports = async (bot, message, args, Discord, moment) => {
+export default async (bot, message, args, Discord, moment) => {
 
     let nameofuser = args.join(' ');
     let user = message.member.user;
@@ -29,7 +29,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
     await fetch('https://graphql.anilist.co', {
         method: 'post',
         body: JSON.stringify(databody),
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
     })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
@@ -161,25 +164,35 @@ module.exports = async (bot, message, args, Discord, moment) => {
             let animescores = stats.animeScoreDistribution;
             for (let a = 0; a < stats.animeScoreDistribution.length; ++a) {
                 switch (animescores[a].score) {
-                    case 10: animescore.push("**[1]:** " + `${animescores[a].amount}`);
+                    case 10:
+                        animescore.push("**[1]:** " + `${animescores[a].amount}`);
                         break;
-                    case 20: animescore.push("**[2]:** " + `${animescores[a].amount}`);
+                    case 20:
+                        animescore.push("**[2]:** " + `${animescores[a].amount}`);
                         break;
-                    case 30: animescore.push("**[3]:** " + `${animescores[a].amount}`);
+                    case 30:
+                        animescore.push("**[3]:** " + `${animescores[a].amount}`);
                         break;
-                    case 40: animescore.push("**[4]:** " + `${animescores[a].amount}`);
+                    case 40:
+                        animescore.push("**[4]:** " + `${animescores[a].amount}`);
                         break;
-                    case 50: animescore.push("**[5]:** " + `${animescores[a].amount}`);
+                    case 50:
+                        animescore.push("**[5]:** " + `${animescores[a].amount}`);
                         break;
-                    case 60: animescore.push("**[6]:** " + `${animescores[a].amount}`);
+                    case 60:
+                        animescore.push("**[6]:** " + `${animescores[a].amount}`);
                         break;
-                    case 70: animescore.push("**[7]:** " + `${animescores[a].amount}`);
+                    case 70:
+                        animescore.push("**[7]:** " + `${animescores[a].amount}`);
                         break;
-                    case 80: animescore.push("**[8]:** " + `${animescores[a].amount}`);
+                    case 80:
+                        animescore.push("**[8]:** " + `${animescores[a].amount}`);
                         break;
-                    case 90: animescore.push("**[9]:** " + `${animescores[a].amount}`);
+                    case 90:
+                        animescore.push("**[9]:** " + `${animescores[a].amount}`);
                         break;
-                    case 100: animescore.push("**[10]:** " + `${animescores[a].amount}`);
+                    case 100:
+                        animescore.push("**[10]:** " + `${animescores[a].amount}`);
                         break;
                 };
             };
@@ -190,25 +203,35 @@ module.exports = async (bot, message, args, Discord, moment) => {
             let mangascores = stats.mangaScoreDistribution;
             for (let b = 0; b < mangascores.length; ++b) {
                 switch (mangascores[b].score) {
-                    case 10: mangascore.push("**[1]:** " + `${mangascores[b].amount}`);
+                    case 10:
+                        mangascore.push("**[1]:** " + `${mangascores[b].amount}`);
                         break;
-                    case 20: mangascore.push("**[2]:** " + `${mangascores[b].amount}`);
+                    case 20:
+                        mangascore.push("**[2]:** " + `${mangascores[b].amount}`);
                         break;
-                    case 30: mangascore.push("**[3]:** " + `${mangascores[b].amount}`);
+                    case 30:
+                        mangascore.push("**[3]:** " + `${mangascores[b].amount}`);
                         break;
-                    case 40: mangascore.push("**[4]:** " + `${mangascores[b].amount}`);
+                    case 40:
+                        mangascore.push("**[4]:** " + `${mangascores[b].amount}`);
                         break;
-                    case 50: mangascore.push("**[5]:** " + `${mangascores[b].amount}`);
+                    case 50:
+                        mangascore.push("**[5]:** " + `${mangascores[b].amount}`);
                         break;
-                    case 60: mangascore.push("**[6]:** " + `${mangascores[b].amount}`);
+                    case 60:
+                        mangascore.push("**[6]:** " + `${mangascores[b].amount}`);
                         break;
-                    case 70: mangascore.push("**[7]:** " + `${mangascores[b].amount}`);
+                    case 70:
+                        mangascore.push("**[7]:** " + `${mangascores[b].amount}`);
                         break;
-                    case 80: mangascore.push("**[8]:** " + `${mangascores[b].amount}`);
+                    case 80:
+                        mangascore.push("**[8]:** " + `${mangascores[b].amount}`);
                         break;
-                    case 90: mangascore.push("**[9]:** " + `${mangascores[b].amount}`);
+                    case 90:
+                        mangascore.push("**[9]:** " + `${mangascores[b].amount}`);
                         break;
-                    case 100: mangascore.push("**[10]:** " + `${mangascores[b].amount}`);
+                    case 100:
+                        mangascore.push("**[10]:** " + `${mangascores[b].amount}`);
                         break;
                 };
             };
@@ -260,6 +283,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 .addField('Favorite Years:', `${yearfav.join(' ')}`)
                 .addField('Last List Update:', `${lastupdated}`);
 
-            await message.channel.send(`${user}, here is the result for ${username}`, { embed });
+            await message.channel.send(`${user}, here is the result for ${username}`, {
+                embed
+            });
         });
 };
