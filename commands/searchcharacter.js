@@ -1,5 +1,5 @@
-import fetch from 'node-fetch';
-import query from "../data/characterquery.js";
+const fetch = require('node-fetch')
+const query = require("../data/characterquery.js");
 
 var emoji = [
     "❌", //X
@@ -24,7 +24,7 @@ var value1 = [
     `Reaction: ${emoji[7]}`
 ];
 
-export default async (bot, message, args, Discord, moment) => {
+module.exports = async (bot, message, args, Discord, moment) => {
 
     var nameundso = args.join(' ');
     var charactername;
@@ -58,13 +58,10 @@ export default async (bot, message, args, Discord, moment) => {
     };
 
     await fetch('https://graphql.anilist.co', {
-            method: 'post',
-            body: JSON.stringify(databody),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
+        method: 'post',
+        body: JSON.stringify(databody),
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+    })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
 
@@ -127,7 +124,8 @@ export default async (bot, message, args, Discord, moment) => {
                         "footer": {
                             "text": `Please choose by using the Reactions below!`,
                         },
-                        "fields": [{
+                        "fields": [
+                            {
                                 "name": field1[0],
                                 "value": value1[0]
                             },
@@ -147,7 +145,8 @@ export default async (bot, message, args, Discord, moment) => {
                         "footer": {
                             "text": `Please choose by using the Reactions below!`,
                         },
-                        "fields": [{
+                        "fields": [
+                            {
                                 "name": field1[0],
                                 "value": value1[0]
                             },
@@ -171,7 +170,8 @@ export default async (bot, message, args, Discord, moment) => {
                         "footer": {
                             "text": `Please choose by using the Reactions below!`,
                         },
-                        "fields": [{
+                        "fields": [
+                            {
                                 "name": field1[0],
                                 "value": value1[0]
                             },
@@ -199,7 +199,8 @@ export default async (bot, message, args, Discord, moment) => {
                         "footer": {
                             "text": `Please choose by using the Reactions below!`,
                         },
-                        "fields": [{
+                        "fields": [
+                            {
                                 "name": field1[0],
                                 "value": value1[0]
                             },
@@ -231,7 +232,8 @@ export default async (bot, message, args, Discord, moment) => {
                         "footer": {
                             "text": `Please choose by using the Reactions below!`,
                         },
-                        "fields": [{
+                        "fields": [
+                            {
                                 "name": field1[0],
                                 "value": value1[0]
                             },
@@ -267,7 +269,8 @@ export default async (bot, message, args, Discord, moment) => {
                         "footer": {
                             "text": `Please choose by using the Reactions below!`,
                         },
-                        "fields": [{
+                        "fields": [
+                            {
                                 "name": field1[0],
                                 "value": value1[0]
                             },
@@ -307,7 +310,8 @@ export default async (bot, message, args, Discord, moment) => {
                         "footer": {
                             "text": `Please choose by using the Reactions below!`,
                         },
-                        "fields": [{
+                        "fields": [
+                            {
                                 "name": field1[0],
                                 "value": value1[0]
                             },
@@ -350,33 +354,25 @@ export default async (bot, message, args, Discord, moment) => {
                     em1 = await message.channel.send(`${user}, Couldn't find any Results for "${args.join(" ")}"!`);
                     return;
                 case 1:
-                    em1 = await message.channel.send(`${user} is choosing a Character.`, {
-                        embed
-                    });
+                    em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[0]);
                     break;
                 case 2:
-                    em1 = await message.channel.send(`${user} is choosing a Character.`, {
-                        embed
-                    });
+                    em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[2]);
                     await em1.react(emoji[0]);
                     break;
                 case 3:
-                    em1 = await message.channel.send(`${user} is choosing a Character.`, {
-                        embed
-                    });
+                    em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[2]);
                     await em1.react(emoji[3]);
                     await em1.react(emoji[0]);
                     break;
                 case 4:
-                    em1 = await message.channel.send(`${user} is choosing a Character.`, {
-                        embed
-                    });
+                    em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[2]);
                     await em1.react(emoji[3]);
@@ -384,9 +380,7 @@ export default async (bot, message, args, Discord, moment) => {
                     await em1.react(emoji[0]);
                     break;
                 case 5:
-                    em1 = await message.channel.send(`${user} is choosing a Character.`, {
-                        embed
-                    });
+                    em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[2]);
                     await em1.react(emoji[3]);
@@ -395,9 +389,7 @@ export default async (bot, message, args, Discord, moment) => {
                     await em1.react(emoji[0]);
                     break;
                 case 6:
-                    em1 = await message.channel.send(`${user} is choosing a Character.`, {
-                        embed
-                    });
+                    em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[2]);
                     await em1.react(emoji[3]);
@@ -407,9 +399,7 @@ export default async (bot, message, args, Discord, moment) => {
                     await em1.react(emoji[0]);
                     break;
                 case 7:
-                    em1 = await message.channel.send(`${user} is choosing a Character.`, {
-                        embed
-                    });
+                    em1 = await message.channel.send(`${user} is choosing a Character.`, { embed });
                     await em1.react(emoji[1]);
                     await em1.react(emoji[2]);
                     await em1.react(emoji[3]);
@@ -425,10 +415,7 @@ export default async (bot, message, args, Discord, moment) => {
                 return emoji.includes(reaction.emoji.name) === true && user.id === uid;
             };
 
-            const collector = await em1.createReactionCollector(filter, {
-                max: 1,
-                time: 15000
-            });
+            const collector = await em1.createReactionCollector(filter, { max: 1, time: 15000 });
 
             collector.on('collect', async (reaction, reactionCollector) => {
                 let chosen = reaction.emoji.name;
@@ -505,21 +492,19 @@ export default async (bot, message, args, Discord, moment) => {
                     isin = "No Media in Database.";
                 } else {
                     for (let b = 0; b < isindatas.length; ++b) {
-                        let formati = format[b].node.format;
+                     let formati = format[b].node.format;
                         isindata.push("[" + isindatas[b].node.title.romaji + "]" + "(" + siteUrl[b].node.siteUrl + ")" + " (" + bot.caps(formati) + ")");
                     };
                 };
 
                 if (isindata.length < 1) {
-                    isin = "No Media in Database."
-                };
-
+                    isin = "No Media in Database."};
+              
                 if (isindata.length > 7) {
                     isindata.length = 7
                     isin = isindata.join("\n")
-                } else {
-                    isin = isindata.join("\n")
-                };
+                }else {
+                  isin = isindata.join("\n")};
 
                 let embed = new Discord.RichEmbed()
                     .setTitle(subname.replace("&#039;", "'"))
@@ -531,9 +516,7 @@ export default async (bot, message, args, Discord, moment) => {
                     .setDescription(description)
                     .addField("Character In:", isin);
 
-                await em1.edit(`${user}, here is the result for ${name}`, {
-                    embed
-                });
+                await em1.edit(`${user}, here is the result for ${name}`, { embed });
             });
 
             collector.on('end', collected => {

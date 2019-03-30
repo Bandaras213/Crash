@@ -1,4 +1,4 @@
-export default async (bot, message, args, Discord, moment) => {
+module.exports = async (bot, message, args, Discord, moment) => {
   let prefix = bot.config.prefix;
 
   message.author.send({
@@ -11,7 +11,8 @@ export default async (bot, message, args, Discord, moment) => {
       title: `${bot.user.username} commands Help`,
       url: "http://github.com/Bandaras213/Crash/wiki/Commands",
       description: "These are all Commands with a Description.",
-      fields: [{
+      fields: [
+        {
           name: `${prefix}help`,
           value: "Shows you this Embed."
         },

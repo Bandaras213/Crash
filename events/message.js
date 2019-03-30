@@ -1,4 +1,4 @@
-export default (bot, message, Discord, moment) => {
+module.exports = (bot, message, Discord, moment) => {
     if (message.author.equals(bot.user)) return;
     if (message.content.indexOf(bot.config.prefix) !== 0) return;
     const args = message.content.slice(bot.config.prefix.length).trim().split(/ +/g);

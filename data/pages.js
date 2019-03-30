@@ -1,4 +1,4 @@
-export default `
+module.exports = `
 query ($page: Int, $perPage: Int, $genre: String) {
 	Page (page: $page, perPage: $perPage) {
 		pageInfo {
