@@ -1,15 +1,13 @@
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 const query = require("../data/userquery.js");
-const toHex = require('colornames');
+const toHex = require("colornames");
 
 module.exports = async (bot, message, args, Discord, moment) => {
-
-    let nameofuser = args.join(' ');
+    let nameofuser = args.join(" ");
     let user = message.member.user;
     let uid = message.author.id;
     const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
     message.delete();
-
 
     if (args.length == 0) {
         return message.channel.send(`${user}, I need a Username to search for! (Usage: €user Username)`);
@@ -18,7 +16,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     await query;
 
     let variables = {
-        name: nameofuser,
+        name: nameofuser
     };
 
     let databody = {
@@ -26,17 +24,16 @@ module.exports = async (bot, message, args, Discord, moment) => {
         variables: variables
     };
 
-    await fetch('https://graphql.anilist.co', {
-        method: 'post',
+    await fetch("https://graphql.anilist.co", {
+        method: "post",
         body: JSON.stringify(databody),
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            "Content-Type": "application/json",
+            Accept: "application/json"
         }
     })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
-
             if (fetch1.data.User == null) {
                 return message.channel.send(`${user}, Couldn't find a matching Anilist for '**${args.join(" ")}**'`);
             };
@@ -62,7 +59,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
             let color = fetch1.data.User.options.profileColor;
             let colorfilter = toHex(`${color}`);
-            color = colorfilter.replace('#', '');
+            color = colorfilter.replace("#", "");
             let siteUrl = fetch1.data.User.siteUrl;
             let updatedAt = fetch1.data.User.updatedAt;
 
@@ -85,9 +82,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
             } else {
                 if (favoritanimes.length > 3) {
                     favoritanimes.length = 3;
-                    favoritanime = favoritanimes.join(' ');
+                    favoritanime = favoritanimes.join(" ");
                 } else {
-                    favoritanimes.join(' ');
+                    favoritanimes.join(" ");
                 };
             };
 
@@ -109,9 +106,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
             } else {
                 if (favoritmangas.length > 3) {
                     favoritmangas.length = 3;
-                    favoritmanga = favoritmangas.join(' ');
+                    favoritmanga = favoritmangas.join(" ");
                 } else {
-                    favoritmanga = favoritmangas.join(' ');
+                    favoritmanga = favoritmangas.join(" ");
                 };
             };
 
@@ -137,26 +134,27 @@ module.exports = async (bot, message, args, Discord, moment) => {
             } else {
                 if (favoritcharacters.length > 3) {
                     favoritcharacters.length = 3;
-                    favoritcharacter = favoritcharacters.join(' ');
+                    favoritcharacter = favoritcharacters.join(" ");
                 } else {
-                    favoritcharacter = favoritcharacters.join(' ');
+                    favoritcharacter = favoritcharacters.join(" ");
                 };
             };
 
             let stats = fetch1.data.User.stats;
             let time;
-            let timeconvert = (n) => {
+
+            function timeConvert(n) {
                 if (isNaN(n) || n == null) {
-                    return time = "Can't Calculate Time with no Episodes watched.";
-                };
-                return time = Math.floor(n / 24 / 60) + " " + "Days" + " " + Math.floor(n / 60 % 24) + " " + 'Hours' + " " + Math.floor(n % 60) + " " + 'Minutes';
+                    return (time = "Can't Calculate Time with no Episodes watched.");
+                }
+                return (time = Math.floor(n / 24 / 60) + " " + "Days" + " " + Math.floor((n / 60) % 24) + " " + "Hours" + " " + Math.floor(n % 60) + " " + "Minutes");
             };
 
             let animewatchtime = stats.watchedTime;
             if (animewatchtime == null) {
                 time = "Can't Calculate Time with no Episodes watched.";
             } else {
-                timeconvert(animewatchtime);
+                timeConvert(animewatchtime);
             };
 
             let anistats = stats.animeStatusDistribution;
@@ -259,7 +257,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             let lastupdated;
             lastupdated = new Date(updatedAt * 1000);
             lastupdated = lastupdated.toUTCString();
-            lastupdated = `${moment(lastupdated).format('DD.MM.YYYY')}` + " at " + `${moment(lastupdated).format('hh:mm a')}`;
+            lastupdated = `${moment(lastupdated).format("DD.MM.YYYY")}` + " at " + `${moment(lastupdated).format("hh:mm a")}`;
 
             const embed = new Discord.RichEmbed()
                 .setTitle(username)
@@ -270,18 +268,18 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 .setThumbnail(avatar)
                 .setTimestamp()
                 .setURL(siteUrl)
-                .addField('Favorite Characters:', `${favoritcharacter}`)
-                .addField('Favorite Animes:', `${favoritanime}`)
-                .addField('Time Spend Watching Anime:', `${time}`)
-                .addField('Anime List:', "**Watching:** " + `${anistats[0].amount}` + "\n" + "**Plan to Watch:** " + `${anistats[1].amount}` + "\n" + "**Completed:** " + `${anistats[2].amount}` + "\n" + "**Dropped:** " + `${anistats[3].amount}` + "\n" + "**Paused:** " + `${anistats[4].amount}`)
-                .addField('Anime Scores (Score: Amount):', `${animescore.join(' ')}`)
-                .addField('Favorite Mangas:', `${favoritmanga}`)
-                .addField('Manga Chapters Read:', `${chapterread}`)
-                .addField('Manga List:', "**Reading:** " + `${mangastats[0].amount}` + "\n" + "**Plan to Read:** " + `${mangastats[1].amount}` + "\n" + "**Completed:** " + `${mangastats[2].amount}` + "\n" + "**Dropped:** " + `${mangastats[3].amount}` + "\n" + "**Paused:** " + `${mangastats[4].amount}`)
-                .addField('Manga Scores (Score: Amount):', `${mangascore.join(' ')}`)
-                .addField('Favorite Genres:', `${genrefav.join(' ')}`)
-                .addField('Favorite Years:', `${yearfav.join(' ')}`)
-                .addField('Last List Update:', `${lastupdated}`);
+                .addField("Favorite Characters:", `${favoritcharacter}`)
+                .addField("Favorite Animes:", `${favoritanime}`)
+                .addField("Time Spend Watching Anime:", `${time}`)
+                .addField("Anime List:", "**Watching:** " + `${anistats[0].amount}` + "\n" + "**Plan to Watch:** " + `${anistats[1].amount}` + "\n" + "**Completed:** " + `${anistats[2].amount}` + "\n" + "**Dropped:** " + `${anistats[3].amount}` + "\n" + "**Paused:** " + `${anistats[4].amount}`)
+                .addField("Anime Scores (Score: Amount):", `${animescore.join(" ")}`)
+                .addField("Favorite Mangas:", `${favoritmanga}`)
+                .addField("Manga Chapters Read:", `${chapterread}`)
+                .addField("Manga List:", "**Reading:** " + `${mangastats[0].amount}` + "\n" + "**Plan to Read:** " + `${mangastats[1].amount}` + "\n" + "**Completed:** " + `${mangastats[2].amount}` + "\n" + "**Dropped:** " + `${mangastats[3].amount}` + "\n" + "**Paused:** " + `${mangastats[4].amount}`)
+                .addField("Manga Scores (Score: Amount):", `${mangascore.join(" ")}`)
+                .addField("Favorite Genres:", `${genrefav.join(" ")}`)
+                .addField("Favorite Years:", `${yearfav.join(" ")}`)
+                .addField("Last List Update:", `${lastupdated}`);
 
             await message.channel.send(`${user}, here is the result for ${username}`, { embed });
         });

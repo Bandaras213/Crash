@@ -1,9 +1,8 @@
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 const query = require("../data/staffquery.js");
 
 module.exports = async (bot, message, args, Discord, moment) => {
-
-  let staffname = args.join(' ');
+  let staffname = args.join(" ");
   let color = Math.floor(Math.random() * 16777214) + 1;
   let user = message.member.user;
   const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
@@ -16,7 +15,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
   await query;
 
   let variables = {
-    search: staffname,
+    search: staffname
   };
 
   let databody = {
@@ -24,25 +23,24 @@ module.exports = async (bot, message, args, Discord, moment) => {
     variables: variables
   };
 
-  await fetch('https://graphql.anilist.co', {
-    method: 'post',
+  await fetch("https://graphql.anilist.co", {
+    method: "post",
     body: JSON.stringify(databody),
     headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      "Content-Type": "application/json",
+      Accept: "application/json"
     }
   })
     .then(fetch1 => fetch1.json())
     .then(async fetch1 => {
-
       if (fetch1.data.Staff == null) {
         return message.channel.send(`${user}, Couldn't find a matching Staffmember for '**${args.join(" ")}**'`);
-      };
+      }
 
       let name = fetch1.data.Staff.name.first;
       if (fetch1.data.Staff.name.last != null) {
         name += ` ${fetch1.data.Staff.name.last}`;
-      };
+      }
 
       let namenative = fetch1.data.Staff.name.native;
       let staffimage = fetch1.data.Staff.image.large;
@@ -86,7 +84,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             break;
           case staffmedia[3]:
             staffmediasort3.push(staffmedia[d]);
-            staffmediasort3.push(staffmedia[d + 1])
+            staffmediasort3.push(staffmedia[d + 1]);
             break;
           case staffmedia[4]:
             staffmediasort4.push(staffmedia[d]);
@@ -112,8 +110,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
             staffmediasort9.push(staffmedia[d]);
             staffmediasort9.push(staffmedia[d + 1]);
             break;
-        };
-      };
+        }
+      }
 
       let staffmedia1;
       staffmedia1 = staffmediasort0.concat(staffmediasort1, staffmediasort2, staffmediasort3, staffmediasort4, staffmediasort5, staffmediasort6, staffmediasort7, staffmediasort8, staffmediasort9);
@@ -134,12 +132,12 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
             if (charactersedges[ab].node.name.last != null) {
               charactername += ` ${charactersedges[ab].node.name.last}`;
-            };
+            }
 
             let characterurl = charactersedges[ab].node.siteUrl;
             if (charrole === "Main") {
               characters.push("[" + mediatitle + "]" + "(" + mediaurl + ")" + "\n" + "(" + "\u200b" + "[" + charactername + "]" + "(" + characterurl + ")" + ")");
-            };
+            }
 
             if (charrole === "Supporting") {
               characters1.push("[" + mediatitle + "]" + "(" + mediaurl + ")" + "\n" + "(" + "\u200b" + "[" + charactername + "]" + "(" + characterurl + ")" + ")");
@@ -158,7 +156,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
       while (rannumb2.length < characters1.length) {
         var r = Math.floor(Math.random() * characters1.length) + 0;
         if (rannumb2.indexOf(r) === -1) rannumb2.push(r);
-      }
+      };
 
       let rdmcharacter1 = [];
       if (characters.length < 1) {
@@ -187,11 +185,24 @@ module.exports = async (bot, message, args, Discord, moment) => {
       };
 
       if (description.length > 2045) {
-        description = description.replace(/<[^>]*>/g, ' ').replace(/&#039;/g, "'").replace(/&quot;/g, '"').replace(/\s{2,}/g, ' ').replace(/__/g, "").trim().substring(0, 2045) + "...";
+        description =
+          description
+            .replace(/<[^>]*>/g, " ")
+            .replace(/&#039;/g, "'")
+            .replace(/&quot;/g, '"')
+            .replace(/\s{2,}/g, " ")
+            .replace(/__/g, "")
+            .trim()
+            .substring(0, 2045) + "...";
       } else {
-        description = description.replace(/<[^>]*>/g, ' ').replace(/&#039;/g, "'").replace(/&quot;/g, '"').replace(/\s{2,}/g, ' ').replace(/__/g, "").trim();
+        description = description
+          .replace(/<[^>]*>/g, " ")
+          .replace(/&#039;/g, "'")
+          .replace(/&quot;/g, '"')
+          .replace(/\s{2,}/g, " ")
+          .replace(/__/g, "")
+          .trim();
       };
-
 
       const embed = new Discord.RichEmbed()
         .setTitle(name + "," + " " + namenative)
@@ -204,7 +215,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
         .addField("Language:", bot.caps(stafflanguage))
         .addField("Media:", uniqstaff)
         .addField("Main Characters:", rdmcharacter1)
-        .addField("Support Characters", rdmcharacter2)
+        .addField("Support Characters", rdmcharacter2);
       await message.channel.send(`${user}, here is the result for ${staffname}`, { embed });
     });
 };

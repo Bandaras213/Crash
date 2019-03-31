@@ -84,4 +84,4 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String, $genre: String) {
 		}
 	}
 }
-}`;
+}`

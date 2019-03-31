@@ -35,4 +35,4 @@ query ($search: String, $id: Int, $page: Int, $perPage: Int) {
 		}
 	}
 }
-}`;
+}`

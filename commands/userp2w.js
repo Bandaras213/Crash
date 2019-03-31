@@ -2,87 +2,57 @@ const fetch = require("node-fetch");
 const moment = require("moment");
 const fs = require("fs");
 const p2w = require("../data/userp2w.js");
-const { getColorFromURL } = require('color-thief-node');
-const rgbHex = require('rgb-hex');
+const { getColorFromURL } = require("color-thief-node");
+const rgbHex = require("rgb-hex");
 
 module.exports = async (bot, message, args, Discord) => {
-
     let user = message.author;
     let color;
     let UserlistDB = "data/userlists.json";
-    let UserlistDBobj = JSON.parse(fs.readFileSync(UserlistDB, 'utf8'));
+    let UserlistDBobj = JSON.parse(fs.readFileSync(UserlistDB, "utf8"));
     let anilistid;
     let anilistname = UserlistDBobj.userlist.find(did => did.anilistusername == args[0]);
     let anilistuserindex;
-    let listindex;
-    let mediatype;
     let variables;
     message.delete();
 
     if (args[0] == undefined) {
         return message.channel.send(`${user}, Looks like you didn't provide a Anilist Username!`);
-    };
-
-    if (args[1] != undefined) {
-        mediatype = bot.allcaps(args[1])
-    };
-    if (mediatype != "MANGA") {
-        mediatype = "ANIME"
-    };
+    }
 
     if (anilistname == undefined) {
-        let userName = args[0]
-        listindex = 0
-        if (mediatype == undefined || mediatype == "ANIME") {
-            variables = {
-                userName: userName,
-                type: "ANIME",
-                MediaListStatus: "PLANNING"
-            };
-        } else {
-            variables = {
-                userName: userName,
-                type: mediatype,
-                MediaListStatus: "PLANNING"
-            }
+        let userName = args[0];
+        listindex = 0;
+        variables = {
+            userName: userName,
+            type: "ANIME",
+            MediaListStatus: "PLANNING"
         };
     } else {
         anilistuserindex = UserlistDBobj.userlist.findIndex(did => did.anilistusername == args[0]);
         anilistid = await UserlistDBobj.userlist[anilistuserindex].anilistid;
-        listindex = 0
-        if (mediatype == undefined || mediatype == "ANIME") {
-            variables = {
-                userId: anilistid,
-                type: "ANIME",
-                MediaListStatus: "PLANNING"
-            }
-        } else {
-            variables = {
-                userId: anilistid,
-                type: mediatype,
-                MediaListStatus: "PLANNING"
-            }
-        }
-    };
+        listindex = 0;
+        variables = {
+            userId: anilistid,
+            type: "ANIME",
+            MediaListStatus: "PLANNING"
+        };
+    }
 
-    await p2w
+    await p2w;
 
     let databody = {
         query: p2w,
         variables: variables
     };
 
-    await fetch('https://graphql.anilist.co', {
-        method: 'post',
+    await fetch("https://graphql.anilist.co", {
+        method: "post",
         body: JSON.stringify(databody),
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
+        headers: { "Content-Type": "application/json", Accept: "application/json" }
     })
         .then(fetch1 => fetch1.json())
         .then(async fetch1 => {
-
             let i = Math.floor(Math.random() * fetch1.data.MediaListCollection.lists[listindex].entries.length) + 0;
 
             let nsfw = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.isAdult;
@@ -97,22 +67,14 @@ module.exports = async (bot, message, args, Discord) => {
                 animetitle = "Unknown.";
             };
 
-            let mangatitle;
-            if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.romaji == null) {
-                mangatitle = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.english;
-            } else {
-                mangatitle = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.romaji;
-            };
-
-            if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.romaji == null && fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.english == null) {
-                mangatitle = "Unknown.";
-            };
-
             let description;
             if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.description == null) {
                 description = "No Description found.";
             } else {
-                description = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.description.replace(/<[^>]*>/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                description = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.description
+                    .replace(/<[^>]*>/g, " ")
+                    .replace(/\s{2,}/g, " ")
+                    .trim();
             };
 
             let coverIMG;
@@ -124,7 +86,7 @@ module.exports = async (bot, message, args, Discord) => {
 
             let posterIMG;
             if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.bannerImage == null) {
-                posterIMG = '';
+                posterIMG = "";
             } else {
                 posterIMG = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.bannerImage;
             };
@@ -134,27 +96,6 @@ module.exports = async (bot, message, args, Discord) => {
                 animeurl = "https://anilist.co";
             } else {
                 animeurl = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.siteUrl;
-            };
-
-            let mangaurl;
-            if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.siteUrl == null) {
-                mangaurl = "https://anilist.co";
-            } else {
-                mangaurl = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.siteUrl;
-            };
-
-            let chapters = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.chapterd;
-            if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.chapters == null) {
-                chapters = "No Chapters in Database.";
-            } else {
-                chapters = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.chapters;
-            };
-
-            let volumes;
-            if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.volumes == null) {
-                volumes = "No Volumes in Database.";
-            } else {
-                volumes = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.volumes;
             };
 
             let video;
@@ -187,7 +128,7 @@ module.exports = async (bot, message, args, Discord) => {
                 genres = genre1.join(", ");
             };
 
-            let status
+            let status;
             if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.status == null) {
                 status = "No Status found.";
             } else {
@@ -226,7 +167,7 @@ module.exports = async (bot, message, args, Discord) => {
                 let dateairing;
                 dateairing = new Date(fetch1.data.MediaListCollection.lists[listindex].entries[i].media.nextAiringEpisode.airingAt * 1000);
                 dateairing = dateairing.toUTCString();
-                dateairing = `${moment(dateairing).format('DD.MM.YYYY')}` + " at " + `${moment(dateairing).format('hh:mm a')}`;
+                dateairing = `${moment(dateairing).format("DD.MM.YYYY")}` + " at " + `${moment(dateairing).format("hh:mm a")}`;
                 nextepi = "Episode " + fetch1.data.MediaListCollection.lists[listindex].entries[i].media.nextAiringEpisode.episode + ", Airing on: " + dateairing;
             };
 
@@ -247,9 +188,9 @@ module.exports = async (bot, message, args, Discord) => {
             };
 
             let time;
-            let timeconvert = (n) => {
+            let timeConvert = (n) => {
                 if (isNaN(n) || n == null) {
-                    return time = "Can't Calculate time without Episodes or Episode Length.";
+                    return (time = "Can't Calculate time without Episodes or Episode Length.");
                 };
 
                 let hours = Math.floor(n / 60);
@@ -269,7 +210,7 @@ module.exports = async (bot, message, args, Discord) => {
                 runtime = "Can't Calculate Runtime without Episodes or Episode length.";
             } else {
                 runtime = episodes * episodemins;
-                timeconvert(runtime);
+                timeConvert(runtime);
             };
 
             let avgRating;
@@ -279,7 +220,7 @@ module.exports = async (bot, message, args, Discord) => {
                 avgRating = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.averageScore + "%";
             };
 
-            let sourcefilter
+            let sourcefilter;
             if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.source == null || fetch1.data.MediaListCollection.lists[listindex].entries[i].media.source == undefined) {
                 sourcefilter = "No Source in Database.";
             } else {
@@ -290,61 +231,33 @@ module.exports = async (bot, message, args, Discord) => {
             color = rgbHex(`${dominantColor}`);
 
             let embed;
-            if (mediatype == "ANIME") {
-                embed = new Discord.RichEmbed()
-                    .setTitle(animetitle)
-                    .setColor(color)
-                    .setDescription(description)
-                    .setFooter(animetitle)
-                    .setImage(posterIMG)
-                    .setThumbnail(coverIMG)
-                    .setTimestamp()
-                    .setURL(animeurl)
-                    .addField('Preview Trailer:', `${video}`)
-                    .addField('Type:', `${bot.caps(format.split("_"))}`)
-                    .addField('Genres:', `${genres}`)
-                    .addField('Status:', `${status}`)
-                    .addField('Aired:', `From ${season} ${start} ${end}`)
-                    .addField('Next Episode:', `${nextepi}`)
-                    .addField('Episodes:', episodes)
-                    .addField('Episode Length:', `${episodemin}`)
-                    .addField('Estimated Total Runtime:', `${time}`)
-                    .addField('Community Rating:', avgRating)
-                    .addField('Source:', `${sourcefilter}`);
 
-                if (nsfw == false) {
-                    await message.channel.send(`${user}, Your Random Plan 2 Watch Anime is: ${animetitle}`, { embed });
-                } else {
-                    await message.channel.send(`${user}, Your randomly selected Plan 2 Watch Anime is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                    await message.author.send(`${user}, Your Random Plan 2 Watch Anime is: ${animetitle}`, { embed });
-                };
-            };
+            embed = new Discord.RichEmbed()
+                .setTitle(animetitle)
+                .setColor(color)
+                .setDescription(description)
+                .setFooter(animetitle)
+                .setImage(posterIMG)
+                .setThumbnail(coverIMG)
+                .setTimestamp()
+                .setURL(animeurl)
+                .addField("Preview Trailer:", `${video}`)
+                .addField("Type:", `${bot.caps(format.split("_"))}`)
+                .addField("Genres:", `${genres}`)
+                .addField("Status:", `${status}`)
+                .addField("Aired:", `From ${season} ${start} ${end}`)
+                .addField("Next Episode:", `${nextepi}`)
+                .addField("Episodes:", episodes)
+                .addField("Episode Length:", `${episodemin}`)
+                .addField("Estimated Total Runtime:", `${time}`)
+                .addField("Community Rating:", avgRating)
+                .addField("Source:", `${sourcefilter}`);
 
-            if (mediatype == "MANGA" && status == "Finished") {
-                embed = new Discord.RichEmbed()
-                    .setTitle(mangatitle)
-                    .setColor(color)
-                    .setDescription(description)
-                    .setFooter(mangatitle)
-                    .setImage(posterIMG)
-                    .setThumbnail(coverIMG)
-                    .setTimestamp()
-                    .setURL(mangaurl)
-                    .addField('Type:', `${bot.caps(format.split("_"))}`)
-                    .addField('Genres:', `${genres}`)
-                    .addField('Status:', `${status}`)
-                    .addField('Released:', `${start} ${end}`)
-                    .addField('Chapter:', chapters)
-                    .addField('Volumes:', `${volumes}`)
-                    .addField('Community Rating:', avgRating)
-                    .addField('Source:', `${sourcefilter}`);
-
-                if (nsfw == false) {
-                    await message.channel.send(`${user}, Your Random Plan 2 Read Manga is: ${mangatitle}`, { embed });
-                } else {
-                    await message.channel.send(`${user}, Your randomly selected Plan 2 Read Manga is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                    await message.author.send(`${user}, Your Random Plan 2 Read Manga is: ${mangatitle}`, { embed });
-                };
+            if (nsfw == false) {
+                await message.channel.send(`${user}, Your Random Plan 2 Watch Anime is: ${animetitle}`, { embed });
+            } else {
+                await message.channel.send(`${user}, Your randomly selected Plan 2 Watch Anime is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
+                await message.author.send(`${user}, Your Random Plan 2 Watch Anime is: ${animetitle}`, { embed });
             };
         });
 };

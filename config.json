@@ -1,9 +1,9 @@
 {
-    "token": "DISCORD_TOKEN",
-    "prefix": "€",
-    "botactivity": {
-        "activity": "Restarted",
-        "type": "Watching",
-        "status": "dnd"
-    }
+  "token": "DISCORD_TOKEN",
+  "prefix": "€",
+  "botactivity": {
+    "activity": "Restarted",
+    "type": "Watching",
+    "status": "dnd"
+  }
 }

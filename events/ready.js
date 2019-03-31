@@ -1,6 +1,5 @@
 const ms = require("ms");
-module.exports = (bot) => {
-
+module.exports = bot => {
   let type;
   let status;
   let activity;
@@ -32,17 +31,11 @@ module.exports = (bot) => {
   });
 
   setInterval(() => {
-    let rdmactivity = [
-      "Hentaihaven.org",
-      "hanime.tv",
-      "hentai2read.com",
-      "pururin.io",
-    ];
-
-    let randAct = Math.floor((Math.random() * rdmactivity.length));
+    let rdmactivity = ["Hentaihaven.org", "hanime.tv", "hentai2read.com", "pururin.io"];
+    let randAct = Math.floor(Math.random() * rdmactivity.length);
     bot.user.setPresence({
       game: {
-        name: (`${rdmactivity[randAct]}`),
+        name: `${rdmactivity[randAct]}`,
         type: `${type}`
       },
       status: `${status}`
