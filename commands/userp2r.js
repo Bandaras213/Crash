@@ -1,5 +1,4 @@
 const fetch = require("node-fetch");
-const moment = require("moment");
 const fs = require("fs");
 const p2w = require("../data/userp2w.js");
 const { getColorFromURL } = require("color-thief-node");
@@ -57,7 +56,6 @@ module.exports = async (bot, message, args, Discord) => {
       let i = Math.floor(Math.random() * fetch1.data.MediaListCollection.lists[listindex].entries.length) + 0;
 
       let nsfw = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.isAdult;
-      let animetitle;
 
       let mangatitle;
       if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.romaji == null) {
