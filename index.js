@@ -34,9 +34,9 @@ bot.commands.set("staff", require("./commands/searchstaff.js"));
 bot.commands.set("poll", require("./commands/poll.js"));
 bot.commands.set("test", require("./commands/test.js"));
 bot.commands.set("p2w", require("./commands/userp2w.js"));
+bot.commands.set("p2r", require("./commands/userp2r.js"));
 bot.commands.set("antibully", require("./commands/antibully.js"));
 bot.commands.set("antiantibully", require("./commands/antiantibully.js"));
-//bot.commands.set('', require('./commands/.js'));
 
 bot.login(bot.token);
 
