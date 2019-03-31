@@ -1,8 +1,9 @@
 const Discord = require("discord.js");
 const moment = require('moment');
+var bot = new Discord.Client();
 let token
 
-var bot = new Discord.Client();
+bot.token = token;
 bot.config = require('./config.json');
 bot.log = require('./functions/log.js');
 bot.caps = require('./functions/capitalize.js');
@@ -13,8 +14,6 @@ if (process.env.DISCORDTOKEN == null) {
 } else {
   token = process.env.DISCORDTOKEN;
 };
-
-bot.token = token;
 
 bot.on('ready', () => require('./events/ready.js')(bot));
 bot.on('message', message => require('./events/message.js')(bot, message, Discord, moment));
@@ -42,7 +41,6 @@ bot.login(bot.token);
 
 
 //Webserver
-
 const http = require('http');
 const express = require('express');
 const app = express();

@@ -14,7 +14,7 @@ module.exports = async (bot, message, args, Discord) => {
     let findmentiondiscid
     if (mention) {
         findmentiondiscid = UserlistDBobj.userlist.find(did => did.discid == mention.id);
-    }
+    };
     let indexuserdiscid;
     let indexmentiondiscid;
     let anilistid;
