@@ -32,16 +32,18 @@ module.exports = async (bot, message, args, Discord) => {
 
     if (anilistname == undefined) {
         let userName = args[0]
-        listindex = 3
+        listindex = 0
         if (mediatype == undefined || mediatype == "ANIME") {
             variables = {
                 userName: userName,
-                type: "ANIME"
+                type: "ANIME",
+                MediaListStatus: "PLANNING"
             };
         } else {
             variables = {
                 userName: userName,
-                type: mediatype
+                type: mediatype,
+                MediaListStatus: "PLANNING"
             }
         };
     } else {
