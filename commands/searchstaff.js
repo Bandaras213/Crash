@@ -1,9 +1,8 @@
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 const query = require("../data/staffquery.js");
 
 module.exports = async (bot, message, args, Discord, moment) => {
-
-  let staffname = args.join(' ');
+  let staffname = args.join(" ");
   let color = Math.floor(Math.random() * 16777214) + 1;
   let user = message.member.user;
   const anilistLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Flogo_al.png?1543900749555";
@@ -11,12 +10,12 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
   if (args.length == 0) {
     return message.channel.send(`${user}, I need a Staff Name to search for! (Usage: €staff Name)`);
-  };
+  }
 
   await query;
 
   let variables = {
-    search: staffname,
+    search: staffname
   };
 
   let databody = {
@@ -24,28 +23,26 @@ module.exports = async (bot, message, args, Discord, moment) => {
     variables: variables
   };
 
-  await fetch('https://graphql.anilist.co', {
-      method: 'post',
-      body: JSON.stringify(databody),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    })
+  await fetch("https://graphql.anilist.co", {
+    method: "post",
+    body: JSON.stringify(databody),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    }
+  })
     .then(fetch1 => fetch1.json())
     .then(async fetch1 => {
-
       if (fetch1.data.Staff == null) {
         return message.channel.send(`${user}, Couldn't find a matching Staffmember for '**${args.join(" ")}**'`);
-      };
+      }
 
       let name = fetch1.data.Staff.name.first;
       if (fetch1.data.Staff.name.last != null) {
         name += ` ${fetch1.data.Staff.name.last}`;
-      };
+      }
 
       let namenative = fetch1.data.Staff.name.native;
-      //let stafflanguage = fetch1.data.Staff.language;
       let staffimage = fetch1.data.Staff.image.large;
       let description = fetch1.data.Staff.description;
       let staffurl = fetch1.data.Staff.siteUrl;
@@ -59,7 +56,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
         let mediaurl = staffedges[a].node.siteUrl;
         staffmedia.push(staffrole + ":");
         staffmedia.push("[" + mediatitle + "]" + "(" + mediaurl + ")" + " " + "(" + mediatype + ")");
-      };
+      }
 
       let staffmediasort0 = [];
       let staffmediasort1 = [];
@@ -87,7 +84,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             break;
           case staffmedia[3]:
             staffmediasort3.push(staffmedia[d]);
-            staffmediasort3.push(staffmedia[d + 1])
+            staffmediasort3.push(staffmedia[d + 1]);
             break;
           case staffmedia[4]:
             staffmediasort4.push(staffmedia[d]);
@@ -113,8 +110,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
             staffmediasort9.push(staffmedia[d]);
             staffmediasort9.push(staffmedia[d + 1]);
             break;
-        };
-      };
+        }
+      }
 
       let staffmedia1;
       staffmedia1 = staffmediasort0.concat(staffmediasort1, staffmediasort2, staffmediasort3, staffmediasort4, staffmediasort5, staffmediasort6, staffmediasort7, staffmediasort8, staffmediasort9);
@@ -135,25 +132,25 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
             if (charactersedges[ab].node.name.last != null) {
               charactername += ` ${charactersedges[ab].node.name.last}`;
-            };
+            }
 
             let characterurl = charactersedges[ab].node.siteUrl;
             if (charrole === "Main") {
               characters.push("[" + mediatitle + "]" + "(" + mediaurl + ")" + "\n" + "(" + "\u200b" + "[" + charactername + "]" + "(" + characterurl + ")" + ")");
-            };
+            }
 
             if (charrole === "Supporting") {
               characters1.push("[" + mediatitle + "]" + "(" + mediaurl + ")" + "\n" + "(" + "\u200b" + "[" + charactername + "]" + "(" + characterurl + ")" + ")");
-            };
-          };
-        };
-      };
+            }
+          }
+        }
+      }
 
       var rannumb1 = [];
       while (rannumb1.length < characters.length) {
         var r = Math.floor(Math.random() * characters.length) + 0;
         if (rannumb1.indexOf(r) === -1) rannumb1.push(r);
-      };
+      }
 
       var rannumb2 = [];
       while (rannumb2.length < characters1.length) {
@@ -167,12 +164,12 @@ module.exports = async (bot, message, args, Discord, moment) => {
       } else {
         for (let rdm = 0; rdm < rannumb1.length; rdm++) {
           rdmcharacter1.push(characters[rannumb1[rdm]]);
-        };
-      };
+        }
+      }
 
       if (rdmcharacter1.length > 5) {
         rdmcharacter1.length = 5;
-      };
+      }
 
       let rdmcharacter2 = [];
       if (characters1.length < 1) {
@@ -180,19 +177,32 @@ module.exports = async (bot, message, args, Discord, moment) => {
       } else {
         for (let rdm = 0; rdm < rannumb2.length; rdm++) {
           rdmcharacter2.push(characters1[rannumb2[rdm]]);
-        };
-      };
+        }
+      }
 
       if (rdmcharacter2.length > 5) {
         rdmcharacter2.length = 5;
-      };
+      }
 
       if (description.length > 2045) {
-        description = description.replace(/<[^>]*>/g, ' ').replace(/&#039;/g, "'").replace(/&quot;/g, '"').replace(/\s{2,}/g, ' ').replace(/__/g, "").trim().substring(0, 2045) + "...";
+        description =
+          description
+            .replace(/<[^>]*>/g, " ")
+            .replace(/&#039;/g, "'")
+            .replace(/&quot;/g, '"')
+            .replace(/\s{2,}/g, " ")
+            .replace(/__/g, "")
+            .trim()
+            .substring(0, 2045) + "...";
       } else {
-        description = description.replace(/<[^>]*>/g, ' ').replace(/&#039;/g, "'").replace(/&quot;/g, '"').replace(/\s{2,}/g, ' ').replace(/__/g, "").trim();
-      };
-
+        description = description
+          .replace(/<[^>]*>/g, " ")
+          .replace(/&#039;/g, "'")
+          .replace(/&quot;/g, '"')
+          .replace(/\s{2,}/g, " ")
+          .replace(/__/g, "")
+          .trim();
+      }
 
       const embed = new Discord.RichEmbed()
         .setTitle(name + "," + " " + namenative)
@@ -205,9 +215,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
         .addField("Language:", bot.caps(stafflanguage))
         .addField("Media:", uniqstaff)
         .addField("Main Characters:", rdmcharacter1)
-        .addField("Support Characters", rdmcharacter2)
-      await message.channel.send(`${user}, here is the result for ${staffname}`, {
-        embed
-      });
+        .addField("Support Characters", rdmcharacter2);
+      await message.channel.send(`${user}, here is the result for ${staffname}`, { embed });
     });
 };
