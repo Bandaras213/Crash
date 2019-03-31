@@ -47,16 +47,18 @@ module.exports = async (bot, message, args, Discord) => {
     } else {
         anilistuserindex = UserlistDBobj.userlist.findIndex(did => did.anilistusername == args[0]);
         anilistid = await UserlistDBobj.userlist[anilistuserindex].anilistid;
-        listindex = 1
+        listindex = 0
         if (mediatype == undefined || mediatype == "ANIME") {
             variables = {
                 userId: anilistid,
-                type: "ANIME"
+                type: "ANIME",
+                MediaListStatus: "PLANNING"
             }
         } else {
             variables = {
                 userId: anilistid,
-                type: mediatype
+                type: mediatype,
+                MediaListStatus: "PLANNING"
             }
         }
     };
