@@ -37,6 +37,7 @@ bot.commands.set("p2w", require("./commands/userp2w.js"));
 bot.commands.set("p2r", require("./commands/userp2r.js"));
 bot.commands.set("antibully", require("./commands/antibully.js"));
 bot.commands.set("antiantibully", require("./commands/antiantibully.js"));
+bot.commands.set("yt", require("./commands/youtubesearch.js"));
 
 bot.login(bot.token);
 

@@ -11,26 +11,64 @@ module.exports = async (bot, message, args, Discord) => {
   let UserlistDBobj = JSON.parse(fs.readFileSync(UserlistDB, "utf8"));
   let anilistid;
   let anilistname = UserlistDBobj.userlist.find(did => did.anilistusername == args[0]);
+  let findmentiondiscid;
+  let finduserdiscid = UserlistDBobj.userlist.find(did => did.discid == user.id);
   let anilistuserindex;
-  let listindex;
+  let indexmentiondiscid;
   let variables;
+  let userName;
+  let test;
+  let listindex;
+  let mentioncheck = false;
+  let mention = message.mentions.users.first();
+  if (mention) {
+    findmentiondiscid = UserlistDBobj.userlist.find(did => did.discid == mention.id);
+    mentioncheck = true;
+  }
+
   message.delete();
 
-  if (args[0] == undefined) {
-    return message.channel.send(`${user}, Looks like you didn't provide a Anilist Username!`);
-  };
+  if (finduserdiscid == undefined && args[0] == undefined) {
+    return message.channel.send(`${user}, Looks like you don't have a Anilist! Save a Anilist by using €anilist save [name]!`);
+  }
 
-  if (anilistname == undefined) {
-    let userName = args[0];
+  if (mention && findmentiondiscid == undefined && args[0] == undefined) {
+    return message.channel.send(`${user}, Looks like ${mention} doesn't have a Anilist!`);
+  }
+
+  if (anilistname == undefined && mentioncheck == false && args[0] != undefined) {
+    test = 1;
+    userName = args[0];
     listindex = 0;
     variables = {
       userName: userName,
       type: "MANGA",
       MediaListStatus: "PLANNING"
     };
-  } else {
+  } else if (anilistname != undefined && mentioncheck == false) {
     anilistuserindex = UserlistDBobj.userlist.findIndex(did => did.anilistusername == args[0]);
     anilistid = await UserlistDBobj.userlist[anilistuserindex].anilistid;
+    test = 2;
+    listindex = 0;
+    variables = {
+      userId: anilistid,
+      type: "MANGA",
+      MediaListStatus: "PLANNING"
+    };
+  } else if (mentioncheck == true && findmentiondiscid != undefined) {
+    indexmentiondiscid = UserlistDBobj.userlist.findIndex(did => did.discid == mention.id);
+    anilistid = await UserlistDBobj.userlist[indexmentiondiscid].anilistid;
+    test = 3;
+    listindex = 0;
+    variables = {
+      userId: anilistid,
+      type: "MANGA",
+      MediaListStatus: "PLANNING"
+    };
+  } else if (mentioncheck == false && args[0] == undefined) {
+    anilistuserindex = UserlistDBobj.userlist.findIndex(did => did.discid == user.id);
+    anilistid = await UserlistDBobj.userlist[anilistuserindex].anilistid;
+    test = 4;
     listindex = 0;
     variables = {
       userId: anilistid,
@@ -53,6 +91,14 @@ module.exports = async (bot, message, args, Discord) => {
   })
     .then(fetch1 => fetch1.json())
     .then(async fetch1 => {
+      if (fetch1.data.MediaListCollection == null) {
+        return message.channel.send(`${user}, Looks like ${args[0]} is not a valid Anilist! Save a Anilist by using €anilist save [name]!`);
+      }
+
+      if (fetch1.data.MediaListCollection.lists.length == 0) {
+        return message.channel.send(`${user}, Looks like ${args[0]} has no Mangas in there Anilist! Add some Mangas to your Plan 2 Read List an try again!`);
+      }
+
       let i = Math.floor(Math.random() * fetch1.data.MediaListCollection.lists[listindex].entries.length) + 0;
 
       let nsfw = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.isAdult;
@@ -213,11 +259,39 @@ module.exports = async (bot, message, args, Discord) => {
           .addField("Community Rating:", avgRating)
           .addField("Source:", `${sourcefilter}`);
       }
-      if (nsfw == false) {
-        await message.channel.send(`${user}, Your Random Manga is: ${mangatitle}`, { embed });
-      } else {
-        await message.channel.send(`${user}, Your randomly selected Manga is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-        await message.author.send(`${user}, Your Random Manga is: ${mangatitle}`, { embed });
-      };
+      switch (test) {
+        case 1:
+          if (nsfw == false) {
+            await message.channel.send(`${user}, ${userName}´s Random Plan 2 Read Manga is: ${mangatitle}`, { embed });
+          } else {
+            await message.channel.send(`${user}, ${userName}´s randomly selected Plan 2 Read Manga is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
+            await message.author.send(`${user}, ${userName}´s Random Plan 2 Read Manga is: ${mangatitle}`, { embed });
+          }
+          break;
+        case 2:
+          if (nsfw == false) {
+            await message.channel.send(`${user}, ${args[0]}´s Random Plan 2 Read Manga is: ${mangatitle}`, { embed });
+          } else {
+            await message.channel.send(`${user}, ${args[0]}´s randomly selected Plan 2 Read Manga is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
+            await message.author.send(`${user}, ${args[0]}´s Random Plan 2 Read Manga is: ${mangatitle}`, { embed });
+          }
+          break;
+        case 3:
+          if (nsfw == false) {
+            await message.channel.send(`${user}, ${mention} Random Plan 2 Read Manga is: ${mangatitle}`, { embed });
+          } else {
+            await message.channel.send(`${user}, ${mention} randomly selected Plan 2 Read Manga is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
+            await message.author.send(`${user}, ${mention} Random Plan 2 Read Manga is: ${mangatitle}`, { embed });
+          }
+          break;
+        case 4:
+          if (nsfw == false) {
+            await message.channel.send(`${user}, Your Random Plan 2 Read Manga is: ${mangatitle}`, { embed });
+          } else {
+            await message.channel.send(`${user}, Your randomly selected Plan 2 Read Manga is NSFW! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
+            await message.author.send(`${user}, Your Random Plan 2 Read Manga is: ${mangatitle}`, { embed });
+          }
+          break;
+      }
     });
 };
