@@ -113,6 +113,12 @@ module.exports = async (bot, message, args, Discord) => {
         animetitle = "Unknown.";
       }
 
+      let usercheck;
+      usercheck = fetch1.data.MediaListCollection.user.name;
+
+      let anilistmediaID;
+      anilistmediaID = fetch1.data.MediaListCollection.lists[listindex].entries[i].mediaId;
+
       let description;
       if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.description == null) {
         description = "No Description found.";
@@ -282,7 +288,7 @@ module.exports = async (bot, message, args, Discord) => {
         .setTitle(animetitle)
         .setColor(color)
         .setDescription(description)
-        .setFooter(animetitle)
+        .setFooter("Anilistname:" + " " + usercheck + " " + "|" + " " + "Animename:" + " " + animetitle + " " + "|" + " " + "AnilistID:" + " " + anilistmediaID)
         .setImage(posterIMG)
         .setThumbnail(coverIMG)
         .setTimestamp()
