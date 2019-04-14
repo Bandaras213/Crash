@@ -1,9 +1,13 @@
 module.exports = `
 query ($userId: Int, $type: MediaType, $userName: String, $MediaListStatus: MediaListStatus) {
   MediaListCollection (userId: $userId, type: $type, userName: $userName, status: $MediaListStatus ,sort: [STATUS]) {
+    user {
+      name
+    }
     lists {
       status
       entries {
+        mediaId
         media {
           title {
             romaji
