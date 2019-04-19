@@ -44,8 +44,6 @@ Avaliable types are PLAYING, STREAMING, LISTENING, WATCHING.
 - ## Commands
   + **help**
      * Sends a DM embed to the command user and shows all avaliable commands and Infos about them.
-  + **anime ["Anime Name"]**
-     * Starts a search for ["Anime Name"] and gets the 7 best matching results. From these results you can choose the one that matches the one you wanted and displays its details.
   + **user ["Anilist Username"]**
      * Starts a fetch for ["Anilist Username"] and gets the best matching or only matching result. If a Anilist user got found it gets the list and profile informations.
   + **anilist ["Anilist Username"], anilist ["save Anilist Username"], anilist ["@discordname#number Anilist Username"]**
@@ -56,12 +54,39 @@ Avaliable types are PLAYING, STREAMING, LISTENING, WATCHING.
      * Trys to get a saved waifu for Username.
      * With ["waifu save name"] gets a matching list of characters to choose from. Saves the found waifu to your discord ID.
      * With ["waifu @discordname#number"] can be checked what's the waifu from the mentioned user.
+      + **anime ["Anime Name"]**
+     * Starts a search for ["Anime Name"] and gets the 7 best matching results. From these results you can choose the one that matches the one you wanted and displays its details.
   + **manga ["Manga Name"]**
      * Starts a search for ["Manga Name"] and gets the 7 best matching results. From these results you can choose the one that matches the one you wanted and displays its details.
   + **rdmanime**
      * Displays a random anime.
   + **rdmmanga**
      * Displays a random manga.
+  + **character [Character Name]**
+     * Starts a fetch for ["Character Name"] and gets the best matching results and starts a choose one embed.
+  + **staff [Staff Name]**
+     * Starts a fetch for ["Staff Name"] and gets the best matching results and starts a choose one embed.
+  + **poll [Question]**
+     * Starts a Poll with [Question] where everyone in the Channel can vote on it.
+  + **p2w [nothing, Anilistname, @mention]**
+     * Gets a random Plan 2 Watch Anime from a defined Anilist.
+     [p2w] Gets the result of youre registered Anilist without second command. (Needs to be registerd by ["anilist" command])
+     [p2w Anilistname] Gets a p2w from ["Anilistname"] and posts it in the Channel.
+     [p2w @user] Gets a p2w from ["@user" Anilist if he/she has a registered anilist] and posts it in the Channel.
+  + **p2r [nothing, Anilistname, @mention]**
+     * Gets a random Plan 2 Read Manga from a defined Anilist.
+     Gets the result of youre registered Anilist without second command. (Needs to be registerd by ["anilist" command])
+     Gets a p2w from ["Anilistname"] and posts it in the Channel.
+     Gets a p2w from ["@user" Anilist if he/she has a registered anilist] and posts it in the Channel.
+  + **antibully [-Message -Color1 -Color2]**
+     * Creates a Picture with the anti bully ranger.
+     Creates a Picture with [-Message] and [-Color1] and [-Color2] where ["Color1"] stands for the Letter Color and ["Color2"] stands for the Letter Border Collor.
+  + **antiantibully [-Message -Color1 -Color2]**
+     * Create a Picture with the anti anti bully ranger.
+     Creates a Picture with [-Message] and [-Color1] and [-Color2] where ["Color1"] stands for the Letter Color and ["Color2"] stands for the Letter Border Collor.
+  + **yt [title]**
+     * Starts a Youtube Search for ["title"] and gives you a Choise of Nine Videos that got found.
+
 ---
 			
 ## Credits
