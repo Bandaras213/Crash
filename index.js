@@ -21,15 +21,15 @@ bot.on("message", message => require("./events/message.js")(bot, message, Discor
 bot.on("error", error => require("./events/error.js")(bot, error));
 
 bot.commands = new Discord.Collection();
-bot.commands.set("waifu", require("./commands/mywaifu.js"));
-bot.commands.set("anilist", require("./commands/anilist.js"));
-bot.commands.set("anime", require("./commands/searchanime.js"));
-bot.commands.set("character", require("./commands/searchcharacter.js"));
-bot.commands.set("manga", require("./commands/searchmanga.js"));
+bot.commands.set("help", require("./commands/help.js"));
 bot.commands.set("user", require("./commands/searchuser.js"));
+bot.commands.set("anilist", require("./commands/anilist.js"));
+bot.commands.set("waifu", require("./commands/mywaifu.js"));
+bot.commands.set("anime", require("./commands/searchanime.js"));
+bot.commands.set("manga", require("./commands/searchmanga.js"));
 bot.commands.set("rdmanime", require("./commands/randomanime.js"));
 bot.commands.set("rdmmanga", require("./commands/randommanga.js"));
-bot.commands.set("help", require("./commands/help.js"));
+bot.commands.set("character", require("./commands/searchcharacter.js"));
 bot.commands.set("staff", require("./commands/searchstaff.js"));
 bot.commands.set("poll", require("./commands/poll.js"));
 bot.commands.set("test", require("./commands/test.js"));

@@ -42,6 +42,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
         name += ` ${fetch1.data.Staff.name.last}`;
       }
 
+      let stafflanguage = fetch1.data.Staff.language;
+      if (fetch1.data.Staff.language == null) {
+        stafflanguage = "Not Defined in Database"
+      }
+
       let namenative = fetch1.data.Staff.name.native;
       let staffimage = fetch1.data.Staff.image.large;
       let description = fetch1.data.Staff.description;
@@ -184,9 +189,12 @@ module.exports = async (bot, message, args, Discord, moment) => {
         rdmcharacter2.length = 5;
       };
 
+      if (description == null) {
+        description = "No Description in Database."
+      }
+      
       if (description.length > 2045) {
-        description =
-          description
+        description = description
             .replace(/<[^>]*>/g, " ")
             .replace(/&#039;/g, "'")
             .replace(/&quot;/g, '"')
