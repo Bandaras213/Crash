@@ -356,6 +356,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
             .trim();
         };
 
+        let mangaid;
+        if (fetch1.data.Page.media[i].id == null) {
+          mangaid = "";
+        } else {
+          mangaid = fetch1.data.Page.media[i].id;
+        }
+
         let coverIMG;
         if (fetch1.data.Page.media[i].coverImage.large == null) {
           coverIMG = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848";
@@ -399,6 +406,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
         } else {
           genres = genre1.join(", ");
         };
+
         let mainchar;
         let chardata = [];
         if (fetch1.data.Page.media[i].characters.nodes.length == 0) {
@@ -412,6 +420,22 @@ module.exports = async (bot, message, args, Discord, moment) => {
             };
           };
         };
+
+        let tags;
+        let tags1 = [];
+        if (fetch1.data.Page.media[i].tags.length == 0) {
+          tags = "No Tags found.";
+        } else {
+          for (let c = 0; c < fetch1.data.Page.media[i].tags.length; ++c) {
+            tags1.push(fetch1.data.Page.media[i].tags[c].name);
+          }
+        }
+
+        if (tags1.length == 0) {
+          tags = "No Tags found.";
+        } else {
+          tags = tags1.join(", ");
+        }
 
         if (chardata.length == 0) {
           mainchar = "No Characters found.";
@@ -504,13 +528,14 @@ module.exports = async (bot, message, args, Discord, moment) => {
             .setTitle(mangatitle)
             .setColor(color)
             .setDescription(description)
-            .setFooter(mangatitle, anilistLogo)
+            .setFooter("Mangatitle:" + " " + mangatitle + " " + "|" + " " + "MangaID:" + " " + mangaid, anilistLogo)
             .setImage(posterIMG)
             .setThumbnail(coverIMG)
             .setTimestamp()
             .setURL(mangaurl)
             .addField("Type:", `${bot.caps(format.split("_"))}`)
             .addField("Genres:", `${genres}`)
+            .addField("Tags:", `${tags}`)
             .addField("Main Characters:", `${mainchar}`)
             .addField("Status:", `${status}`)
             .addField("Released:", `${start} ${end}`)
@@ -524,13 +549,14 @@ module.exports = async (bot, message, args, Discord, moment) => {
             .setTitle(mangatitle)
             .setColor(color)
             .setDescription(description)
-            .setFooter(mangatitle, anilistLogo)
+            .setFooter("Mangatitle:" + " " + mangatitle + " " + "|" + " " + "MangaID:" + " " + mangaid, anilistLogo)
             .setImage(posterIMG)
             .setThumbnail(coverIMG)
             .setTimestamp()
             .setURL(mangaurl)
             .addField("Type:", `${bot.caps(format.split("_"))}`)
             .addField("Genres:", `${genres}`)
+            .addField("Tags:", `${tags}`)
             .addField("Main Characters:", `${mainchar}`)
             .addField("Status:", `${status}`)
             .addField("Released:", `${start} ${end}`)

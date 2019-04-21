@@ -10,6 +10,9 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String, $genre: String) {
 		}
 	media (id: $id, search: $search, genre: $genre, type: MANGA) {
 		id
+		tags {
+			name
+		}
 		siteUrl
 		format
 		title {

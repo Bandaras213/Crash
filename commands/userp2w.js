@@ -116,9 +116,6 @@ module.exports = async (bot, message, args, Discord) => {
       let usercheck;
       usercheck = fetch1.data.MediaListCollection.user.name;
 
-      let anilistmediaID;
-      anilistmediaID = fetch1.data.MediaListCollection.lists[listindex].entries[i].mediaId;
-
       let description;
       if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.description == null) {
         description = "No Description found.";
@@ -141,6 +138,13 @@ module.exports = async (bot, message, args, Discord) => {
         posterIMG = "";
       } else {
         posterIMG = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.bannerImage;
+      }
+
+      let anilistmediaID;
+      if (anilistmediaID = fetch1.data.MediaListCollection.lists[listindex].entries[i].mediaId == null) {
+        anilistmediaID = "";
+      } else {
+        anilistmediaID = anilistmediaID = fetch1.data.MediaListCollection.lists[listindex].entries[i].mediaId;
       }
 
       let animeurl;
@@ -178,6 +182,22 @@ module.exports = async (bot, message, args, Discord) => {
         genres = "No Genres found.";
       } else {
         genres = genre1.join(", ");
+      }
+
+      let tags;
+      let tags1 = [];
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.tags.length == 0) {
+        tags = "No Tags found.";
+      } else {
+        for (let c = 0; c < fetch1.data.MediaListCollection.lists[listindex].entries[i].media.tags.length; ++c) {
+          tags1.push(fetch1.data.MediaListCollection.lists[listindex].entries[i].media.tags[c].name);
+        }
+      }
+
+      if (tags1.length == 0) {
+        tags = "No Tags found.";
+      } else {
+        tags = tags1.join(", ");
       }
 
       let status;
@@ -288,7 +308,7 @@ module.exports = async (bot, message, args, Discord) => {
         .setTitle(animetitle)
         .setColor(color)
         .setDescription(description)
-        .setFooter("Anilistname:" + " " + usercheck + " " + "|" + " " + "Animename:" + " " + animetitle + " " + "|" + " " + "AnilistID:" + " " + anilistmediaID)
+        .setFooter("Anilistname:" + " " + usercheck + " " + "|" + " " + "Animename:" + " " + animetitle + " " + "|" + " " + "AnimeID:" + " " + anilistmediaID)
         .setImage(posterIMG)
         .setThumbnail(coverIMG)
         .setTimestamp()
@@ -296,6 +316,7 @@ module.exports = async (bot, message, args, Discord) => {
         .addField("Preview Trailer:", `${video}`)
         .addField("Type:", `${bot.caps(format.split("_"))}`)
         .addField("Genres:", `${genres}`)
+        .addField("Tags:", `${tags}`)
         .addField("Status:", `${status}`)
         .addField("Aired:", `From ${season} ${start} ${end}`)
         .addField("Next Episode:", `${nextepi}`)

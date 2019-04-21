@@ -13,6 +13,9 @@ query ($userId: Int, $type: MediaType, $userName: String, $MediaListStatus: Medi
             romaji
             english
           }
+          tags {
+            name
+          }
         format
         status
         description(asHtml: false)
