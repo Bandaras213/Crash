@@ -188,6 +188,22 @@ module.exports = async (bot, message, args, Discord) => {
         genres = genre1.join(", ");
       }
 
+      let tags;
+      let tags1 = [];
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.tags.length == 0) {
+        tags = "No Tags found.";
+      } else {
+        for (let c = 0; c < fetch1.data.MediaListCollection.lists[listindex].entries[i].media.tags.length; ++c) {
+          tags1.push(fetch1.data.MediaListCollection.lists[listindex].entries[i].media.tags[c].name);
+        }
+      }
+
+      if (tags1.length == 0) {
+        tags = "No Tags found.";
+      } else {
+        tags = tags1.join(", ");
+      }
+
       let status;
       if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.status == null) {
         status = "No Status found.";
@@ -235,13 +251,14 @@ module.exports = async (bot, message, args, Discord) => {
           .setTitle(mangatitle)
           .setColor(color)
           .setDescription(description)
-          .setFooter("Anilistname:" + " " + usercheck + " " + "|" + " " + "Manganame:" + " " + mangatitle + " " + "|" + " " + "AnilistID:" + " " + anilistmediaID)
+          .setFooter("Anilistname:" + " " + usercheck + " " + "|" + " " + "Manganame:" + " " + mangatitle + " " + "|" + " " + "MangaID:" + " " + anilistmediaID)
           .setImage(posterIMG)
           .setThumbnail(coverIMG)
           .setTimestamp()
           .setURL(mangaurl)
           .addField("Type:", `${bot.caps(format.split("_"))}`)
           .addField("Genres:", `${genres}`)
+          .addField("Tags:", `${tags}`)
           .addField("Status:", `${status}`)
           .addField("Released:", `${start} ${end}`)
           .addField("Chapter:", chapters)
@@ -253,13 +270,14 @@ module.exports = async (bot, message, args, Discord) => {
           .setTitle(mangatitle)
           .setColor(color)
           .setDescription(description)
-          .setFooter("Anilistname:" + " " + usercheck + " " + "|" + " " + "Manganame:" + " " + mangatitle + " " + "|" + " " + "AnilistID:" + " " + anilistmediaID)
+          .setFooter("Anilistname:" + " " + usercheck + " " + "|" + " " + "Manganame:" + " " + mangatitle + " " + "|" + " " + "MangaID:" + " " + anilistmediaID)
           .setImage(posterIMG)
           .setThumbnail(coverIMG)
           .setTimestamp()
           .setURL(mangaurl)
           .addField("Type:", `${bot.caps(format.split("_"))}`)
           .addField("Genres:", `${genres}`)
+          .addField("Tags:", `${tags}`)
           .addField("Status:", `${status}`)
           .addField("Released:", `From ${start} ${end}`)
           .addField("Community Rating:", avgRating)

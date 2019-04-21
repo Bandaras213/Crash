@@ -366,6 +366,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
           posterIMG = fetch1.data.Page.media[i].bannerImage;
         }
 
+        let animeid;
+        if (fetch1.data.Page.media[i].id == null) {
+          animeid = "";
+        } else {
+          animeid = fetch1.data.Page.media[i].id;
+        }
+
         let animeurl;
         if (fetch1.data.Page.media[i].siteUrl == null) {
           animeurl = "https://anilist.co";
@@ -401,6 +408,22 @@ module.exports = async (bot, message, args, Discord, moment) => {
           genres = "No Genres found.";
         } else {
           genres = genre1.join(", ");
+        }
+
+        let tags;
+        let tags1 = [];
+        if (fetch1.data.Page.media[i].tags.length == 0) {
+          tags = "No Tags found.";
+        } else {
+          for (let c = 0; c < fetch1.data.Page.media[i].tags.length; ++c) {
+            tags1.push(fetch1.data.Page.media[i].tags[c].name);
+          }
+        }
+
+        if (tags1.length == 0) {
+          tags = "No Tags found.";
+        } else {
+          tags = tags1.join(", ");
         }
 
         let mainchar;
@@ -585,7 +608,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           .setTitle(animetitle)
           .setColor(color)
           .setDescription(description)
-          .setFooter(animetitle, anilistLogo)
+          .setFooter("Animetitle:" + " " + animetitle + " " + "|" + " " + "AnimeID:" + " " + animeid, anilistLogo)
           .setImage(posterIMG)
           .setThumbnail(coverIMG)
           .setTimestamp()
@@ -593,6 +616,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           .addField("Preview Trailer:", `${video}`)
           .addField("Type:", `${bot.caps(format.split("_"))}`)
           .addField("Genres:", `${genres}`)
+          .addField("Tags:", `${tags}`)
           .addField("Main Characters:", `${mainchar}`)
           .addField("Status:", `${status}`)
           .addField("Aired:", `From ${season} ${start} ${end}`)
