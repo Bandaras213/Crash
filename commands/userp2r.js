@@ -30,11 +30,11 @@ module.exports = async (bot, message, args, Discord) => {
 
   if (finduserdiscid == undefined && args[0] == undefined) {
     return message.channel.send(`${user}, Looks like you don't have a Anilist! Save a Anilist by using €anilist save [name]!`);
-  }
+  };
 
   if (mention && findmentiondiscid == undefined && args[0] == undefined) {
     return message.channel.send(`${user}, Looks like ${mention} doesn't have a Anilist!`);
-  }
+  };
 
   if (anilistname == undefined && mentioncheck == false && args[0] != undefined) {
     test = 1;
@@ -93,11 +93,11 @@ module.exports = async (bot, message, args, Discord) => {
     .then(async fetch1 => {
       if (fetch1.data.MediaListCollection == null) {
         return message.channel.send(`${user}, Looks like ${args[0]} is not a valid Anilist! Save a Anilist by using €anilist save [name]!`);
-      }
+      };
 
       if (fetch1.data.MediaListCollection.lists.length == 0) {
         return message.channel.send(`${user}, Looks like ${args[0]} has no Mangas in there Anilist! Add some Mangas to your Plan 2 Read List an try again!`);
-      }
+      };
 
       let i = Math.floor(Math.random() * fetch1.data.MediaListCollection.lists[listindex].entries.length) + 0;
 
@@ -195,14 +195,14 @@ module.exports = async (bot, message, args, Discord) => {
       } else {
         for (let c = 0; c < fetch1.data.MediaListCollection.lists[listindex].entries[i].media.tags.length; ++c) {
           tags1.push(fetch1.data.MediaListCollection.lists[listindex].entries[i].media.tags[c].name);
-        }
-      }
+        };
+      };
 
       if (tags1.length == 0) {
         tags = "No Tags found.";
       } else {
         tags = tags1.join(", ");
-      }
+      };
 
       let status;
       if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.status == null) {
@@ -316,6 +316,6 @@ module.exports = async (bot, message, args, Discord) => {
             await message.author.send(`${user}, Your Random Plan 2 Read Manga is: ${mangatitle}`, { embed });
           }
           break;
-      }
+      };
     });
 };

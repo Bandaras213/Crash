@@ -192,16 +192,16 @@ module.exports = async (bot, message, args, Discord, moment) => {
       if (description == null) {
         description = "No Description in Database."
       }
-      
+
       if (description.length > 2045) {
         description = description
-            .replace(/<[^>]*>/g, " ")
-            .replace(/&#039;/g, "'")
-            .replace(/&quot;/g, '"')
-            .replace(/\s{2,}/g, " ")
-            .replace(/__/g, "")
-            .trim()
-            .substring(0, 2045) + "...";
+          .replace(/<[^>]*>/g, " ")
+          .replace(/&#039;/g, "'")
+          .replace(/&quot;/g, '"')
+          .replace(/\s{2,}/g, " ")
+          .replace(/__/g, "")
+          .trim()
+          .substring(0, 2045) + "...";
       } else {
         description = description
           .replace(/<[^>]*>/g, " ")

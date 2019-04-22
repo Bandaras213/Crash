@@ -107,7 +107,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 animeid = "";
               } else {
                 animeid = fetch1.data.Page.media[i].id;
-              }
+              };
 
               if (fetch1.data.Page.media[i].title.romaji == null && fetch1.data.Page.media[i].title.english == null) {
                 animetitle = "Unknown.";
@@ -183,7 +183,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                   tags1.push(fetch1.data.Page.media[i].tags[c].name);
                 }
               }
-      
+
               if (tags1.length == 0) {
                 tags = "No Tags found.";
               } else {
