@@ -825,7 +825,7 @@ module.exports = async (bot, message, args, Discord) => {
           .addField("Favorite Years:", `${yearfav.join(" ")}`)
           .addField("Last List Update:", `${lastupdated}`);
 
-        await message.channel.send(`${user}, ${username} (${userID}) is ${mention}'s Anilist Profile!`, { embed });
+        await message.channel.send(`${user}, ${username} (${userID}) is ${aniliststringname}'s Anilist Profile!`, { embed });
       });
   };
 
