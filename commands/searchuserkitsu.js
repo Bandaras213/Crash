@@ -279,34 +279,34 @@ module.exports = async (bot, message, args, Discord, moment) => {
           .then(async listentries1 => {
             switch (listentries_links.data[0].listentries[g].id) {
               case "0":
-                listentries_anime.push("Completed: " + listentries1.meta.count);
+                listentries_anime.push("Completed:" + " " + listentries1.meta.count);
                 break;
               case "1":
-                listentries_anime.push("Current: " + listentries1.meta.count);
+                listentries_anime.push("Current:" + " " + listentries1.meta.count);
                 break;
               case "2":
-                listentries_anime.push("Dropped: " + listentries1.meta.count);
+                listentries_anime.push("Dropped:" + " " + listentries1.meta.count);
                 break;
               case "3":
-                listentries_anime.push("On Hold: " + listentries1.meta.count);
+                listentries_anime.push("On Hold:" + " " + listentries1.meta.count);
                 break;
               case "4":
-                listentries_anime.push("Planned: " + listentries1.meta.count);
+                listentries_anime.push("Planned:" + " " + listentries1.meta.count);
                 break;
               case "5":
-                listentries_manga.push("Completed: " + listentries1.meta.count);
+                listentries_manga.push("Completed:" + " " + listentries1.meta.count);
                 break;
               case "6":
-                listentries_manga.push("Current: " + listentries1.meta.count);
+                listentries_manga.push("Current:" + " " + listentries1.meta.count);
                 break;
               case "7":
-                listentries_manga.push("Dropped: " + listentries1.meta.count);
+                listentries_manga.push("Dropped:" + " " + listentries1.meta.count);
                 break;
               case "8":
-                listentries_manga.push("On Hold: " + listentries1.meta.count);
+                listentries_manga.push("On Hold:" + " " + listentries1.meta.count);
                 break;
               case "9":
-                listentries_manga.push("Planned: " + listentries1.meta.count);
+                listentries_manga.push("Planned:" + " " + listentries1.meta.count);
                 break;
             }
           });
