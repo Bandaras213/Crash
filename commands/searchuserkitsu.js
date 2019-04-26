@@ -64,7 +64,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
       let favoritanime = [];
       let favoritmanga = [];
       let favoritcharacter = [];
-      await fetch(fetch1.data[0].relationships.favorites.links.related, {
+      await fetch(fetch1.data[0].relationships.favorites.links.related + "?sort=favRank&page[limit]=20", {
         method: "GET",
         headers: {
           "Content-Type": "application/vnd.api+json",
@@ -124,7 +124,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                   //favoritcharacterids.push("https://kitsu.io/character/" + favorits1.data.id);
                 } else if (favorits1.data.attributes.canonicalName != null) {
                   favoritcharactername.push(favorits1.data.attributes.canonicalName);
-                  //favoritcharacterids.push("https://kitsu.io/manga/" + favorits1.data.id);
+                  //favoritcharacterids.push("https://kitsu.io/character/" + favorits1.data.id);
                 }
                 break;
             }
@@ -162,7 +162,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
         month: 24 * 60 * 30,
         day: 24 * 60,
         hour: 24 * 6,
-        minute: 24
+        //minute: 24
       };
 
       var lifeSpentOnAnimeresult = [];
@@ -321,54 +321,54 @@ module.exports = async (bot, message, args, Discord, moment) => {
             }
           });
       }
-    
-    let sortObject = (obj) => {
-    var arr = [];
-    for (let prop in obj) {
-        if (obj.hasOwnProperty(prop)) {
+
+      let sortObject = (obj) => {
+        var arr = [];
+        for (let prop in obj) {
+          if (obj.hasOwnProperty(prop)) {
             arr.push({
-                'genre': prop,
-                'amount': obj[prop]
+              'genre': prop,
+              'amount': obj[prop]
             });
+          }
         }
-    }
-    arr.sort((a, b) => { return b.amount - a.amount; });
-    return arr;
-}
-    
-    let animecategorysorted = sortObject(animecategory)
-    let animecategorysortedfix = [];
-    let mangacategorysorted = sortObject(mangacategory)
-    let mangacategorysortedfix = [];
-    animecategorysorted.length = 5;
-    mangacategorysorted.lenth = 5;
+        arr.sort((a, b) => { return b.amount - a.amount; });
+        return arr;
+      }
 
-    for (let e = 0; e < animecategorysorted.length; ++e) {
-      animecategorysortedfix.push(animecategorysorted[e].genre + ":" + " " + animecategorysorted[e].amount)
-      mangacategorysortedfix.push(mangacategorysorted[e].genre + ":" + " " + mangacategorysorted[e].amount)
-    }
+      let animecategorysorted = sortObject(animecategory)
+      let animecategorysortedfix = [];
+      let mangacategorysorted = sortObject(mangacategory)
+      let mangacategorysortedfix = [];
+      animecategorysorted.length = 5;
+      mangacategorysorted.lenth = 5;
 
-    const embed = new Discord.RichEmbed()
-    .setTitle(username)
-    .setColor(color)
-    .setDescription(about)
-    .setFooter(`Information about ${username}`, kitsuLogo)
-    .setImage(coverImage)
-    .setThumbnail(avatar)
-    .setTimestamp()
-    .setURL(siteUrl)
-    .addField("Favorite Characters:", favoritcharacter)
-    .addField("Favorite Animes:", favoritanime)
-    .addField("Time Spend Watching Anime:", `${lifeSpentOnAnimeresult.join(" ")}`)
-    .addField("Anime List:", listentries_anime)
-    .addField("Favorite Mangas:", favoritmanga)
-    .addField("Manga Chapters Read:", chapterread)
-    .addField("Manga List:", listentries_manga)
-    .addField("Favorite Anime Genres:", animecategorysortedfix)
-    .addField("Favorite Manga Genres:", mangacategorysortedfix)
-    //.addField("Favorite Years:", `${yearfav.join(" ")}`)
-    //.addField("Last List Update:", updatedAt);
+      for (let e = 0; e < animecategorysorted.length; ++e) {
+        animecategorysortedfix.push(animecategorysorted[e].genre + ":" + " " + animecategorysorted[e].amount)
+        mangacategorysortedfix.push(mangacategorysorted[e].genre + ":" + " " + mangacategorysorted[e].amount)
+      }
 
-    await message.channel.send(`${user}, here is the result for ${username}`, { embed });
+      const embed = new Discord.RichEmbed()
+        .setTitle(username)
+        .setColor(color)
+        .setDescription(about)
+        .setFooter(`Information about ${username}`, kitsuLogo)
+        .setImage(coverImage)
+        .setThumbnail(avatar)
+        .setTimestamp()
+        .setURL(siteUrl)
+        .addField("Anime List:", listentries_anime, true)
+        .addField("Manga List:", listentries_manga, true)
+        .addField("Anime Watch Time:", bot.caps(lifeSpentOnAnimeresult.join(" ")), true)
+        .addField("Manga Chapters Read:", chapterread, true)
+        .addField("Favorite Animes:", favoritanime, true)
+        .addField("Favorite Mangas:", favoritmanga, true)
+        .addField("Favorite Characters:", favoritcharacter)
+        .addField("Favorite Anime Genres:", animecategorysortedfix, true)
+        .addField("Favorite Manga Genres:", mangacategorysortedfix, true)
+      //.addField("Favorite Years:", `${yearfav.join(" ")}`)
+      //.addField("Last List Update:", updatedAt);
+
+      await message.channel.send(`${user}, here is the result for ${username}`, { embed });
     });
 };

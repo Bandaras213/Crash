@@ -23,7 +23,7 @@ bot.on("error", error => require("./events/error.js")(bot, error));
 bot.commands = new Discord.Collection();
 bot.commands.set("help", require("./commands/help.js"));
 bot.commands.set("user", require("./commands/searchuser.js"));
-bot.commands.set("kitsuuser", require("./commands/searchuserkitsu.js"));
+bot.commands.set("kitsu", require("./commands/searchuserkitsu.js"));
 bot.commands.set("anilist", require("./commands/anilist.js"));
 bot.commands.set("waifu", require("./commands/mywaifu.js"));
 bot.commands.set("anilistanime", require("./commands/searchanime.js"));

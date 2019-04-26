@@ -88,9 +88,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
   ctx.strokeText(`${customText}`, 200, 375);
   ctx.fillText(`${customText}`, 200, 375);
 
-    const attachment = new Discord.Attachment(canvas.toBuffer(), `antibullyranger.png`);
-    setTimeout(() => {
-        mes.delete();
-        message.channel.send(`${user} summoned the Anti Bully Ranger`, (attachment));
-    }, 3500);
+  const attachment = new Discord.Attachment(canvas.toBuffer(), `antibullyranger.png`);
+  setTimeout(() => {
+    mes.delete();
+    message.channel.send(`${user} summoned the Anti Bully Ranger`, (attachment));
+  }, 3500);
 };
