@@ -16,7 +16,7 @@ var emoji = [
 ];
 
 module.exports = async (bot, message, args, Discord, moment) => {
-  let animename = args.join(" ");
+  let manganame = args.join(" ");
   let user = message.member.user;
   let i;
   let color;
@@ -25,10 +25,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
   message.delete();
 
   if (args.length == 0) {
-    return message.channel.send(`${user}, I need a Title to search for! (Usage: €anime Title)`);
+    return message.channel.send(`${user}, I need a Title to search for! (Usage: €manga Title)`);
   }
 
-  await fetch("https://kitsu.io/api/edge/anime?filter%5Btext%5D=" + animename, {
+  await fetch("https://kitsu.io/api/edge/manga?filter%5Btext%5D=" + manganame, {
     method: "GET",
     headers: {
       "Content-Type": "application/vnd.api+json",
@@ -38,22 +38,22 @@ module.exports = async (bot, message, args, Discord, moment) => {
     .then(fetch1 => fetch1.json())
     .then(async fetch1 => {
       let field1 = [];
-      let NSFW = [];
+      //let NSFW = [];
       for (let a = 0; a < fetch1.data.length; a++) {
-        if (fetch1.data[a].attributes.nsfw == true) {
+        /*if (fetch1.data[a].attributes.nsfw == true) {
           NSFW.push("🔞" + "NSFW" + "🔞");
         } else {
           NSFW.push("");
-        }
+        }*/
 
         field1.push({
-          name: `${fetch1.data[a].attributes.titles.en_jp} (${bot.caps(fetch1.data[a].attributes.showType.split("_"))}) ${NSFW[a]}`,
+          name: `${fetch1.data[a].attributes.titles.en_jp} (${bot.caps(fetch1.data[a].attributes.mangaType.split("_"))})`,
           value: `Reaction: ${emoji[a + 1]}`
         });
       }
 
       if (field1.length == 0) {
-        return message.channel.send(`${user}, Couldn't find a matching Anime for '**${animename}**'`);
+        return message.channel.send(`${user}, Couldn't find a matching Manga for '**${manganame}**'`);
       }
 
       if (fetch1.data.length >= 10) {
@@ -66,7 +66,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           embed = {
             color: 65280,
             author: {
-              name: `Results for "${animename}"`
+              name: `Results for "${manganame}"`
             },
             footer: {
               text: `Please choose by using the Reactions below!`
@@ -84,7 +84,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           embed = {
             color: 65280,
             author: {
-              name: `Results for "${animename}"`
+              name: `Results for "${manganame}"`
             },
             footer: {
               text: `Please choose by using the Reactions below!`
@@ -103,7 +103,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           embed = {
             color: 65280,
             author: {
-              name: `Results for "${animename}"`
+              name: `Results for "${manganame}"`
             },
             footer: {
               text: `Please choose by using the Reactions below!`
@@ -123,7 +123,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           embed = {
             color: 65280,
             author: {
-              name: `Results for "${animename}"`
+              name: `Results for "${manganame}"`
             },
             footer: {
               text: `Please choose by using the Reactions below!`
@@ -144,7 +144,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           embed = {
             color: 65280,
             author: {
-              name: `Results for "${animename}"`
+              name: `Results for "${manganame}"`
             },
             footer: {
               text: `Please choose by using the Reactions below!`
@@ -166,7 +166,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           embed = {
             color: 65280,
             author: {
-              name: `Results for "${animename}"`
+              name: `Results for "${manganame}"`
             },
             footer: {
               text: `Please choose by using the Reactions below!`
@@ -189,7 +189,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           embed = {
             color: 65280,
             author: {
-              name: `Results for "${animename}"`
+              name: `Results for "${manganame}"`
             },
             footer: {
               text: `Please choose by using the Reactions below!`
@@ -217,25 +217,25 @@ module.exports = async (bot, message, args, Discord, moment) => {
           em1 = await message.channel.send(`${user}, Couldn't find any Results for "${args.join(" ")}"!`);
           return;
         case 1:
-          em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+          em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
           await em1.react(emoji[1]);
           await em1.react(emoji[0]);
           break;
         case 2:
-          em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+          em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
           await em1.react(emoji[1]);
           await em1.react(emoji[2]);
           await em1.react(emoji[0]);
           break;
         case 3:
-          em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+          em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
           await em1.react(emoji[1]);
           await em1.react(emoji[2]);
           await em1.react(emoji[3]);
           await em1.react(emoji[0]);
           break;
         case 4:
-          em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+          em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
           await em1.react(emoji[1]);
           await em1.react(emoji[2]);
           await em1.react(emoji[3]);
@@ -243,7 +243,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           await em1.react(emoji[0]);
           break;
         case 5:
-          em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+          em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
           await em1.react(emoji[1]);
           await em1.react(emoji[2]);
           await em1.react(emoji[3]);
@@ -252,7 +252,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           await em1.react(emoji[0]);
           break;
         case 6:
-          em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+          em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
           await em1.react(emoji[1]);
           await em1.react(emoji[2]);
           await em1.react(emoji[3]);
@@ -262,7 +262,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           await em1.react(emoji[0]);
           break;
         case 7:
-          em1 = await message.channel.send(`${user} is choosing a Anime.`, { embed });
+          em1 = await message.channel.send(`${user} is choosing a Manga.`, { embed });
           await em1.react(emoji[1]);
           await em1.react(emoji[2]);
           await em1.react(emoji[3]);
@@ -319,16 +319,16 @@ module.exports = async (bot, message, args, Discord, moment) => {
             break;
         }
 
-        let nsfw = fetch1.data[i].attributes.nsfw;
-        let animetitle;
+        //let nsfw = fetch1.data[i].attributes.nsfw;
+        let Mangatitle;
         if (fetch1.data[i].attributes.titles.en_us == null) {
-          animetitle = fetch1.data[i].attributes.titles.en_jp;
+          Mangatitle = fetch1.data[i].attributes.titles.en_jp;
         } else {
-          animetitle = fetch1.data[i].attributes.titles.en_jp;
+          Mangatitle = fetch1.data[i].attributes.titles.en_jp;
         }
 
         if (fetch1.data[i].attributes.titles.en_jp == null && fetch1.data[i].attributes.titles.en_us == null) {
-          animetitle = fetch1.data[i].attributes.canonicalTitle;
+          Mangatitle = fetch1.data[i].attributes.canonicalTitle;
         }
 
         let description;
@@ -359,25 +359,18 @@ module.exports = async (bot, message, args, Discord, moment) => {
           posterIMG = fetch1.data[i].attributes.posterImage.large;
         }
 
-        let animeid;
+        let Mangaid;
         if (fetch1.data[i].id == null) {
-          animeid = "";
+          Mangaid = "";
         } else {
-          animeid = fetch1.data[i].id;
+          Mangaid = fetch1.data[i].id;
         }
 
-        let animeurl;
+        let Mangaurl;
         if (fetch1.data[i].id == null) {
-          animeurl = "https://kitsu.io";
+          Mangaurl = "https://kitsu.io";
         } else {
-          animeurl = "https://kitsu.io/anime/" + animeid;
-        }
-
-        let video;
-        if (fetch1.data[i].attributes.youtubeVideoId == null || fetch1.data[i].attributes.youtubeVideoId == "" || fetch1.data[i].attributes.youtubeVideoId == " ") {
-          video = "No Video found.";
-        } else {
-          video = `[Click Me](https://www.youtube.com/watch?v=` + `${fetch1.data[i].attributes.youtubeVideoId})`;
+          Mangaurl = "https://kitsu.io/manga/" + Mangaid;
         }
 
         let format;
@@ -467,7 +460,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         headers: {
                           "Content-Type": "application/vnd.api+json",
                           Accept: "application/vnd.api+json"
-                        } 
+                        }
                       })
                         .then(relation1 => relation1.json())
                         .then(async relation1 => {
@@ -489,26 +482,6 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     }
 
                     let relationsfinal = relations;
-
-                    /*let mainchar;
-    let chardata = [];
-    if (fetch1.data.Page.media[i].characters.nodes.length == 0) {
-      mainchar = "No Characters found.";
-    } else {
-      for (let c = 0; c < fetch1.data.Page.media[i].characters.nodes.length; ++c) {
-        if (fetch1.data.Page.media[i].characters.nodes[c].name.last == null) {
-          chardata.push("[" + fetch1.data.Page.media[i].characters.nodes[c].name.first + "]" + "(" + fetch1.data.Page.media[i].characters.nodes[c].siteUrl + ")");
-        } else {
-          chardata.push("[" + fetch1.data.Page.media[i].characters.nodes[c].name.first + " " + fetch1.data.Page.media[i].characters.nodes[c].name.last + "]" + "(" + fetch1.data.Page.media[i].characters.nodes[c].siteUrl + ")");
-        }
-      }
-    }
-
-    if (chardata.length == 0) {
-      mainchar = "No Characters found.";
-    } else {
-      mainchar = chardata.join(", ");
-    }*/
 
                     let status;
                     if (fetch1.data[i].attributes.status == null) {
@@ -564,47 +537,25 @@ module.exports = async (bot, message, args, Discord, moment) => {
                       ageRating = ratings.join(" - ");
                     }
 
-                    let episodes = fetch1.data[i].attributes.episodeCount;
-                    if (fetch1.data[i].attributes.episodeCount == null) {
-                      episodes = "No Episodes in the Database.";
+                    let chapters;
+                    if (fetch1.data[i].attributes.chapterCount == null || fetch1.data[i].attributes.chapterCount == "0") {
+                      chapters = "No Chapters in the Database.";
                     } else {
-                      episodes = fetch1.data[i].attributes.episodeCount;
+                      chapters = fetch1.data[i].attributes.chapterCount;
                     }
 
-                    let episodemin;
-                    let episodemins;
-                    if (fetch1.data[i].attributes.episodeLength == null) {
-                      episodemin = "No Duration in Database.";
+                    let volumes;
+                    if (fetch1.data[i].attributes.volumeCount == null || fetch1.data[i].attributes.volumeCount == "0") {
+                      volumes = "No Volumes in Database.";
                     } else {
-                      episodemin = fetch1.data[i].attributes.episodeLength + " minutes";
-                      episodemins = fetch1.data[i].attributes.episodeLength;
+                      volumes = fetch1.data[i].attributes.volumeCount;
                     }
 
-                    let time;
-
-                    function timeConvert(n) {
-                      if (isNaN(n) || n == null) {
-                        return (time = "Can't Calculate time without Episodes or Episode Length.");
-                      }
-
-                      let hours = Math.floor(n / 60);
-                      let minutes = Math.floor((n / 60 - hours) * 60);
-
-                      if (hours === 0) {
-                        time = minutes + " minute(s)";
-                      } else if (minutes === 0) {
-                        time = hours + " hour(s)";
-                      } else {
-                        time = hours + " hour(s) and " + minutes + " minute(s)";
-                      }
-                    }
-
-                    let runtime;
-                    if (episodes === null || episodemin === null) {
-                      runtime = "Can't Calculate Runtime without Episodes or Episode length.";
+                    let serialization;
+                    if (fetch1.data[i].attributes.serialization == null || fetch1.data[i].attributes.serialization == "") {
+                      serialization = "No Serialized Studio in Database.";
                     } else {
-                      runtime = episodes * episodemins;
-                      timeConvert(runtime);
+                      serialization = fetch1.data[i].attributes.serialization;
                     }
 
                     let avgRating;
@@ -618,110 +569,43 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     if (fetch1.data[i].attributes.popularityRank === null) {
                       popularityrank = "No Rating in Database.";
                     } else {
-                      popularityrank = `❤️ Rank#${fetch1.data[i].attributes.popularityRank} (Most Popular Anime)`;
+                      popularityrank = `❤️ Rank#${fetch1.data[i].attributes.popularityRank} (Most Popular Manga)`;
                     }
 
                     let highrated;
                     if (fetch1.data[i].attributes.ratingRank === null) {
                       highrated = "No Rating in Database.";
                     } else {
-                      highrated = `⭐ Rank#${fetch1.data[i].attributes.ratingRank} (Highest Rated Anime)`;
+                      highrated = `⭐ Rank#${fetch1.data[i].attributes.ratingRank} (Highest Rated Manga)`;
                     }
-
-                    /*let studios;
-    let studiosdata = [];
-    if (fetch1.data.Page.media[i].studios.nodes.length == 0) {
-      studios = "No Studios in the Database.";
-    } else {
-      for (let s = 0; s < fetch1.data.Page.media[i].studios.nodes.length; ++s) {
-        studiosdata.push(fetch1.data.Page.media[i].studios.nodes[s].name);
-      }
-    }
-
-    if (studiosdata.length == 0) {
-      studios = "No Studios in the Database.";
-    } else {
-      studios = studiosdata.join(", ");
-    }
-
-    let staff;
-    let staffdata = [];
-    if (fetch1.data.Page.media[i].staff.edges.length == 0) {
-      staff = "No Staff in Database.";
-    } else {
-      let staffdatas = fetch1.data.Page.media[i].staff.edges;
-      for (let m = 0; m < staffdatas.length; ++m) {
-        if (staffdatas[m].role == "Original Creator") {
-          if (staffdatas[m].node.name.last == null) {
-            staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + "]" + "(" + staffdatas[m].node.siteUrl + ")");
-          } else {
-            staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")");
-          }
-        }
-
-        if (staffdatas[m].role == "Director") {
-          if (staffdatas[m].node.name.last == null) {
-            staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + "]" + "(" + staffdatas[m].node.siteUrl + ")");
-          } else {
-            staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")");
-          }
-        }
-
-        if (staffdatas[m].role == "Music") {
-          if (staffdatas[m].node.name.last == null) {
-            staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + "]" + "(" + staffdatas[m].node.siteUrl + ")");
-          } else {
-            staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")");
-          }
-        }
-      }
-    }
-
-    if (staffdata.length == 0) {
-      staff = "No Staff in Database.";
-    } else {
-      staff = staffdata.join("\n");
-    }*/
 
                     const dominantColor = await getColorFromURL(posterIMG);
                     color = rgbHex(`${dominantColor}`);
 
                     const embed = new Discord.RichEmbed()
-                      .setTitle(animetitle)
+                      .setTitle(Mangatitle)
                       .setColor(color)
                       .setDescription(description)
-                      .setFooter("Animetitle:" + " " + animetitle + " " + "|" + " " + "AnimeID:" + " " + animeid, kitsuLogo)
+                      .setFooter("Mangatitle:" + " " + Mangatitle + " " + "|" + " " + "MangaID:" + " " + Mangaid, kitsuLogo)
                       .setImage(coverIMG)
                       .setThumbnail(posterIMG)
                       .setTimestamp()
-                      .setURL(animeurl)
-                      .addField("Preview Trailer:", `${video}`)
+                      .setURL(Mangaurl)
                       .addField("Type:", `${bot.caps(format.split("_"))}`)
                       .addField("Rating:", `${ageRating}`)
                       .addField("Popularity Rating:", popularityrank)
                       .addField("Highest Rating:", highrated)
                       .addField("Genres:", `${genres}`)
                       .addField("Tags:", `${tags}`)
-                      //.addField("Main Characters:", `${mainchar}`)
                       .addField("Status:", `${status}`)
                       .addField("Aired:", airings.join())
-                      //.addField("Next Episode:", `${nextepi}`)
-                      .addField("Episodes:", episodes)
-                      .addField("Episode Length:", `${episodemin}`)
-                      .addField("Estimated Total Runtime:", `${time}`)
+                      .addField("Chapters:", chapters)
+                      .addField("Volumes:", volumes)
+                      .addField("Serialization:", serialization)
                       .addField("Community Rating:", avgRating)
                       .addField("Relations:", relationsfinal);
-                    //.addField("Source:", `${sourcefilter}`)
-                    //.addField("Studios:", `${studios}`)
-                    //.addField("Staff:", `${staff}`);
 
-                    if (nsfw == false) {
-                      await em1.edit(`${user}, here is the result for ${animetitle}`, { embed });
-                    } else {
-                      await em1.delete();
-                      await message.channel.send(`${user}, You've selected a NSFW Anime! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
-                      await message.author.send(`${user}, Here is the result for ${animetitle}`, { embed });
-                    }
+                    await em1.edit(`${user}, here is the result for ${Mangatitle}`, { embed });
                   });
 
                 collector.on("end", collected => {
