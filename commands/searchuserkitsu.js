@@ -1,6 +1,7 @@
 const fetch = require("node-fetch");
 const { getColorFromURL } = require("color-thief-node");
 const rgbHex = require("rgb-hex");
+const moment = require("moment");
 
 module.exports = async (bot, message, args, Discord, moment) => {
   let nameofuser = args.join(" ");
@@ -135,7 +136,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
       if (favoritanimename.length == 0) {
         favoritanime = "No Favorite Animes found.";
       } else if (favoritanime.length < topresults) {
-        for (let f = 0; f < topresults; ++f) {
+        for (let f = 0; f < favoritmanganame.length; ++f) {
           favoritanime.push(`[${favoritanimename[f]}](${favoritanimeids[f]})`);
         }
       } else if (favoritanime.length >= topresults) {
@@ -148,7 +149,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
       if (favoritmanganame.length == 0) {
         favoritmanga = "No Favorite Mangas found.";
       } else if (favoritmanganame.length < topresults) {
-        for (let ff = 0; ff < topresults; ++ff) {
+        for (let ff = 0; ff < favoritmanganame.length; ++ff) {
           favoritmanga.push(`[${favoritmanganame[ff]}](${favoritmangaids[ff]})`);
         }
       } else if (favoritmanganame.length >= topresults) {
@@ -161,7 +162,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
       if (favoritcharactername.length == 0) {
         favoritcharacter = "No Favorite Characters found.";
       } else if (favoritcharactername.length < topresults) {
-        for (let fff = 0; fff < topresults; ++fff) {
+        for (let fff = 0; fff < favoritmanganame.length; ++fff) {
           favoritcharacter.push(favoritcharactername[fff]);
         }
       } else if (favoritcharactername.length >= topresults) {
@@ -381,8 +382,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
         .addField("Favorite Characters:", favoritcharacter)
         .addField("Favorite Anime Genres:", animecategorysortedfix, true)
         .addField("Favorite Manga Genres:", mangacategorysortedfix, true)
-      //.addField("Favorite Years:", `${yearfav.join(" ")}`)
-      //.addField("Last List Update:", updatedAt);
+        //.addField("Favorite Years:", `${yearfav.join(" ")}`)
+        .addField("Last List Update:", moment(updatedAt).format("DD.MM.YYYY") + " at " + moment(updatedAt).format("hh:mm a"));
 
       await message.channel.send(`${user}, here is the result for ${username}`, { embed });
     });
