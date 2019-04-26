@@ -133,40 +133,40 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
       let topresults = 5
       if (favoritanimename.length == 0) {
-        favoritanime = "No Favorit Animes found.";
+        favoritanime = "No Favorite Animes found.";
       } else if (favoritanime.length < topresults) {
-        for (let f = 0; f < favoritanimename.length; ++f) {
+        for (let f = 0; f < topresults; ++f) {
           favoritanime.push(`[${favoritanimename[f]}](${favoritanimeids[f]})`);
         }
       } else if (favoritanime.length >= topresults) {
         favoritanimename.length = topresults;
-        for (let f = 0; f < favoritanimename.length; ++f) {
+        for (let f = 0; f < topresults; ++f) {
           favoritanime.push(`[${favoritanimename[f]}](${favoritanimeids[f]})`);
         }
       }
 
       if (favoritmanganame.length == 0) {
-        favoritmanga = "No Favorit Mangas found.";
+        favoritmanga = "No Favorite Mangas found.";
       } else if (favoritmanganame.length < topresults) {
-        for (let ff = 0; ff < favoritmanganame.length; ++ff) {
+        for (let ff = 0; ff < topresults; ++ff) {
           favoritmanga.push(`[${favoritmanganame[ff]}](${favoritmangaids[ff]})`);
         }
-      } else if (favoritmanga.length >= topresults) {
+      } else if (favoritmanganame.length >= topresults) {
         favoritmanganame.length = topresults;
-        for (let ff = 0; ff < favoritmanganame.length; ++ff) {
+        for (let ff = 0; ff < topresults; ++ff) {
           favoritmanga.push(`[${favoritmanganame[ff]}](${favoritmangaids[ff]})`);
         }
       }
 
       if (favoritcharactername.length == 0) {
-        favoritcharacter = "No Favorit Characters found.";
+        favoritcharacter = "No Favorite Characters found.";
       } else if (favoritcharactername.length < topresults) {
-        for (let fff = 0; fff < favoritcharactername.length; ++fff) {
+        for (let fff = 0; fff < topresults; ++fff) {
           favoritcharacter.push(favoritcharactername[fff]);
         }
       } else if (favoritcharactername.length >= topresults) {
         favoritcharactername.length = topresults;
-        for (let fff = 0; fff < favoritcharactername.length; ++fff) {
+        for (let fff = 0; fff < topresults; ++fff) {
           favoritcharacter.push(favoritcharactername[fff]);
         }
       }
