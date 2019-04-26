@@ -131,10 +131,15 @@ module.exports = async (bot, message, args, Discord, moment) => {
           });
       }
 
+      let topresults = 5
       if (favoritanimename.length == 0) {
         favoritanime = "No Favorit Animes found.";
-      } else {
-        favoritanimename.length = 5;
+      } else if (favoritanime.length < topresults) {
+        for (let f = 0; f < favoritanimename.length; ++f) {
+          favoritanime.push(`[${favoritanimename[f]}](${favoritanimeids[f]})`);
+        }
+      } else if (favoritanime.length >= topresults) {
+        favoritanimename.length = topresults;
         for (let f = 0; f < favoritanimename.length; ++f) {
           favoritanime.push(`[${favoritanimename[f]}](${favoritanimeids[f]})`);
         }
@@ -142,8 +147,12 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
       if (favoritmanganame.length == 0) {
         favoritmanga = "No Favorit Mangas found.";
-      } else {
-        favoritmanganame.length = 5;
+      } else if (favoritmanganame.length < topresults) {
+        for (let ff = 0; ff < favoritmanganame.length; ++ff) {
+          favoritmanga.push(`[${favoritmanganame[ff]}](${favoritmangaids[ff]})`);
+        }
+      } else if (favoritmanga.length >= topresults) {
+        favoritmanganame.length = topresults;
         for (let ff = 0; ff < favoritmanganame.length; ++ff) {
           favoritmanga.push(`[${favoritmanganame[ff]}](${favoritmangaids[ff]})`);
         }
@@ -151,8 +160,12 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
       if (favoritcharactername.length == 0) {
         favoritcharacter = "No Favorit Characters found.";
-      } else {
-        favoritcharactername.length = 5;
+      } else if (favoritcharactername.length < topresults) {
+        for (let fff = 0; fff < favoritcharactername.length; ++fff) {
+          favoritcharacter.push(favoritcharactername[fff]);
+        }
+      } else if (favoritcharactername.length >= topresults) {
+        favoritcharactername.length = topresults;
         for (let fff = 0; fff < favoritcharactername.length; ++fff) {
           favoritcharacter.push(favoritcharactername[fff]);
         }
@@ -343,7 +356,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
       let mangacategorysorted = sortObject(mangacategory)
       let mangacategorysortedfix = [];
       animecategorysorted.length = 5;
-      mangacategorysorted.lenth = 5;
+      mangacategorysorted.length = 5;
 
       for (let e = 0; e < animecategorysorted.length; ++e) {
         animecategorysortedfix.push(animecategorysorted[e].genre + ":" + " " + animecategorysorted[e].amount)
