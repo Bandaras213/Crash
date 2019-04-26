@@ -143,6 +143,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
       if (favoritmanganame.length == 0) {
         favoritmanga = "No Favorit Mangas found.";
       } else {
+        favoritmanganame.length = 5;
         for (let ff = 0; ff < favoritmanganame.length; ++ff) {
           favoritmanga.push(`[${favoritmanganame[ff]}](${favoritmangaids[ff]})`);
         }
@@ -151,6 +152,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
       if (favoritcharactername.length == 0) {
         favoritcharacter = "No Favorit Characters found.";
       } else {
+        favoritcharactername.length = 5;
         for (let fff = 0; fff < favoritcharactername.length; ++fff) {
           favoritcharacter.push(favoritcharactername[fff]);
         }
