@@ -279,34 +279,34 @@ module.exports = async (bot, message, args, Discord, moment) => {
           .then(async listentries1 => {
             switch (listentries_links.data[0].listentries[g].id) {
               case "0":
-                listentries_anime.push("Completed:" + " " + listentries1.meta.count);
+                listentries_anime.push("Completed: " + listentries1.meta.count);
                 break;
               case "1":
-                listentries_anime.push("Current:" + " " + listentries1.meta.count);
+                listentries_anime.push("Current: " + listentries1.meta.count);
                 break;
               case "2":
-                listentries_anime.push("Dropped:" + " " + listentries1.meta.count);
+                listentries_anime.push("Dropped: " + listentries1.meta.count);
                 break;
               case "3":
-                listentries_anime.push("On Hold:" + " " + listentries1.meta.count);
+                listentries_anime.push("On Hold: " + listentries1.meta.count);
                 break;
               case "4":
-                listentries_anime.push("Planned:" + " " + listentries1.meta.count);
+                listentries_anime.push("Planned: " + listentries1.meta.count);
                 break;
               case "5":
-                listentries_manga.push("Completed:" + " " + listentries1.meta.count);
+                listentries_manga.push("Completed: " + listentries1.meta.count);
                 break;
               case "6":
-                listentries_manga.push("Current:" + " " + listentries1.meta.count);
+                listentries_manga.push("Current: " + listentries1.meta.count);
                 break;
               case "7":
-                listentries_manga.push("Dropped:" + " " + listentries1.meta.count);
+                listentries_manga.push("Dropped: " + listentries1.meta.count);
                 break;
               case "8":
-                listentries_manga.push("On Hold:" + " " + listentries1.meta.count);
+                listentries_manga.push("On Hold: " + listentries1.meta.count);
                 break;
               case "9":
-                listentries_manga.push("Planned:" + " " + listentries1.meta.count);
+                listentries_manga.push("Planned: " + listentries1.meta.count);
                 break;
             }
           });
@@ -338,30 +338,32 @@ module.exports = async (bot, message, args, Discord, moment) => {
           });
       }
 
-      let sortObject = (obj) => {
+      let sortObject = obj => {
         var arr = [];
         for (let prop in obj) {
           if (obj.hasOwnProperty(prop)) {
             arr.push({
-              'genre': prop,
-              'amount': obj[prop]
+              genre: prop,
+              amount: obj[prop]
             });
           }
         }
-        arr.sort((a, b) => { return b.amount - a.amount; });
+        arr.sort((a, b) => {
+          return b.amount - a.amount;
+        });
         return arr;
-      }
+      };
 
-      let animecategorysorted = sortObject(animecategory)
+      let animecategorysorted = sortObject(animecategory);
       let animecategorysortedfix = [];
-      let mangacategorysorted = sortObject(mangacategory)
+      let mangacategorysorted = sortObject(mangacategory);
       let mangacategorysortedfix = [];
       animecategorysorted.length = 5;
       mangacategorysorted.length = 5;
 
       for (let e = 0; e < animecategorysorted.length; ++e) {
-        animecategorysortedfix.push(animecategorysorted[e].genre + ":" + " " + animecategorysorted[e].amount)
-        mangacategorysortedfix.push(mangacategorysorted[e].genre + ":" + " " + mangacategorysorted[e].amount)
+        animecategorysortedfix.push(animecategorysorted[e].genre + ": " + animecategorysorted[e].amount);
+        mangacategorysortedfix.push(mangacategorysorted[e].genre + ": " + mangacategorysorted[e].amount);
       }
 
       const embed = new Discord.RichEmbed()
@@ -375,13 +377,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
         .setURL(siteUrl)
         .addField("Anime List:", listentries_anime, true)
         .addField("Manga List:", listentries_manga, true)
-        .addField("Anime Watch Time:", bot.caps(lifeSpentOnAnimeresult.join(" ")), true)
-        .addField("Manga Chapters Read:", chapterread, true)
         .addField("Favorite Animes:", favoritanime, true)
         .addField("Favorite Mangas:", favoritmanga, true)
         .addField("Favorite Characters:", favoritcharacter)
         .addField("Favorite Anime Genres:", animecategorysortedfix, true)
         .addField("Favorite Manga Genres:", mangacategorysortedfix, true)
+        .addField("Anime Watch Time:", bot.caps(lifeSpentOnAnimeresult.join(" ")), false)
+        .addField("Manga Chapters Read:", chapterread, false)
         //.addField("Favorite Years:", `${yearfav.join(" ")}`)
         .addField("Last List Update:", moment(updatedAt).format("DD.MM.YYYY") + " at " + moment(updatedAt).format("hh:mm a"));
 
