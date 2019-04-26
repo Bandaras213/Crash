@@ -467,7 +467,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         headers: {
                           "Content-Type": "application/vnd.api+json",
                           Accept: "application/vnd.api+json"
-                        }
+                        } 
                       })
                         .then(relation1 => relation1.json())
                         .then(async relation1 => {
@@ -542,20 +542,24 @@ module.exports = async (bot, message, args, Discord, moment) => {
                     let ratings = [];
                     let ageRating;
                     let ageRatingGuide;
-                    if (fetch1.data[i].attributes.ageRating == null) {
+                    if (fetch1.data[i].attributes.ageRating == null || fetch1.data[i].attributes.ageRating.length == 0) {
                       ageRating = "0";
                     } else {
                       ratings.push(fetch1.data[i].attributes.ageRating);
                     }
 
-                    if (fetch1.data[i].attributes.ageRatingGuide == null) {
+                    if (fetch1.data[i].attributes.ageRatingGuide == null || fetch1.data[i].attributes.ageRatingGuide == "") {
                       ageRatingGuide = "0";
                     } else {
                       ratings.push(fetch1.data[i].attributes.ageRatingGuide);
                     }
 
-                    if (ageRating || ageRatingGuide == "0") {
+                    if (ageRating == "0" && ageRatingGuide == "0") {
                       ageRating = "No Age Rating found in Database.";
+                    } else if (ageRatingGuide == "0") {
+                      ageRating = ratings[0];
+                    } else if (ageRating == "0") {
+                      ageRating = ratings[1];
                     } else {
                       ageRating = ratings.join(" - ");
                     }
