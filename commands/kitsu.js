@@ -59,7 +59,7 @@ module.exports = async (bot, message, args, Discord) => {
       .then(fetch1 => fetch1.json())
       .then(async fetch1 => {
 
-        if (fetch1.data[0].length < 1) {
+        if (fetch1.data[0].length == 0) {
           return message.channel.send(`${user}, Couldn't find a matching Kitsulist for '**${usersearchname}**'`);
         };
 
@@ -264,6 +264,17 @@ module.exports = async (bot, message, args, Discord) => {
             };
 
             var lifeSpentOnAnimeresult = [];
+            if (value == "0") {
+              lifeSpentOnAnimeresult = "No Time could be calculated."
+            } else {
+              for (var name in units) {
+                var p = Math.floor(value / units[name]);
+                if (p == 1) lifeSpentOnAnimeresult.push(p + " " + name);
+                if (p >= 2) lifeSpentOnAnimeresult.push(p + " " + name + "s");
+                value %= units[name];
+              }
+              lifeSpentOnAnimeresult = bot.caps(lifeSpentOnAnimeresult.join(" "))
+            }
 
             for (var name in units) {
               var p = Math.floor(value / units[name]);
@@ -440,13 +451,34 @@ module.exports = async (bot, message, args, Discord) => {
             let animecategorysortedfix = [];
             let mangacategorysorted = sortObject(mangacategory);
             let mangacategorysortedfix = [];
-            animecategorysorted.length = 5;
-            mangacategorysorted.length = 5;
 
-            for (let e = 0; e < animecategorysorted.length; ++e) {
-              animecategorysortedfix.push(animecategorysorted[e].genre + ": " + animecategorysorted[e].amount);
-              mangacategorysortedfix.push(mangacategorysorted[e].genre + ": " + mangacategorysorted[e].amount);
-            }
+            if (animecategorysorted.length >= 5) {
+              animecategorysorted.length = 5;
+            } else {
+              animecategorysorted.length = animecategorysorted.length;
+            };
+
+            if (mangacategorysorted.length >= 5) {
+              mangacategorysorted.length = 5;
+            } else {
+              mangacategorysorted.length = mangacategorysorted.length;
+            };
+
+            if (animecategorysorted.length > 0) {
+              for (let e = 0; e < animecategorysorted.length; ++e) {
+                animecategorysortedfix.push(animecategorysorted[e].genre + ": " + animecategorysorted[e].amount);
+              }
+            } else {
+              animecategorysortedfix.push("No Favorite Anime Genres Found.")
+            };
+
+            if (mangacategorysorted.length > 0) {
+              for (let ee = 0; ee < mangacategorysorted.length; ++ee) {
+                mangacategorysortedfix.push(mangacategorysorted[ee].genre + ": " + mangacategorysorted[ee].amount);
+              }
+            } else {
+              mangacategorysortedfix.push("No Favorite Manga Genres Found.")
+            };
 
             const embed = new Discord.RichEmbed()
               .setTitle(username)
@@ -464,7 +496,7 @@ module.exports = async (bot, message, args, Discord) => {
               .addField("Favorite Characters:", favoritcharacter)
               .addField("Favorite Anime Genres:", animecategorysortedfix, true)
               .addField("Favorite Manga Genres:", mangacategorysortedfix, true)
-              .addField("Anime Watch Time:", bot.caps(lifeSpentOnAnimeresult.join(" ")), false)
+              .addField("Anime Watch Time:", lifeSpentOnAnimeresult, false)
               .addField("Manga Chapters Read:", chapterread, false)
               //.addField("Favorite Years:", `${yearfav.join(" ")}`)
               .addField("Last List Update:", moment(updatedAt).format("DD.MM.YYYY") + " at " + moment(updatedAt).format("hh:mm a"));
@@ -645,6 +677,17 @@ module.exports = async (bot, message, args, Discord) => {
           };
 
           var lifeSpentOnAnimeresult = [];
+          if (value == "0") {
+            lifeSpentOnAnimeresult = "No Time could be calculated."
+          } else {
+            for (var name in units) {
+              var p = Math.floor(value / units[name]);
+              if (p == 1) lifeSpentOnAnimeresult.push(p + " " + name);
+              if (p >= 2) lifeSpentOnAnimeresult.push(p + " " + name + "s");
+              value %= units[name];
+            }
+            lifeSpentOnAnimeresult = bot.caps(lifeSpentOnAnimeresult.join(" "))
+          }
 
           for (var name in units) {
             var p = Math.floor(value / units[name]);
@@ -821,13 +864,34 @@ module.exports = async (bot, message, args, Discord) => {
           let animecategorysortedfix = [];
           let mangacategorysorted = sortObject(mangacategory);
           let mangacategorysortedfix = [];
-          animecategorysorted.length = 5;
-          mangacategorysorted.length = 5;
 
-          for (let e = 0; e < animecategorysorted.length; ++e) {
-            animecategorysortedfix.push(animecategorysorted[e].genre + ": " + animecategorysorted[e].amount);
-            mangacategorysortedfix.push(mangacategorysorted[e].genre + ": " + mangacategorysorted[e].amount);
-          }
+          if (animecategorysorted.length >= 5) {
+            animecategorysorted.length = 5;
+          } else {
+            animecategorysorted.length = animecategorysorted.length;
+          };
+
+          if (mangacategorysorted.length >= 5) {
+            mangacategorysorted.length = 5;
+          } else {
+            mangacategorysorted.length = mangacategorysorted.length;
+          };
+
+          if (animecategorysorted.length > 0) {
+            for (let e = 0; e < animecategorysorted.length; ++e) {
+              animecategorysortedfix.push(animecategorysorted[e].genre + ": " + animecategorysorted[e].amount);
+            }
+          } else {
+            animecategorysortedfix.push("No Favorite Anime Genres Found.")
+          };
+
+          if (mangacategorysorted.length > 0) {
+            for (let ee = 0; ee < mangacategorysorted.length; ++ee) {
+              mangacategorysortedfix.push(mangacategorysorted[ee].genre + ": " + mangacategorysorted[ee].amount);
+            }
+          } else {
+            mangacategorysortedfix.push("No Favorite Manga Genres Found.")
+          };
 
           const embed = new Discord.RichEmbed()
             .setTitle(username)
@@ -845,7 +909,7 @@ module.exports = async (bot, message, args, Discord) => {
             .addField("Favorite Characters:", favoritcharacter)
             .addField("Favorite Anime Genres:", animecategorysortedfix, true)
             .addField("Favorite Manga Genres:", mangacategorysortedfix, true)
-            .addField("Anime Watch Time:", bot.caps(lifeSpentOnAnimeresult.join(" ")), false)
+            .addField("Anime Watch Time:", lifeSpentOnAnimeresult, false)
             .addField("Manga Chapters Read:", chapterread, false)
             //.addField("Favorite Years:", `${yearfav.join(" ")}`)
             .addField("Last List Update:", moment(updatedAt).format("DD.MM.YYYY") + " at " + moment(updatedAt).format("hh:mm a"));
@@ -1023,6 +1087,17 @@ module.exports = async (bot, message, args, Discord) => {
           };
 
           var lifeSpentOnAnimeresult = [];
+          if (value == "0") {
+            lifeSpentOnAnimeresult = "No Time could be calculated."
+          } else {
+            for (var name in units) {
+              var p = Math.floor(value / units[name]);
+              if (p == 1) lifeSpentOnAnimeresult.push(p + " " + name);
+              if (p >= 2) lifeSpentOnAnimeresult.push(p + " " + name + "s");
+              value %= units[name];
+            }
+            lifeSpentOnAnimeresult = bot.caps(lifeSpentOnAnimeresult.join(" "))
+          }
 
           for (var name in units) {
             var p = Math.floor(value / units[name]);
@@ -1199,13 +1274,34 @@ module.exports = async (bot, message, args, Discord) => {
           let animecategorysortedfix = [];
           let mangacategorysorted = sortObject(mangacategory);
           let mangacategorysortedfix = [];
-          animecategorysorted.length = 5;
-          mangacategorysorted.length = 5;
 
-          for (let e = 0; e < animecategorysorted.length; ++e) {
-            animecategorysortedfix.push(animecategorysorted[e].genre + ": " + animecategorysorted[e].amount);
-            mangacategorysortedfix.push(mangacategorysorted[e].genre + ": " + mangacategorysorted[e].amount);
-          }
+          if (animecategorysorted.length >= 5) {
+            animecategorysorted.length = 5;
+          } else {
+            animecategorysorted.length = animecategorysorted.length;
+          };
+
+          if (mangacategorysorted.length >= 5) {
+            mangacategorysorted.length = 5;
+          } else {
+            mangacategorysorted.length = mangacategorysorted.length;
+          };
+
+          if (animecategorysorted.length > 0) {
+            for (let e = 0; e < animecategorysorted.length; ++e) {
+              animecategorysortedfix.push(animecategorysorted[e].genre + ": " + animecategorysorted[e].amount);
+            }
+          } else {
+            animecategorysortedfix.push("No Favorite Anime Genres Found.")
+          };
+
+          if (mangacategorysorted.length > 0) {
+            for (let ee = 0; ee < mangacategorysorted.length; ++ee) {
+              mangacategorysortedfix.push(mangacategorysorted[ee].genre + ": " + mangacategorysorted[ee].amount);
+            }
+          } else {
+            mangacategorysortedfix.push("No Favorite Manga Genres Found.")
+          };
 
           const embed = new Discord.RichEmbed()
             .setTitle(username)
@@ -1223,7 +1319,7 @@ module.exports = async (bot, message, args, Discord) => {
             .addField("Favorite Characters:", favoritcharacter)
             .addField("Favorite Anime Genres:", animecategorysortedfix, true)
             .addField("Favorite Manga Genres:", mangacategorysortedfix, true)
-            .addField("Anime Watch Time:", bot.caps(lifeSpentOnAnimeresult.join(" ")), false)
+            .addField("Anime Watch Time:", lifeSpentOnAnimeresult, false)
             .addField("Manga Chapters Read:", chapterread, false)
             //.addField("Favorite Years:", `${yearfav.join(" ")}`)
             .addField("Last List Update:", moment(updatedAt).format("DD.MM.YYYY") + " at " + moment(updatedAt).format("hh:mm a"));
@@ -1401,6 +1497,17 @@ module.exports = async (bot, message, args, Discord) => {
           };
 
           var lifeSpentOnAnimeresult = [];
+          if (value == "0") {
+            lifeSpentOnAnimeresult = "No Time could be calculated."
+          } else {
+            for (var name in units) {
+              var p = Math.floor(value / units[name]);
+              if (p == 1) lifeSpentOnAnimeresult.push(p + " " + name);
+              if (p >= 2) lifeSpentOnAnimeresult.push(p + " " + name + "s");
+              value %= units[name];
+            }
+            lifeSpentOnAnimeresult = bot.caps(lifeSpentOnAnimeresult.join(" "))
+          }
 
           for (var name in units) {
             var p = Math.floor(value / units[name]);
@@ -1577,13 +1684,34 @@ module.exports = async (bot, message, args, Discord) => {
           let animecategorysortedfix = [];
           let mangacategorysorted = sortObject(mangacategory);
           let mangacategorysortedfix = [];
-          animecategorysorted.length = 5;
-          mangacategorysorted.length = 5;
 
-          for (let e = 0; e < animecategorysorted.length; ++e) {
-            animecategorysortedfix.push(animecategorysorted[e].genre + ": " + animecategorysorted[e].amount);
-            mangacategorysortedfix.push(mangacategorysorted[e].genre + ": " + mangacategorysorted[e].amount);
-          }
+          if (animecategorysorted.length >= 5) {
+            animecategorysorted.length = 5;
+          } else {
+            animecategorysorted.length = animecategorysorted.length;
+          };
+
+          if (mangacategorysorted.length >= 5) {
+            mangacategorysorted.length = 5;
+          } else {
+            mangacategorysorted.length = mangacategorysorted.length;
+          };
+
+          if (animecategorysorted.length > 0) {
+            for (let e = 0; e < animecategorysorted.length; ++e) {
+              animecategorysortedfix.push(animecategorysorted[e].genre + ": " + animecategorysorted[e].amount);
+            }
+          } else {
+            animecategorysortedfix.push("No Favorite Anime Genres Found.")
+          };
+
+          if (mangacategorysorted.length > 0) {
+            for (let ee = 0; ee < mangacategorysorted.length; ++ee) {
+              mangacategorysortedfix.push(mangacategorysorted[ee].genre + ": " + mangacategorysorted[ee].amount);
+            }
+          } else {
+            mangacategorysortedfix.push("No Favorite Manga Genres Found.")
+          };
 
           const embed = new Discord.RichEmbed()
             .setTitle(username)
@@ -1601,7 +1729,7 @@ module.exports = async (bot, message, args, Discord) => {
             .addField("Favorite Characters:", favoritcharacter)
             .addField("Favorite Anime Genres:", animecategorysortedfix, true)
             .addField("Favorite Manga Genres:", mangacategorysortedfix, true)
-            .addField("Anime Watch Time:", bot.caps(lifeSpentOnAnimeresult.join(" ")), false)
+            .addField("Anime Watch Time:", lifeSpentOnAnimeresult, false)
             .addField("Manga Chapters Read:", chapterread, false)
             //.addField("Favorite Years:", `${yearfav.join(" ")}`)
             .addField("Last List Update:", moment(updatedAt).format("DD.MM.YYYY") + " at " + moment(updatedAt).format("hh:mm a"));
