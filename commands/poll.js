@@ -13,5 +13,5 @@ module.exports = async (bot, message, args, Discord, moment) => {
     let msg = await message.channel.send({ embed });
     await msg.react("👍");
     await msg.react("👎");
-  }
+  };
 };

@@ -27,7 +27,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
   if (args.length == 0) {
     return message.channel.send(`${user}, I need a Title to search for! (Usage: €manga Title)`);
-  }
+  };
 
   await query;
 
@@ -59,7 +59,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           NSFW.push("🔞" + "NSFW" + "🔞");
         } else {
           NSFW.push("");
-        }
+        };
 
         if (fetch1.data.Page.media[a].title.romaji != null) {
           field1.push({
@@ -71,8 +71,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
             name: `${fetch1.data.Page.media[a].title.english} (${bot.caps(fetch1.data.Page.media[a].format.split(" "))}) ${NSFW[a]}`,
             value: `Reaction: ${emoji[a + 1]}`
           });
-        }
-      }
+        };
+      };
 
       let embed;
       switch (fetch1.data.Page.media.length) {
@@ -223,7 +223,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             ]
           };
           break;
-      }
+      };
 
       let em1;
       switch (fetch1.data.Page.media.length) {
@@ -286,7 +286,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           await em1.react(emoji[7]);
           await em1.react(emoji[0]);
           break;
-      }
+      };
 
       const filter = (reaction, user) => {
         return emoji.includes(reaction.emoji.name) === true && user.id === uid;
@@ -331,7 +331,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             em1.clearReactions();
             i = 6;
             break;
-        }
+        };
 
         let nsfw = fetch1.data.Page.media[i].isAdult;
 
@@ -340,11 +340,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
           mangatitle = fetch1.data.Page.media[i].title.english;
         } else {
           mangatitle = fetch1.data.Page.media[i].title.romaji;
-        }
+        };
 
         if (fetch1.data.Page.media[i].title.romaji == null && fetch1.data.Page.media[i].title.english == null) {
           mangatitle = "Unknown.";
-        }
+        };
 
         let description;
         if (fetch1.data.Page.media[i].description == null) {
@@ -354,7 +354,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             .replace(/<[^>]*>/g, " ")
             .replace(/\s{2,}/g, " ")
             .trim();
-        }
+        };
 
         let mangaid;
         if (fetch1.data.Page.media[i].id == null) {
@@ -368,28 +368,28 @@ module.exports = async (bot, message, args, Discord, moment) => {
           coverIMG = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848";
         } else {
           coverIMG = fetch1.data.Page.media[i].coverImage.large;
-        }
+        };
 
         let posterIMG;
         if (fetch1.data.Page.media[i].bannerImage == null) {
           posterIMG = "";
         } else {
           posterIMG = fetch1.data.Page.media[i].bannerImage;
-        }
+        };
 
         let mangaurl;
         if (fetch1.data.Page.media[i].siteUrl == null) {
           mangaurl = "https://anilist.co";
         } else {
           mangaurl = fetch1.data.Page.media[i].siteUrl;
-        }
+        };
 
         let format;
         if (fetch1.data.Page.media[i].format == null) {
           format = "Unknown.";
         } else {
           format = fetch1.data.Page.media[i].format;
-        }
+        };
 
         let genres;
         let genre1 = [];
@@ -398,14 +398,14 @@ module.exports = async (bot, message, args, Discord, moment) => {
         } else {
           for (let b = 0; b < fetch1.data.Page.media[i].genres.length; ++b) {
             genre1.push(fetch1.data.Page.media[i].genres[b]);
-          }
-        }
+          };
+        };
 
         if (genre1.length == 0) {
           genres = "No Genres found.";
         } else {
           genres = genre1.join(", ");
-        }
+        };
 
         let mainchar;
         let chardata = [];
@@ -417,9 +417,9 @@ module.exports = async (bot, message, args, Discord, moment) => {
               chardata.push("[" + fetch1.data.Page.media[i].characters.nodes[c].name.first + "]" + "(" + fetch1.data.Page.media[i].characters.nodes[c].siteUrl + ")");
             } else {
               chardata.push("[" + fetch1.data.Page.media[i].characters.nodes[c].name.first + " " + fetch1.data.Page.media[i].characters.nodes[c].name.last + "]" + "(" + fetch1.data.Page.media[i].characters.nodes[c].siteUrl + ")");
-            }
-          }
-        }
+            };
+          };
+        };
 
         let tags;
         let tags1 = [];
@@ -441,14 +441,14 @@ module.exports = async (bot, message, args, Discord, moment) => {
           mainchar = "No Characters found.";
         } else {
           mainchar = chardata.join(", ");
-        }
+        };
 
         let status;
         if (fetch1.data.Page.media[i].status == null) {
           status = "No Status found.";
         } else {
           status = bot.caps(fetch1.data.Page.media[i].status);
-        }
+        };
 
         let start;
         let end;
@@ -458,13 +458,13 @@ module.exports = async (bot, message, args, Discord, moment) => {
           airings.push(start);
         } else {
           start = "From " + fetch1.data.Page.media[i].startDate.day + "." + fetch1.data.Page.media[i].startDate.month + "." + fetch1.data.Page.media[i].startDate.year;
-        }
+        };
 
         if (fetch1.data.Page.media[i].endDate.day == null || fetch1.data.Page.media[i].endDate.month == null || fetch1.data.Page.media[i].endDate.year == null) {
           end = "";
         } else {
           end = "to " + fetch1.data.Page.media[i].endDate.day + "." + fetch1.data.Page.media[i].endDate.month + "." + fetch1.data.Page.media[i].endDate.year;
-        }
+        };
 
         airings.push(start + " " + end);
 
@@ -473,28 +473,28 @@ module.exports = async (bot, message, args, Discord, moment) => {
           chapters = "No Chapters in Database.";
         } else {
           chapters = fetch1.data.Page.media[i].chapters;
-        }
+        };
 
         let volumes;
         if (fetch1.data.Page.media[i].volumes == null) {
           volumes = "No Volumes in Database.";
         } else {
           volumes = fetch1.data.Page.media[i].volumes;
-        }
+        };
 
         let avgRating;
         if (fetch1.data.Page.media[i].averageScore === null) {
           avgRating = "No Rating in Database.";
         } else {
           avgRating = fetch1.data.Page.media[i].averageScore + "%";
-        }
+        };
 
         let sourcefilter;
         if (fetch1.data.Page.media[i].source == null || fetch1.data.Page.media[i].source == undefined) {
           sourcefilter = "No Source in Database.";
         } else {
           sourcefilter = bot.caps(fetch1.data.Page.media[i].source.split("_"));
-        }
+        };
 
         let staff;
         let staffdata = [];
@@ -508,16 +508,16 @@ module.exports = async (bot, message, args, Discord, moment) => {
                 staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + "]" + "(" + staffdatas[m].node.siteUrl + ")");
               } else {
                 staffdata.push(staffdatas[m].role + ": " + "[" + staffdatas[m].node.name.first + " " + staffdatas[m].node.name.last + "]" + "(" + staffdatas[m].node.siteUrl + ")");
-              }
-            }
-          }
-        }
+              };
+            };
+          };
+        };
 
         if (staffdata.length == 0) {
           staff = "No Staff in Database.";
         } else {
           staff = staffdata.join("\n");
-        }
+        };
 
         const dominantColor = await getColorFromURL(coverIMG);
         color = rgbHex(`${dominantColor}`);
@@ -563,7 +563,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             .addField("Community Rating:", avgRating)
             .addField("Source:", `${sourcefilter}`)
             .addField("Staff:", `${staff}`);
-        }
+        };
 
         if (nsfw == false) {
           await em1.edit(`${user}, here is the result for ${mangatitle}`, { embed });
@@ -571,14 +571,14 @@ module.exports = async (bot, message, args, Discord, moment) => {
           await em1.delete();
           await message.channel.send(`${user}, You've selected a NSFW Manga! I've sent you a DM ( ͡~ ͜ʖ ͡°)`);
           await message.author.send(`${user}, Here is the result for ${mangatitle}`, { embed });
-        }
+        };
       });
 
       collector.on("end", collected => {
         if (collected.size == 0) {
           em1.delete();
           message.channel.send(`${user}, You didn't react fast enough, try again!`);
-        }
+        };
       });
     });
 };

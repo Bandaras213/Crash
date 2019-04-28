@@ -37,11 +37,11 @@ module.exports = async (bot, message, args, Discord) => {
 
   if (finduserdiscid == undefined && args[0] != "save") {
     return message.channel.send(`${user}, Looks like you don't have a Waifu! Save a Waifu by using €mywaifu save [name]!`);
-  }
+  };
 
   if (mention && findmentiondiscid == undefined && args[0] != "save") {
     return message.channel.send(`${user}, Looks like ${mention} doesn't have a Waifu!`);
-  }
+  };
 
   if (finduserdiscid && mention == undefined && args[0] != "save") {
     indexuserdiscid = WaifuDBobj.waifus.findIndex(did => did.discid == user.id);
@@ -90,17 +90,17 @@ module.exports = async (bot, message, args, Discord) => {
             .trim()
             .split("~!");
           description = description[0].toString();
-        }
+        };
         if (description < 2043) {
           description = description;
         } else {
           description = description.substring(0, 2043) + "...";
-        }
+        };
 
         let name = fetch1.data.Page.characters[0].name.first;
         if (fetch1.data.Page.characters[0].name.last != null) {
           name += ` ${fetch1.data.Page.characters[0].name.last}`;
-        }
+        };
 
         let subname;
         if (alternative == null || alternative == "") {
@@ -113,7 +113,7 @@ module.exports = async (bot, message, args, Discord) => {
               .toString()
               .split(",")
               .join(", ");
-        }
+        };
 
         var isin;
         var isindata = [];
@@ -125,13 +125,13 @@ module.exports = async (bot, message, args, Discord) => {
         } else {
           for (let b = 0; b < isindatas.length; ++b) {
             isindata.push("[" + isindatas[b].node.title.romaji + "]" + "(" + siteUrl[b].node.siteUrl + ")" + " (" + bot.caps(format[b].node.format) + ")");
-          }
-        }
+          };
+        };
         if (isindata.length == 0) {
           isin = "No Media in Database.";
         } else {
           isin = isindata.join("\n");
-        }
+        };
 
         let embed = new Discord.RichEmbed()
           .setTitle(subname.replace("&#039;", "'"))
@@ -145,7 +145,7 @@ module.exports = async (bot, message, args, Discord) => {
 
         await message.channel.send(`${user}, ${name} is your Waifu!`, { embed });
       });
-  }
+  };
 
   if (findmentiondiscid && args[0] != "save") {
     indexmentiondiscid = WaifuDBobj.waifus.findIndex(did => did.discid == mention.id);
@@ -194,17 +194,17 @@ module.exports = async (bot, message, args, Discord) => {
             .trim()
             .split("~!");
           description = description[0].toString();
-        }
+        };
         if (description < 2043) {
           description = description;
         } else {
           description = description.substring(0, 2043) + "...";
-        }
+        };
 
         let name = fetch1.data.Page.characters[0].name.first;
         if (fetch1.data.Page.characters[0].name.last != null) {
           name += ` ${fetch1.data.Page.characters[0].name.last}`;
-        }
+        };
 
         let subname;
         if (alternative == null || alternative == "") {
@@ -217,7 +217,7 @@ module.exports = async (bot, message, args, Discord) => {
               .toString()
               .split(",")
               .join(", ");
-        }
+        };
 
         var isin;
         var isindata = [];
@@ -229,13 +229,13 @@ module.exports = async (bot, message, args, Discord) => {
         } else {
           for (let b = 0; b < isindatas.length; ++b) {
             isindata.push("[" + isindatas[b].node.title.romaji + "]" + "(" + siteUrl[b].node.siteUrl + ")" + " (" + bot.caps(format[b].node.format) + ")");
-          }
-        }
+          };
+        };
         if (isindata.length == 0) {
           isin = "No Media in Database.";
         } else {
           isin = isindata.join("\n");
-        }
+        };
 
         let embed = new Discord.RichEmbed()
           .setTitle(subname.replace("&#039;", "'"))
@@ -249,16 +249,16 @@ module.exports = async (bot, message, args, Discord) => {
 
         await message.channel.send(`${user}, ${name} is ${mention}'s Waifu!`, { embed });
       });
-  }
+  };
 
   if (args[0] == "save") {
     if (finduserdiscid != undefined) {
       OVERWRITE = true;
-    }
+    };
 
     if (args.length < 2) {
       return message.channel.send(`${user}, I need a Name to search for!`);
-    }
+    };
 
     args.splice(0, 1);
     let charactername = args.join(" ");
@@ -296,7 +296,7 @@ module.exports = async (bot, message, args, Discord) => {
           let name = fetch1.data.Page.characters[a].name.first;
           if (fetch1.data.Page.characters[a].name.last != null) {
             name += ` ${fetch1.data.Page.characters[a].name.last}`;
-          }
+          };
 
           var titlecheck;
           var characterRole;
@@ -307,10 +307,10 @@ module.exports = async (bot, message, args, Discord) => {
           } else {
             characterRole = fetch1.data.Page.characters[a].media.edges[0].characterRole;
             titlecheck = fetch1.data.Page.characters[a].media.edges[0].node.title.romaji;
-          }
+          };
           if (titlecheck == null) {
             titlecheck = fetch1.data.Page.characters[a].media.edges[0].node.title.english;
-          }
+          };
 
           if (characterRole === "MAIN") {
             field2.push(`${name.replace("&#039;", "'")} (${titlecheck})`);
@@ -318,8 +318,8 @@ module.exports = async (bot, message, args, Discord) => {
           } else {
             field3.push(`${name.replace("&#039;", "'")} (${titlecheck})`);
             field3.push(`${a}`);
-          }
-        }
+          };
+        };
 
         fieldfilter = field2.concat(field3);
 
@@ -329,11 +329,11 @@ module.exports = async (bot, message, args, Discord) => {
           field1.length = 7;
         } else {
           field1.length;
-        }
+        };
 
         if (field1.length == 0) {
           return message.channel.send(`${user}, Couldn't find a matching character for '**${charactername}**'`);
-        }
+        };
 
         let embed;
 
@@ -569,7 +569,7 @@ module.exports = async (bot, message, args, Discord) => {
               ]
             };
             break;
-        }
+        };
 
         let em1;
         switch (field1.length) {
@@ -632,7 +632,7 @@ module.exports = async (bot, message, args, Discord) => {
             await em1.react(emoji[7]);
             await em1.react(emoji[0]);
             break;
-        }
+        };
 
         const filter = (reaction, user) => {
           return emoji.includes(reaction.emoji.name) === true && user.id === uid;
@@ -677,7 +677,7 @@ module.exports = async (bot, message, args, Discord) => {
               em1.clearReactions();
               i = index1[6];
               break;
-          }
+          };
 
           let alternative = fetch1.data.Page.characters[i].name.alternative;
           let url = fetch1.data.Page.characters[i].siteUrl;
@@ -700,17 +700,17 @@ module.exports = async (bot, message, args, Discord) => {
               .trim()
               .split("~!");
             description = description[0].toString();
-          }
+          };
           if (description < 2043) {
             description = description;
           } else {
             description = description.substring(0, 2043) + "...";
-          }
+          };
 
           let name = fetch1.data.Page.characters[i].name.first;
           if (fetch1.data.Page.characters[i].name.last != null) {
             name += ` ${fetch1.data.Page.characters[i].name.last}`;
-          }
+          };
 
           let subname;
           if (alternative == null || alternative == "") {
@@ -723,7 +723,7 @@ module.exports = async (bot, message, args, Discord) => {
                 .toString()
                 .split(",")
                 .join(", ");
-          }
+          };
 
           var isin;
           var isindata = [];
@@ -735,13 +735,13 @@ module.exports = async (bot, message, args, Discord) => {
           } else {
             for (let b = 0; b < isindatas.length; ++b) {
               isindata.push("[" + isindatas[b].node.title.romaji + "]" + "(" + siteUrl[b].node.siteUrl + ")" + " (" + bot.caps(format[b].node.format) + ")");
-            }
-          }
+            };
+          };
           if (isindata.length == 0) {
             isin = "No Media in Database.";
           } else {
             isin = isindata.join("\n");
-          }
+          };
 
           let embed = new Discord.RichEmbed()
             .setTitle(subname.replace("&#039;", "'"))
@@ -765,7 +765,7 @@ module.exports = async (bot, message, args, Discord) => {
               waifuid: `${fetch1.data.Page.characters[i].id}`,
               waifuname: name
             });
-          }
+          };
 
           fs.writeFile(WaifuDB, JSON.stringify(WaifuDBobj, null, 2), "utf8", err => {
             if (err) bot.log("Unable to write file", "Error");
@@ -776,8 +776,8 @@ module.exports = async (bot, message, args, Discord) => {
           if (collected.size == 0) {
             em1.delete();
             message.channel.send(`${user}, You didn't react fast enough, try again!`);
-          }
+          };
         });
       });
-  }
+  };
 };

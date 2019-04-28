@@ -10,7 +10,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
   if (args.length == 0) {
     return message.channel.send(`${user}, I need a Staff Name to search for! (Usage: €staff Name)`);
-  }
+  };
 
   await query;
 
@@ -61,7 +61,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
         let mediaurl = staffedges[a].node.siteUrl;
         staffmedia.push(staffrole + ":");
         staffmedia.push("[" + mediatitle + "]" + "(" + mediaurl + ")" + " " + "(" + mediatype + ")");
-      }
+      };
 
       let staffmediasort0 = [];
       let staffmediasort1 = [];
@@ -146,22 +146,22 @@ module.exports = async (bot, message, args, Discord, moment) => {
 
             if (charrole === "Supporting") {
               characters1.push("[" + mediatitle + "]" + "(" + mediaurl + ")" + "\n" + "(" + "\u200b" + "[" + charactername + "]" + "(" + characterurl + ")" + ")");
-            }
-          }
-        }
-      }
+            };
+          };
+        };
+      };
 
       var rannumb1 = [];
       while (rannumb1.length < characters.length) {
         var r = Math.floor(Math.random() * characters.length) + 0;
         if (rannumb1.indexOf(r) === -1) rannumb1.push(r);
-      }
+      };
 
       var rannumb2 = [];
       while (rannumb2.length < characters1.length) {
         var r = Math.floor(Math.random() * characters1.length) + 0;
         if (rannumb2.indexOf(r) === -1) rannumb2.push(r);
-      }
+      };
 
       let rdmcharacter1 = [];
       if (characters.length < 1) {
@@ -169,12 +169,12 @@ module.exports = async (bot, message, args, Discord, moment) => {
       } else {
         for (let rdm = 0; rdm < rannumb1.length; rdm++) {
           rdmcharacter1.push(characters[rannumb1[rdm]]);
-        }
-      }
+        };
+      };
 
       if (rdmcharacter1.length > 5) {
         rdmcharacter1.length = 5;
-      }
+      };
 
       let rdmcharacter2 = [];
       if (characters1.length < 1) {
@@ -182,26 +182,26 @@ module.exports = async (bot, message, args, Discord, moment) => {
       } else {
         for (let rdm = 0; rdm < rannumb2.length; rdm++) {
           rdmcharacter2.push(characters1[rannumb2[rdm]]);
-        }
-      }
+        };
+      };
 
       if (rdmcharacter2.length > 5) {
         rdmcharacter2.length = 5;
-      }
+      };
 
       if (description == null) {
         description = "No Description in Database."
       }
-      
+
       if (description.length > 2045) {
         description = description
-            .replace(/<[^>]*>/g, " ")
-            .replace(/&#039;/g, "'")
-            .replace(/&quot;/g, '"')
-            .replace(/\s{2,}/g, " ")
-            .replace(/__/g, "")
-            .trim()
-            .substring(0, 2045) + "...";
+          .replace(/<[^>]*>/g, " ")
+          .replace(/&#039;/g, "'")
+          .replace(/&quot;/g, '"')
+          .replace(/\s{2,}/g, " ")
+          .replace(/__/g, "")
+          .trim()
+          .substring(0, 2045) + "...";
       } else {
         description = description
           .replace(/<[^>]*>/g, " ")
@@ -210,7 +210,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           .replace(/\s{2,}/g, " ")
           .replace(/__/g, "")
           .trim();
-      }
+      };
 
       const embed = new Discord.RichEmbed()
         .setTitle(name + "," + " " + namenative)

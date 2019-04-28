@@ -32,11 +32,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
       while (rannumb1.length < fetch2.data.GenreCollection.length) {
         var r = Math.floor(Math.random() * fetch2.data.GenreCollection.length) + 0;
         if (rannumb1.indexOf(r) === -1) rannumb1.push(r);
-      }
+      };
 
       for (let rdm = 0; rdm < rannumb1.length; rdm++) {
         rdmgenre.push(fetch2.data.GenreCollection[rannumb1[rdm]]);
-      }
+      };
 
       let rdmgenrenmb = Math.floor(Math.random() * rdmgenre.length) + 0;
       let rdmnumbers = [];

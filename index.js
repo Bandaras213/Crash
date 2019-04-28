@@ -23,7 +23,7 @@ bot.on("error", error => require("./events/error.js")(bot, error));
 bot.commands = new Discord.Collection();
 bot.commands.set("help", require("./commands/help.js"));
 bot.commands.set("user", require("./commands/searchuser.js"));
-bot.commands.set("kitsuuser", require("./commands/searchuserkitsu.js"));
+bot.commands.set("kitsu", require("./commands/kitsu.js"));
 bot.commands.set("anilist", require("./commands/anilist.js"));
 bot.commands.set("waifu", require("./commands/mywaifu.js"));
 bot.commands.set("anilistanime", require("./commands/searchanime.js"));
@@ -41,6 +41,7 @@ bot.commands.set("p2r", require("./commands/userp2r.js"));
 bot.commands.set("antibully", require("./commands/antibully.js"));
 bot.commands.set("antiantibully", require("./commands/antiantibully.js"));
 bot.commands.set("yt", require("./commands/youtubesearch.js"));
+bot.commands.set("animekitsu", require("./commands/searchanimekitsu.js"));
 
 bot.login(bot.token);
 

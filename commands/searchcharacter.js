@@ -66,7 +66,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
         let name = fetch1.data.Page.characters[a].name.first;
         if (fetch1.data.Page.characters[a].name.last != null) {
           name += ` ${fetch1.data.Page.characters[a].name.last}`;
-        }
+        };
 
         var titlecheck;
         var characterRole;
@@ -88,8 +88,8 @@ module.exports = async (bot, message, args, Discord, moment) => {
         } else {
           field3.push(`${name.replace("&#039;", "'")} (${titlecheck})`);
           field3.push(`${a}`);
-        }
-      }
+        };
+      };
 
       fieldfilter = field2.concat(field3);
 
@@ -99,11 +99,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
         field1.length = 7;
       } else {
         field1.length;
-      }
+      };
 
       if (field1.length == 0) {
         return message.channel.send(`${user}, Couldn't find a matching character for '**${charactername}**'`);
-      }
+      };
 
       let embed;
 
@@ -339,7 +339,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             ]
           };
           break;
-      }
+      };
 
       let em1;
       switch (field1.length) {
@@ -402,7 +402,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
           await em1.react(emoji[7]);
           await em1.react(emoji[0]);
           break;
-      }
+      };
 
       const filter = (reaction, user) => {
         return emoji.includes(reaction.emoji.name) === true && user.id === uid;
@@ -447,7 +447,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
             em1.clearReactions();
             i = index1[6];
             break;
-        }
+        };
 
         let alternative = fetch1.data.Page.characters[i].name.alternative;
         let url = fetch1.data.Page.characters[i].siteUrl;
@@ -468,17 +468,17 @@ module.exports = async (bot, message, args, Discord, moment) => {
             .replace(/__/g, "**")
             .replace(/~!(.*?)!~/g, "")
             .trim();
-        }
+        };
         if (description < 2043) {
           description = description;
         } else {
           description = description.substring(0, 2043) + "...";
-        }
+        };
 
         let name = fetch1.data.Page.characters[i].name.first;
         if (fetch1.data.Page.characters[i].name.last != null) {
           name += ` ${fetch1.data.Page.characters[i].name.last}`;
-        }
+        };
 
         let subname;
         if (alternative == null || alternative == "") {
@@ -491,7 +491,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
               .toString()
               .split(",")
               .join(", ");
-        }
+        };
 
         var isin;
         var isindata = [];
@@ -502,19 +502,19 @@ module.exports = async (bot, message, args, Discord, moment) => {
           for (let b = 0; b < isindatas.length; ++b) {
             let formati = format[b].node.format;
             isindata.push("[" + isindatas[b].node.title.romaji + "]" + "(" + siteUrl[b].node.siteUrl + ")" + " (" + bot.caps(formati) + ")");
-          }
-        }
+          };
+        };
 
         if (isindata.length < 1) {
           isin = "No Media in Database.";
-        }
+        };
 
         if (isindata.length > 7) {
           isindata.length = 7;
           isin = isindata.join("\n");
         } else {
           isin = isindata.join("\n");
-        }
+        };
 
         let embed = new Discord.RichEmbed()
           .setTitle(subname.replace("&#039;", "'"))
@@ -533,7 +533,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
         if (collected.size == 0) {
           em1.delete();
           message.channel.send(`${user}, You didn't react fast enough, try again!`);
-        }
+        };
       });
     });
 };

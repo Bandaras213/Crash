@@ -8,19 +8,19 @@ module.exports = bot => {
     activity = process.env.ACTIVITY;
   } else {
     activity = bot.config.botactivity.activity;
-  }
+  };
 
   if (process.env.ACTIVITYTYPE != null) {
     type = process.env.ACTIVITYTYPE;
   } else {
     type = bot.config.botactivity.type;
-  }
+  };
 
   if (process.env.ACTIVITYSTATUS != null) {
     status = process.env.ACTIVITYSTATUS;
   } else {
     status = bot.config.botactivity.status;
-  }
+  };
 
   bot.user.setPresence({
     game: {
@@ -30,7 +30,7 @@ module.exports = bot => {
     status: status
   });
 
-  setInterval(function() {
+  setInterval(() => {
     let rdmactivity = ["Hentaihaven.org", "hanime.tv", "hentai2read.com", "pururin.io"];
     let randAct = Math.floor(Math.random() * rdmactivity.length);
     bot.user.setPresence({

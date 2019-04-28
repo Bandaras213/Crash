@@ -467,7 +467,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
                         headers: {
                           "Content-Type": "application/vnd.api+json",
                           Accept: "application/vnd.api+json"
-                        } 
+                        }
                       })
                         .then(relation1 => relation1.json())
                         .then(async relation1 => {
