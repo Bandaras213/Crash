@@ -260,7 +260,7 @@ module.exports = async (bot, message, args, Discord) => {
               month: 24 * 60 * 30,
               day: 24 * 60,
               hour: 24 * 6,
-              //minute: 24
+              minute: 24
             };
 
             var lifeSpentOnAnimeresult = [];
@@ -454,14 +454,10 @@ module.exports = async (bot, message, args, Discord) => {
 
             if (animecategorysorted.length >= 5) {
               animecategorysorted.length = 5;
-            } else {
-              animecategorysorted.length = animecategorysorted.length;
             };
 
             if (mangacategorysorted.length >= 5) {
               mangacategorysorted.length = 5;
-            } else {
-              mangacategorysorted.length = mangacategorysorted.length;
             };
 
             if (animecategorysorted.length > 0) {
@@ -673,7 +669,7 @@ module.exports = async (bot, message, args, Discord) => {
             month: 24 * 60 * 30,
             day: 24 * 60,
             hour: 24 * 6,
-            //minute: 24
+            minute: 24
           };
 
           var lifeSpentOnAnimeresult = [];
@@ -867,14 +863,10 @@ module.exports = async (bot, message, args, Discord) => {
 
           if (animecategorysorted.length >= 5) {
             animecategorysorted.length = 5;
-          } else {
-            animecategorysorted.length = animecategorysorted.length;
           };
 
           if (mangacategorysorted.length >= 5) {
             mangacategorysorted.length = 5;
-          } else {
-            mangacategorysorted.length = mangacategorysorted.length;
           };
 
           if (animecategorysorted.length > 0) {
@@ -1083,7 +1075,7 @@ module.exports = async (bot, message, args, Discord) => {
             month: 24 * 60 * 30,
             day: 24 * 60,
             hour: 24 * 6,
-            //minute: 24
+            minute: 24
           };
 
           var lifeSpentOnAnimeresult = [];
@@ -1277,14 +1269,10 @@ module.exports = async (bot, message, args, Discord) => {
 
           if (animecategorysorted.length >= 5) {
             animecategorysorted.length = 5;
-          } else {
-            animecategorysorted.length = animecategorysorted.length;
           };
 
           if (mangacategorysorted.length >= 5) {
             mangacategorysorted.length = 5;
-          } else {
-            mangacategorysorted.length = mangacategorysorted.length;
           };
 
           if (animecategorysorted.length > 0) {
@@ -1493,7 +1481,7 @@ module.exports = async (bot, message, args, Discord) => {
             month: 24 * 60 * 30,
             day: 24 * 60,
             hour: 24 * 6,
-            //minute: 24
+            minute: 24
           };
 
           var lifeSpentOnAnimeresult = [];
@@ -1687,14 +1675,10 @@ module.exports = async (bot, message, args, Discord) => {
 
           if (animecategorysorted.length >= 5) {
             animecategorysorted.length = 5;
-          } else {
-            animecategorysorted.length = animecategorysorted.length;
           };
 
           if (mangacategorysorted.length >= 5) {
             mangacategorysorted.length = 5;
-          } else {
-            mangacategorysorted.length = mangacategorysorted.length;
           };
 
           if (animecategorysorted.length > 0) {
