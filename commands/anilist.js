@@ -336,29 +336,561 @@ module.exports = async (bot, message, args, Discord) => {
           if (err) bot.log("Unable to write file", "Error");
         });
       });
-  };
+  } else {
 
-  if (!anilistid && !mention && args.length == 0) {
-    return message.channel.send(`${user}, Looks like you don't have a Anilist! Save a Anilist by using €anilist save [name]!`);
-  };
-
-  if (!mentionanilistid && mention) {
-    return message.channel.send(`${user}, Looks like ${mention} doesn't have a Anilist!`);
-  };
-
-  if (!aniliststringname && !mention && args.length > 0) {
-    let variables = {
-      name: args.join(" "),
-      page: 1,
-      perPage: 5
+    if (!anilistid && !mention && args.length == 0) {
+      return message.channel.send(`${user}, Looks like you don't have a Anilist! Save a Anilist by using €anilist save [name]!`);
     };
 
-    let databody = {
-      query: query,
-      variables: variables
+    if (!mentionanilistid && mention) {
+      return message.channel.send(`${user}, Looks like ${mention} doesn't have a Anilist!`);
     };
 
-    try {
+    if (!aniliststringname && !mention && args.length > 0) {
+      let variables = {
+        name: args.join(" "),
+        page: 1,
+        perPage: 5
+      };
+
+      let databody = {
+        query: query,
+        variables: variables
+      };
+
+      try {
+        await fetch("https://graphql.anilist.co", {
+          method: "post",
+          body: JSON.stringify(databody),
+          headers: { "Content-Type": "application/json", Accept: "application/json" }
+        })
+          .then(fetch1 => fetch1.json())
+          .then(async fetch1 => {
+            let username = fetch1.data.User.name;
+            let userID = fetch1.data.User.id;
+
+            let about = fetch1.data.User.about;
+            if (about == null) {
+              about = `No Bio Information on ${username}'s Profile.`;
+            } else {
+              about = about;
+            };
+
+            let avatar = fetch1.data.User.avatar.large;
+
+            let bannerIMG = fetch1.data.User.bannerImage;
+            if (bannerIMG == null) {
+              bannerIMG = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Fnull.png";
+            } else {
+              bannerIMG = bannerIMG;
+            };
+
+            let color = fetch1.data.User.options.profileColor;
+            if (color.startsWith("#")) {
+              color = color.replace("#", "")
+            } else {
+              let colorfilter = toHex(`${color}`);
+              color = colorfilter.replace("#", "");
+            }
+
+            let siteUrl = fetch1.data.User.siteUrl;
+            let updatedAt = fetch1.data.User.updatedAt;
+
+            let favoritanimes = [];
+            let favoritanime;
+            let favourites = fetch1.data.User.favourites;
+            if (favourites.anime.edges.length < 1) {
+              favoritanime = "No Favorite Animes on" + " " + `${username}` + "'s " + "Profile.";
+            } else {
+              for (let ab = 0; ab < favourites.anime.edges.length; ++ab) {
+                let favname = favourites.anime.edges[ab].node.title.romaji;
+                let favstatus = bot.caps(favourites.anime.edges[ab].node.status);
+                let favlink = favourites.anime.edges[ab].node.siteUrl;
+                favoritanimes.push("[" + `${favname}` + "]" + "(" + `${favlink}` + ")" + " " + "[" + `${favstatus}` + "]" + "\n");
+              };
+            };
+
+            if (favoritanimes.length == 0) {
+              favoritanime = "No Favorit Animes on" + " " + `${username}` + "'s " + "Profile.";
+            } else {
+              if (favoritanimes.length > 3) {
+                favoritanimes.length = 3;
+                favoritanime = favoritanimes.join(" ");
+              } else {
+                favoritanimes.join(" ");
+              };
+            };
+
+            let favoritmangas = [];
+            let favoritmanga;
+            if (favourites.manga.edges.length < 1) {
+              favoritmanga = "No Favorite Mangas on" + " " + `${username}` + "'s " + "Profile.";
+            } else {
+              for (let aa = 0; aa < favourites.manga.edges.length; ++aa) {
+                let favname = favourites.manga.edges[aa].node.title.romaji;
+                let favstatus = bot.caps(favourites.manga.edges[aa].node.status);
+                let favlink = favourites.manga.edges[aa].node.siteUrl;
+                favoritmangas.push("[" + `${favname}` + "]" + "(" + `${favlink}` + ")" + " " + "[" + `${favstatus}` + "]" + "\n");
+              };
+            };
+
+            if (favoritmangas.length == 0) {
+              favoritmanga = "No Favorit Mangas on" + " " + `${username}` + "'s " + "Profile.";
+            } else {
+              if (favoritmangas.length > 3) {
+                favoritmangas.length = 3;
+                favoritmanga = favoritmangas.join(" ");
+              } else {
+                favoritmanga = favoritmangas.join(" ");
+              };
+            };
+
+            let favoritcharacters = [];
+            let favoritcharacter;
+            if (favourites.characters.nodes.length < 1) {
+              favoritcharacter = "No Favorite Character on" + " " + `${username}` + "'s " + "Profile.";
+            } else {
+              for (let ac = 0; ac < favourites.characters.nodes.length; ++ac) {
+                let favname = favourites.characters.nodes[ac].name.first;
+                if (favourites.characters.nodes[ac].name.last != null) {
+                  favname += ` ${favourites.characters.nodes[ac].name.last}`;
+                }
+
+                let favaltname = favourites.characters.nodes[ac].name.alternative;
+                let favlink = favourites.characters.nodes[ac].siteUrl;
+                favoritcharacters.push("[" + `${favname}` + " " + "(" + `${favaltname}` + ")" + "]" + "(" + `${favlink}` + ")" + "\n");
+              };
+            };
+
+            if (favoritcharacters.length == 0) {
+              favoritcharacter = "No Favorit Characters on" + " " + `${username}` + "'s " + "Profile.";
+            } else {
+              if (favoritcharacters.length > 3) {
+                favoritcharacters.length = 3;
+                favoritcharacter = favoritcharacters.join(" ");
+              } else {
+                favoritcharacter = favoritcharacters.join(" ");
+              };
+            };
+
+            let stats = fetch1.data.User.stats;
+            let animewatchtime = stats.watchedTime;
+            if (animewatchtime == null) {
+              time = "Can't Calculate Time with no Episodes watched.";
+            } else {
+              timeConvert(animewatchtime);
+            };
+
+            let anistats = stats.animeStatusDistribution;
+            let animescore = [];
+            let animescores = stats.animeScoreDistribution;
+            for (let a = 0; a < stats.animeScoreDistribution.length; ++a) {
+              switch (animescores[a].score) {
+                case 10:
+                  animescore.push("**[1]:** " + `${animescores[a].amount}`);
+                  break;
+                case 20:
+                  animescore.push("**[2]:** " + `${animescores[a].amount}`);
+                  break;
+                case 30:
+                  animescore.push("**[3]:** " + `${animescores[a].amount}`);
+                  break;
+                case 40:
+                  animescore.push("**[4]:** " + `${animescores[a].amount}`);
+                  break;
+                case 50:
+                  animescore.push("**[5]:** " + `${animescores[a].amount}`);
+                  break;
+                case 60:
+                  animescore.push("**[6]:** " + `${animescores[a].amount}`);
+                  break;
+                case 70:
+                  animescore.push("**[7]:** " + `${animescores[a].amount}`);
+                  break;
+                case 80:
+                  animescore.push("**[8]:** " + `${animescores[a].amount}`);
+                  break;
+                case 90:
+                  animescore.push("**[9]:** " + `${animescores[a].amount}`);
+                  break;
+                case 100:
+                  animescore.push("**[10]:** " + `${animescores[a].amount}`);
+                  break;
+              };
+            };
+
+            let chapterread = stats.chaptersRead;
+            let mangastats = stats.mangaStatusDistribution;
+            let mangascore = [];
+            let mangascores = stats.mangaScoreDistribution;
+            for (let b = 0; b < mangascores.length; ++b) {
+              switch (mangascores[b].score) {
+                case 10:
+                  mangascore.push("**[1]:** " + `${mangascores[b].amount}`);
+                  break;
+                case 20:
+                  mangascore.push("**[2]:** " + `${mangascores[b].amount}`);
+                  break;
+                case 30:
+                  mangascore.push("**[3]:** " + `${mangascores[b].amount}`);
+                  break;
+                case 40:
+                  mangascore.push("**[4]:** " + `${mangascores[b].amount}`);
+                  break;
+                case 50:
+                  mangascore.push("**[5]:** " + `${mangascores[b].amount}`);
+                  break;
+                case 60:
+                  mangascore.push("**[6]:** " + `${mangascores[b].amount}`);
+                  break;
+                case 70:
+                  mangascore.push("**[7]:** " + `${mangascores[b].amount}`);
+                  break;
+                case 80:
+                  mangascore.push("**[8]:** " + `${mangascores[b].amount}`);
+                  break;
+                case 90:
+                  mangascore.push("**[9]:** " + `${mangascores[b].amount}`);
+                  break;
+                case 100:
+                  mangascore.push("**[10]:** " + `${mangascores[b].amount}`);
+                  break;
+              };
+            };
+
+            let genrefav = [];
+            let favgenre = stats.favouredGenresOverview;
+            for (let c = 0; c < favgenre.length; ++c) {
+              genrefav.push(`${favgenre[c].genre}: ${favgenre[c].amount}` + "\n");
+            }
+            if (genrefav.length > 3) {
+              genrefav.length = 3;
+            };
+
+            let yearfav = [];
+            let favyear = stats.favouredYears;
+            for (let d = 0; d < favyear.length; ++d) {
+              yearfav.push(`Year: ${favyear[d].year}` + "\n" + `Amount Read/Watched: ${favyear[d].amount}` + " " + `Average Score: ${favyear[d].meanScore}` + "\n");
+            }
+            if (yearfav.length > 3) {
+              yearfav.length = 3;
+            };
+
+            let lastupdated;
+            lastupdated = new Date(updatedAt * 1000);
+            lastupdated = lastupdated.toUTCString();
+            lastupdated = `${moment(lastupdated).format("DD.MM.YYYY")}` + " at " + `${moment(lastupdated).format("hh:mm a")}`;
+
+            const embed = new Discord.RichEmbed()
+              .setAuthor(username + "'s List Info", anilistLogo)
+              .setTitle(username)
+              .setColor(color)
+              .setDescription(about)
+              .setFooter(`Information about ${username}`, anilistLogo)
+              .setImage(bannerIMG)
+              .setThumbnail(avatar)
+              .setTimestamp()
+              .setURL(siteUrl)
+              .addField("Favorite Characters:", `${favoritcharacter}`)
+              .addField("Favorite Animes:", `${favoritanime}`)
+              .addField("Time Spend Watching Anime:", `${time}`)
+              .addField("Anime List:", "**Watching:** " + `${anistats[0].amount}` + "\n" + "**Plan to Watch:** " + `${anistats[1].amount}` + "\n" + "**Completed:** " + `${anistats[2].amount}` + "\n" + "**Dropped:** " + `${anistats[3].amount}` + "\n" + "**Paused:** " + `${anistats[4].amount}`)
+              .addField("Anime Scores (Score: Amount):", `${animescore.join(" ")}`)
+              .addField("Favorite Mangas:", `${favoritmanga}`)
+              .addField("Manga Chapters Read:", `${chapterread}`)
+              .addField("Manga List:", "**Reading:** " + `${mangastats[0].amount}` + "\n" + "**Plan to Read:** " + `${mangastats[1].amount}` + "\n" + "**Completed:** " + `${mangastats[2].amount}` + "\n" + "**Dropped:** " + `${mangastats[3].amount}` + "\n" + "**Paused:** " + `${mangastats[4].amount}`)
+              .addField("Manga Scores (Score: Amount):", `${mangascore.join(" ")}`)
+              .addField("Favorite Genres:", `${genrefav.join(" ")}`)
+              .addField("Favorite Years:", `${yearfav.join(" ")}`)
+              .addField("Last List Update:", `${lastupdated}`);
+
+            await message.channel.send(`${user}, ${username} (${userID}) is ${username}'s Anilist Profile!`, { embed });
+          });
+      } catch (error) {
+        return message.channel.send(`${user}, Couldn't find a User with the name "**${args.join(" ")}**"! Please check your spelling and try again!`);
+      }
+    }
+
+    if (anilistid && !mention && args.length == 0) {
+      indexuserdiscid = UserlistDBobj.userlist.findIndex(did => did.discid == user.id);
+      anilistid = await UserlistDBobj.userlist[indexuserdiscid].anilistid;
+      let variables = {
+        id: anilistid,
+        page: 1,
+        perPage: 1
+      };
+
+      let databody = {
+        query: query,
+        variables: variables
+      };
+
+      await fetch("https://graphql.anilist.co", {
+        method: "post",
+        body: JSON.stringify(databody),
+        headers: { "Content-Type": "application/json", Accept: "application/json" }
+      })
+        .then(fetch1 => fetch1.json())
+        .then(async fetch1 => {
+          let username = fetch1.data.User.name;
+          let userID = fetch1.data.User.id;
+
+          let about = fetch1.data.User.about;
+          if (about == null) {
+            about = `No Bio Information on ${username}'s Profile.`;
+          } else {
+            about = about;
+          };
+
+          let avatar = fetch1.data.User.avatar.large;
+
+          let bannerIMG = fetch1.data.User.bannerImage;
+          if (bannerIMG == null) {
+            bannerIMG = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Fnull.png";
+          } else {
+            bannerIMG = bannerIMG;
+          };
+
+          let color = fetch1.data.User.options.profileColor;
+          if (color.startsWith("#")) {
+            color = color.replace("#", "")
+          } else {
+            let colorfilter = toHex(`${color}`);
+            color = colorfilter.replace("#", "");
+          }
+
+          let siteUrl = fetch1.data.User.siteUrl;
+          let updatedAt = fetch1.data.User.updatedAt;
+
+          let favoritanimes = [];
+          let favoritanime;
+          let favourites = fetch1.data.User.favourites;
+          if (favourites.anime.edges.length < 1) {
+            favoritanime = "No Favorite Animes on" + " " + `${username}` + "'s " + "Profile.";
+          } else {
+            for (let ab = 0; ab < favourites.anime.edges.length; ++ab) {
+              let favname = favourites.anime.edges[ab].node.title.romaji;
+              let favstatus = bot.caps(favourites.anime.edges[ab].node.status);
+              let favlink = favourites.anime.edges[ab].node.siteUrl;
+              favoritanimes.push("[" + `${favname}` + "]" + "(" + `${favlink}` + ")" + " " + "[" + `${favstatus}` + "]" + "\n");
+            };
+          };
+
+          if (favoritanimes.length == 0) {
+            favoritanime = "No Favorit Animes on" + " " + `${username}` + "'s " + "Profile.";
+          } else {
+            if (favoritanimes.length > 3) {
+              favoritanimes.length = 3;
+              favoritanime = favoritanimes.join(" ");
+            } else {
+              favoritanimes.join(" ");
+            };
+          };
+
+          let favoritmangas = [];
+          let favoritmanga;
+          if (favourites.manga.edges.length < 1) {
+            favoritmanga = "No Favorite Mangas on" + " " + `${username}` + "'s " + "Profile.";
+          } else {
+            for (let aa = 0; aa < favourites.manga.edges.length; ++aa) {
+              let favname = favourites.manga.edges[aa].node.title.romaji;
+              let favstatus = bot.caps(favourites.manga.edges[aa].node.status);
+              let favlink = favourites.manga.edges[aa].node.siteUrl;
+              favoritmangas.push("[" + `${favname}` + "]" + "(" + `${favlink}` + ")" + " " + "[" + `${favstatus}` + "]" + "\n");
+            };
+          };
+
+          if (favoritmangas.length == 0) {
+            favoritmanga = "No Favorit Mangas on" + " " + `${username}` + "'s " + "Profile.";
+          } else {
+            if (favoritmangas.length > 3) {
+              favoritmangas.length = 3;
+              favoritmanga = favoritmangas.join(" ");
+            } else {
+              favoritmanga = favoritmangas.join(" ");
+            };
+          };
+
+          let favoritcharacters = [];
+          let favoritcharacter;
+          if (favourites.characters.nodes.length < 1) {
+            favoritcharacter = "No Favorite Character on" + " " + `${username}` + "'s " + "Profile.";
+          } else {
+            for (let ac = 0; ac < favourites.characters.nodes.length; ++ac) {
+              let favname = favourites.characters.nodes[ac].name.first;
+              if (favourites.characters.nodes[ac].name.last != null) {
+                favname += ` ${favourites.characters.nodes[ac].name.last}`;
+              };
+
+              let favaltname = favourites.characters.nodes[ac].name.alternative;
+              let favlink = favourites.characters.nodes[ac].siteUrl;
+              favoritcharacters.push("[" + `${favname}` + " " + "(" + `${favaltname}` + ")" + "]" + "(" + `${favlink}` + ")" + "\n");
+            };
+          };
+
+          if (favoritcharacters.length == 0) {
+            favoritcharacter = "No Favorit Characters on" + " " + `${username}` + "'s " + "Profile.";
+          } else {
+            if (favoritcharacters.length > 3) {
+              favoritcharacters.length = 3;
+              favoritcharacter = favoritcharacters.join(" ");
+            } else {
+              favoritcharacter = favoritcharacters.join(" ");
+            };
+          };
+
+          let stats = fetch1.data.User.stats;
+          let animewatchtime = stats.watchedTime;
+          if (animewatchtime == null) {
+            time = "Can't Calculate Time with no Episodes watched.";
+          } else {
+            timeConvert(animewatchtime);
+          };
+
+          let anistats = stats.animeStatusDistribution;
+          let animescore = [];
+          let animescores = stats.animeScoreDistribution;
+          for (let a = 0; a < stats.animeScoreDistribution.length; ++a) {
+            switch (animescores[a].score) {
+              case 10:
+                animescore.push("**[1]:** " + `${animescores[a].amount}`);
+                break;
+              case 20:
+                animescore.push("**[2]:** " + `${animescores[a].amount}`);
+                break;
+              case 30:
+                animescore.push("**[3]:** " + `${animescores[a].amount}`);
+                break;
+              case 40:
+                animescore.push("**[4]:** " + `${animescores[a].amount}`);
+                break;
+              case 50:
+                animescore.push("**[5]:** " + `${animescores[a].amount}`);
+                break;
+              case 60:
+                animescore.push("**[6]:** " + `${animescores[a].amount}`);
+                break;
+              case 70:
+                animescore.push("**[7]:** " + `${animescores[a].amount}`);
+                break;
+              case 80:
+                animescore.push("**[8]:** " + `${animescores[a].amount}`);
+                break;
+              case 90:
+                animescore.push("**[9]:** " + `${animescores[a].amount}`);
+                break;
+              case 100:
+                animescore.push("**[10]:** " + `${animescores[a].amount}`);
+                break;
+            };
+          };
+
+          let chapterread = stats.chaptersRead;
+          let mangastats = stats.mangaStatusDistribution;
+          let mangascore = [];
+          let mangascores = stats.mangaScoreDistribution;
+          for (let b = 0; b < mangascores.length; ++b) {
+            switch (mangascores[b].score) {
+              case 10:
+                mangascore.push("**[1]:** " + `${mangascores[b].amount}`);
+                break;
+              case 20:
+                mangascore.push("**[2]:** " + `${mangascores[b].amount}`);
+                break;
+              case 30:
+                mangascore.push("**[3]:** " + `${mangascores[b].amount}`);
+                break;
+              case 40:
+                mangascore.push("**[4]:** " + `${mangascores[b].amount}`);
+                break;
+              case 50:
+                mangascore.push("**[5]:** " + `${mangascores[b].amount}`);
+                break;
+              case 60:
+                mangascore.push("**[6]:** " + `${mangascores[b].amount}`);
+                break;
+              case 70:
+                mangascore.push("**[7]:** " + `${mangascores[b].amount}`);
+                break;
+              case 80:
+                mangascore.push("**[8]:** " + `${mangascores[b].amount}`);
+                break;
+              case 90:
+                mangascore.push("**[9]:** " + `${mangascores[b].amount}`);
+                break;
+              case 100:
+                mangascore.push("**[10]:** " + `${mangascores[b].amount}`);
+                break;
+            };
+          };
+
+          let genrefav = [];
+          let favgenre = stats.favouredGenresOverview;
+          for (let c = 0; c < favgenre.length; ++c) {
+            genrefav.push(`${favgenre[c].genre}: ${favgenre[c].amount}` + "\n");
+          };
+
+          if (genrefav.length > 3) {
+            genrefav.length = 3;
+          };
+
+          let yearfav = [];
+          let favyear = stats.favouredYears;
+          for (let d = 0; d < favyear.length; ++d) {
+            yearfav.push(`Year: ${favyear[d].year}` + "\n" + `Amount Read/Watched: ${favyear[d].amount}` + " " + `Average Score: ${favyear[d].meanScore}` + "\n");
+          };
+
+          if (yearfav.length > 3) {
+            yearfav.length = 3;
+          };
+
+          let lastupdated;
+          lastupdated = new Date(updatedAt * 1000);
+          lastupdated = lastupdated.toUTCString();
+          lastupdated = `${moment(lastupdated).format("DD.MM.YYYY")}` + " at " + `${moment(lastupdated).format("hh:mm a")}`;
+
+          const embed = new Discord.RichEmbed()
+            .setAuthor(username + "'s List Infos", anilistLogo)
+            .setTitle(username)
+            .setColor(color)
+            .setDescription(about)
+            .setFooter(`Information about ${username}`, anilistLogo)
+            .setImage(bannerIMG)
+            .setThumbnail(avatar)
+            .setTimestamp()
+            .setURL(siteUrl)
+            .addField("Favorite Characters:", `${favoritcharacter}`)
+            .addField("Favorite Animes:", `${favoritanime}`)
+            .addField("Time Spend Watching Anime:", `${time}`)
+            .addField("Anime List:", "**Watching:** " + `${anistats[0].amount}` + "\n" + "**Plan to Watch:** " + `${anistats[1].amount}` + "\n" + "**Completed:** " + `${anistats[2].amount}` + "\n" + "**Dropped:** " + `${anistats[3].amount}` + "\n" + "**Paused:** " + `${anistats[4].amount}`)
+            .addField("Anime Scores (Score: Amount):", `${animescore.join(" ")}`)
+            .addField("Favorite Mangas:", `${favoritmanga}`)
+            .addField("Manga Chapters Read:", `${chapterread}`)
+            .addField("Manga List:", "**Reading:** " + `${mangastats[0].amount}` + "\n" + "**Plan to Read:** " + `${mangastats[1].amount}` + "\n" + "**Completed:** " + `${mangastats[2].amount}` + "\n" + "**Dropped:** " + `${mangastats[3].amount}` + "\n" + "**Paused:** " + `${mangastats[4].amount}`)
+            .addField("Manga Scores (Score: Amount):", `${mangascore.join(" ")}`)
+            .addField("Favorite Genres:", `${genrefav.join(" ")}`)
+            .addField("Favorite Years:", `${yearfav.join(" ")}`)
+            .addField("Last List Update:", `${lastupdated}`);
+
+          await message.channel.send(`${user}, ${username} (${userID}) is your Anilist!`, { embed });
+        });
+    };
+
+    if (mentionanilistid && mention) {
+      indexmentiondiscid = UserlistDBobj.userlist.findIndex(did => did.discid == mention.id);
+      anilistid = await UserlistDBobj.userlist[indexmentiondiscid].anilistid;
+
+      let variables = {
+        id: anilistid,
+        page: 1,
+        perPage: 5
+      };
+
+      let databody = {
+        query: query,
+        variables: variables
+      };
+
       await fetch("https://graphql.anilist.co", {
         method: "post",
         body: JSON.stringify(databody),
@@ -604,801 +1136,269 @@ module.exports = async (bot, message, args, Discord) => {
             .addField("Favorite Years:", `${yearfav.join(" ")}`)
             .addField("Last List Update:", `${lastupdated}`);
 
-          await message.channel.send(`${user}, ${username} (${userID}) is ${username}'s Anilist Profile!`, { embed });
+          await message.channel.send(`${user}, ${username} (${userID}) is ${mention}'s Anilist Profile!`, { embed });
         });
-    } catch (error) {
-      return message.channel.send(`${user}, Couldn't find a User with the name "**${args.join(" ")}**"! Please check your spelling and try again!`);
-    }
-  }
-
-  if (anilistid && !mention && args.length == 0) {
-    indexuserdiscid = UserlistDBobj.userlist.findIndex(did => did.discid == user.id);
-    anilistid = await UserlistDBobj.userlist[indexuserdiscid].anilistid;
-    let variables = {
-      id: anilistid,
-      page: 1,
-      perPage: 1
     };
 
-    let databody = {
-      query: query,
-      variables: variables
-    };
+    if (aniliststringname && !mention && args.length > 0) {
+      let variables = {
+        name: aniliststringname,
+        page: 1,
+        perPage: 5
+      };
 
-    await fetch("https://graphql.anilist.co", {
-      method: "post",
-      body: JSON.stringify(databody),
-      headers: { "Content-Type": "application/json", Accept: "application/json" }
-    })
-      .then(fetch1 => fetch1.json())
-      .then(async fetch1 => {
-        let username = fetch1.data.User.name;
-        let userID = fetch1.data.User.id;
+      let databody = {
+        query: query,
+        variables: variables
+      };
 
-        let about = fetch1.data.User.about;
-        if (about == null) {
-          about = `No Bio Information on ${username}'s Profile.`;
-        } else {
-          about = about;
-        };
+      await fetch("https://graphql.anilist.co", {
+        method: "post",
+        body: JSON.stringify(databody),
+        headers: { "Content-Type": "application/json", Accept: "application/json" }
+      })
+        .then(fetch1 => fetch1.json())
+        .then(async fetch1 => {
+          let username = fetch1.data.User.name;
+          let userID = fetch1.data.User.id;
 
-        let avatar = fetch1.data.User.avatar.large;
-
-        let bannerIMG = fetch1.data.User.bannerImage;
-        if (bannerIMG == null) {
-          bannerIMG = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Fnull.png";
-        } else {
-          bannerIMG = bannerIMG;
-        };
-
-        let color = fetch1.data.User.options.profileColor;
-        if (color.startsWith("#")) {
-          color = color.replace("#", "")
-        } else {
-          let colorfilter = toHex(`${color}`);
-          color = colorfilter.replace("#", "");
-        }
-
-        let siteUrl = fetch1.data.User.siteUrl;
-        let updatedAt = fetch1.data.User.updatedAt;
-
-        let favoritanimes = [];
-        let favoritanime;
-        let favourites = fetch1.data.User.favourites;
-        if (favourites.anime.edges.length < 1) {
-          favoritanime = "No Favorite Animes on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          for (let ab = 0; ab < favourites.anime.edges.length; ++ab) {
-            let favname = favourites.anime.edges[ab].node.title.romaji;
-            let favstatus = bot.caps(favourites.anime.edges[ab].node.status);
-            let favlink = favourites.anime.edges[ab].node.siteUrl;
-            favoritanimes.push("[" + `${favname}` + "]" + "(" + `${favlink}` + ")" + " " + "[" + `${favstatus}` + "]" + "\n");
-          };
-        };
-
-        if (favoritanimes.length == 0) {
-          favoritanime = "No Favorit Animes on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          if (favoritanimes.length > 3) {
-            favoritanimes.length = 3;
-            favoritanime = favoritanimes.join(" ");
+          let about = fetch1.data.User.about;
+          if (about == null) {
+            about = `No Bio Information on ${username}'s Profile.`;
           } else {
-            favoritanimes.join(" ");
+            about = about;
           };
-        };
 
-        let favoritmangas = [];
-        let favoritmanga;
-        if (favourites.manga.edges.length < 1) {
-          favoritmanga = "No Favorite Mangas on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          for (let aa = 0; aa < favourites.manga.edges.length; ++aa) {
-            let favname = favourites.manga.edges[aa].node.title.romaji;
-            let favstatus = bot.caps(favourites.manga.edges[aa].node.status);
-            let favlink = favourites.manga.edges[aa].node.siteUrl;
-            favoritmangas.push("[" + `${favname}` + "]" + "(" + `${favlink}` + ")" + " " + "[" + `${favstatus}` + "]" + "\n");
-          };
-        };
+          let avatar = fetch1.data.User.avatar.large;
 
-        if (favoritmangas.length == 0) {
-          favoritmanga = "No Favorit Mangas on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          if (favoritmangas.length > 3) {
-            favoritmangas.length = 3;
-            favoritmanga = favoritmangas.join(" ");
+          let bannerIMG = fetch1.data.User.bannerImage;
+          if (bannerIMG == null) {
+            bannerIMG = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Fnull.png";
           } else {
-            favoritmanga = favoritmangas.join(" ");
+            bannerIMG = bannerIMG;
           };
-        };
 
-        let favoritcharacters = [];
-        let favoritcharacter;
-        if (favourites.characters.nodes.length < 1) {
-          favoritcharacter = "No Favorite Character on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          for (let ac = 0; ac < favourites.characters.nodes.length; ++ac) {
-            let favname = favourites.characters.nodes[ac].name.first;
-            if (favourites.characters.nodes[ac].name.last != null) {
-              favname += ` ${favourites.characters.nodes[ac].name.last}`;
+          let color = fetch1.data.User.options.profileColor;
+          if (color.startsWith("#")) {
+            color = color.replace("#", "")
+          } else {
+            let colorfilter = toHex(`${color}`);
+            color = colorfilter.replace("#", "");
+          }
+
+          let siteUrl = fetch1.data.User.siteUrl;
+          let updatedAt = fetch1.data.User.updatedAt;
+
+          let favoritanimes = [];
+          let favoritanime;
+          let favourites = fetch1.data.User.favourites;
+          if (favourites.anime.edges.length < 1) {
+            favoritanime = "No Favorite Animes on" + " " + `${username}` + "'s " + "Profile.";
+          } else {
+            for (let ab = 0; ab < favourites.anime.edges.length; ++ab) {
+              let favname = favourites.anime.edges[ab].node.title.romaji;
+              let favstatus = bot.caps(favourites.anime.edges[ab].node.status);
+              let favlink = favourites.anime.edges[ab].node.siteUrl;
+              favoritanimes.push("[" + `${favname}` + "]" + "(" + `${favlink}` + ")" + " " + "[" + `${favstatus}` + "]" + "\n");
             };
-
-            let favaltname = favourites.characters.nodes[ac].name.alternative;
-            let favlink = favourites.characters.nodes[ac].siteUrl;
-            favoritcharacters.push("[" + `${favname}` + " " + "(" + `${favaltname}` + ")" + "]" + "(" + `${favlink}` + ")" + "\n");
           };
-        };
 
-        if (favoritcharacters.length == 0) {
-          favoritcharacter = "No Favorit Characters on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          if (favoritcharacters.length > 3) {
-            favoritcharacters.length = 3;
-            favoritcharacter = favoritcharacters.join(" ");
+          if (favoritanimes.length == 0) {
+            favoritanime = "No Favorit Animes on" + " " + `${username}` + "'s " + "Profile.";
           } else {
-            favoritcharacter = favoritcharacters.join(" ");
+            if (favoritanimes.length > 3) {
+              favoritanimes.length = 3;
+              favoritanime = favoritanimes.join(" ");
+            } else {
+              favoritanimes.join(" ");
+            };
           };
-        };
 
-        let stats = fetch1.data.User.stats;
-        let animewatchtime = stats.watchedTime;
-        if (animewatchtime == null) {
-          time = "Can't Calculate Time with no Episodes watched.";
-        } else {
-          timeConvert(animewatchtime);
-        };
-
-        let anistats = stats.animeStatusDistribution;
-        let animescore = [];
-        let animescores = stats.animeScoreDistribution;
-        for (let a = 0; a < stats.animeScoreDistribution.length; ++a) {
-          switch (animescores[a].score) {
-            case 10:
-              animescore.push("**[1]:** " + `${animescores[a].amount}`);
-              break;
-            case 20:
-              animescore.push("**[2]:** " + `${animescores[a].amount}`);
-              break;
-            case 30:
-              animescore.push("**[3]:** " + `${animescores[a].amount}`);
-              break;
-            case 40:
-              animescore.push("**[4]:** " + `${animescores[a].amount}`);
-              break;
-            case 50:
-              animescore.push("**[5]:** " + `${animescores[a].amount}`);
-              break;
-            case 60:
-              animescore.push("**[6]:** " + `${animescores[a].amount}`);
-              break;
-            case 70:
-              animescore.push("**[7]:** " + `${animescores[a].amount}`);
-              break;
-            case 80:
-              animescore.push("**[8]:** " + `${animescores[a].amount}`);
-              break;
-            case 90:
-              animescore.push("**[9]:** " + `${animescores[a].amount}`);
-              break;
-            case 100:
-              animescore.push("**[10]:** " + `${animescores[a].amount}`);
-              break;
+          let favoritmangas = [];
+          let favoritmanga;
+          if (favourites.manga.edges.length < 1) {
+            favoritmanga = "No Favorite Mangas on" + " " + `${username}` + "'s " + "Profile.";
+          } else {
+            for (let aa = 0; aa < favourites.manga.edges.length; ++aa) {
+              let favname = favourites.manga.edges[aa].node.title.romaji;
+              let favstatus = bot.caps(favourites.manga.edges[aa].node.status);
+              let favlink = favourites.manga.edges[aa].node.siteUrl;
+              favoritmangas.push("[" + `${favname}` + "]" + "(" + `${favlink}` + ")" + " " + "[" + `${favstatus}` + "]" + "\n");
+            };
           };
-        };
 
-        let chapterread = stats.chaptersRead;
-        let mangastats = stats.mangaStatusDistribution;
-        let mangascore = [];
-        let mangascores = stats.mangaScoreDistribution;
-        for (let b = 0; b < mangascores.length; ++b) {
-          switch (mangascores[b].score) {
-            case 10:
-              mangascore.push("**[1]:** " + `${mangascores[b].amount}`);
-              break;
-            case 20:
-              mangascore.push("**[2]:** " + `${mangascores[b].amount}`);
-              break;
-            case 30:
-              mangascore.push("**[3]:** " + `${mangascores[b].amount}`);
-              break;
-            case 40:
-              mangascore.push("**[4]:** " + `${mangascores[b].amount}`);
-              break;
-            case 50:
-              mangascore.push("**[5]:** " + `${mangascores[b].amount}`);
-              break;
-            case 60:
-              mangascore.push("**[6]:** " + `${mangascores[b].amount}`);
-              break;
-            case 70:
-              mangascore.push("**[7]:** " + `${mangascores[b].amount}`);
-              break;
-            case 80:
-              mangascore.push("**[8]:** " + `${mangascores[b].amount}`);
-              break;
-            case 90:
-              mangascore.push("**[9]:** " + `${mangascores[b].amount}`);
-              break;
-            case 100:
-              mangascore.push("**[10]:** " + `${mangascores[b].amount}`);
-              break;
+          if (favoritmangas.length == 0) {
+            favoritmanga = "No Favorit Mangas on" + " " + `${username}` + "'s " + "Profile.";
+          } else {
+            if (favoritmangas.length > 3) {
+              favoritmangas.length = 3;
+              favoritmanga = favoritmangas.join(" ");
+            } else {
+              favoritmanga = favoritmangas.join(" ");
+            };
           };
-        };
 
-        let genrefav = [];
-        let favgenre = stats.favouredGenresOverview;
-        for (let c = 0; c < favgenre.length; ++c) {
-          genrefav.push(`${favgenre[c].genre}: ${favgenre[c].amount}` + "\n");
-        };
+          let favoritcharacters = [];
+          let favoritcharacter;
+          if (favourites.characters.nodes.length < 1) {
+            favoritcharacter = "No Favorite Character on" + " " + `${username}` + "'s " + "Profile.";
+          } else {
+            for (let ac = 0; ac < favourites.characters.nodes.length; ++ac) {
+              let favname = favourites.characters.nodes[ac].name.first;
+              if (favourites.characters.nodes[ac].name.last != null) {
+                favname += ` ${favourites.characters.nodes[ac].name.last}`;
+              }
 
-        if (genrefav.length > 3) {
-          genrefav.length = 3;
-        };
+              let favaltname = favourites.characters.nodes[ac].name.alternative;
+              let favlink = favourites.characters.nodes[ac].siteUrl;
+              favoritcharacters.push("[" + `${favname}` + " " + "(" + `${favaltname}` + ")" + "]" + "(" + `${favlink}` + ")" + "\n");
+            };
+          };
 
-        let yearfav = [];
-        let favyear = stats.favouredYears;
-        for (let d = 0; d < favyear.length; ++d) {
-          yearfav.push(`Year: ${favyear[d].year}` + "\n" + `Amount Read/Watched: ${favyear[d].amount}` + " " + `Average Score: ${favyear[d].meanScore}` + "\n");
-        };
+          if (favoritcharacters.length == 0) {
+            favoritcharacter = "No Favorit Characters on" + " " + `${username}` + "'s " + "Profile.";
+          } else {
+            if (favoritcharacters.length > 3) {
+              favoritcharacters.length = 3;
+              favoritcharacter = favoritcharacters.join(" ");
+            } else {
+              favoritcharacter = favoritcharacters.join(" ");
+            };
+          };
 
-        if (yearfav.length > 3) {
-          yearfav.length = 3;
-        };
+          let stats = fetch1.data.User.stats;
+          let animewatchtime = stats.watchedTime;
+          if (animewatchtime == null) {
+            time = "Can't Calculate Time with no Episodes watched.";
+          } else {
+            timeConvert(animewatchtime);
+          };
 
-        let lastupdated;
-        lastupdated = new Date(updatedAt * 1000);
-        lastupdated = lastupdated.toUTCString();
-        lastupdated = `${moment(lastupdated).format("DD.MM.YYYY")}` + " at " + `${moment(lastupdated).format("hh:mm a")}`;
+          let anistats = stats.animeStatusDistribution;
+          let animescore = [];
+          let animescores = stats.animeScoreDistribution;
+          for (let a = 0; a < stats.animeScoreDistribution.length; ++a) {
+            switch (animescores[a].score) {
+              case 10:
+                animescore.push("**[1]:** " + `${animescores[a].amount}`);
+                break;
+              case 20:
+                animescore.push("**[2]:** " + `${animescores[a].amount}`);
+                break;
+              case 30:
+                animescore.push("**[3]:** " + `${animescores[a].amount}`);
+                break;
+              case 40:
+                animescore.push("**[4]:** " + `${animescores[a].amount}`);
+                break;
+              case 50:
+                animescore.push("**[5]:** " + `${animescores[a].amount}`);
+                break;
+              case 60:
+                animescore.push("**[6]:** " + `${animescores[a].amount}`);
+                break;
+              case 70:
+                animescore.push("**[7]:** " + `${animescores[a].amount}`);
+                break;
+              case 80:
+                animescore.push("**[8]:** " + `${animescores[a].amount}`);
+                break;
+              case 90:
+                animescore.push("**[9]:** " + `${animescores[a].amount}`);
+                break;
+              case 100:
+                animescore.push("**[10]:** " + `${animescores[a].amount}`);
+                break;
+            };
+          };
 
-        const embed = new Discord.RichEmbed()
-          .setAuthor(username + "'s List Infos", anilistLogo)
-          .setTitle(username)
-          .setColor(color)
-          .setDescription(about)
-          .setFooter(`Information about ${username}`, anilistLogo)
-          .setImage(bannerIMG)
-          .setThumbnail(avatar)
-          .setTimestamp()
-          .setURL(siteUrl)
-          .addField("Favorite Characters:", `${favoritcharacter}`)
-          .addField("Favorite Animes:", `${favoritanime}`)
-          .addField("Time Spend Watching Anime:", `${time}`)
-          .addField("Anime List:", "**Watching:** " + `${anistats[0].amount}` + "\n" + "**Plan to Watch:** " + `${anistats[1].amount}` + "\n" + "**Completed:** " + `${anistats[2].amount}` + "\n" + "**Dropped:** " + `${anistats[3].amount}` + "\n" + "**Paused:** " + `${anistats[4].amount}`)
-          .addField("Anime Scores (Score: Amount):", `${animescore.join(" ")}`)
-          .addField("Favorite Mangas:", `${favoritmanga}`)
-          .addField("Manga Chapters Read:", `${chapterread}`)
-          .addField("Manga List:", "**Reading:** " + `${mangastats[0].amount}` + "\n" + "**Plan to Read:** " + `${mangastats[1].amount}` + "\n" + "**Completed:** " + `${mangastats[2].amount}` + "\n" + "**Dropped:** " + `${mangastats[3].amount}` + "\n" + "**Paused:** " + `${mangastats[4].amount}`)
-          .addField("Manga Scores (Score: Amount):", `${mangascore.join(" ")}`)
-          .addField("Favorite Genres:", `${genrefav.join(" ")}`)
-          .addField("Favorite Years:", `${yearfav.join(" ")}`)
-          .addField("Last List Update:", `${lastupdated}`);
+          let chapterread = stats.chaptersRead;
+          let mangastats = stats.mangaStatusDistribution;
+          let mangascore = [];
+          let mangascores = stats.mangaScoreDistribution;
+          for (let b = 0; b < mangascores.length; ++b) {
+            switch (mangascores[b].score) {
+              case 10:
+                mangascore.push("**[1]:** " + `${mangascores[b].amount}`);
+                break;
+              case 20:
+                mangascore.push("**[2]:** " + `${mangascores[b].amount}`);
+                break;
+              case 30:
+                mangascore.push("**[3]:** " + `${mangascores[b].amount}`);
+                break;
+              case 40:
+                mangascore.push("**[4]:** " + `${mangascores[b].amount}`);
+                break;
+              case 50:
+                mangascore.push("**[5]:** " + `${mangascores[b].amount}`);
+                break;
+              case 60:
+                mangascore.push("**[6]:** " + `${mangascores[b].amount}`);
+                break;
+              case 70:
+                mangascore.push("**[7]:** " + `${mangascores[b].amount}`);
+                break;
+              case 80:
+                mangascore.push("**[8]:** " + `${mangascores[b].amount}`);
+                break;
+              case 90:
+                mangascore.push("**[9]:** " + `${mangascores[b].amount}`);
+                break;
+              case 100:
+                mangascore.push("**[10]:** " + `${mangascores[b].amount}`);
+                break;
+            };
+          };
 
-        await message.channel.send(`${user}, ${username} (${userID}) is your Anilist!`, { embed });
-      });
+          let genrefav = [];
+          let favgenre = stats.favouredGenresOverview;
+          for (let c = 0; c < favgenre.length; ++c) {
+            genrefav.push(`${favgenre[c].genre}: ${favgenre[c].amount}` + "\n");
+          }
+          if (genrefav.length > 3) {
+            genrefav.length = 3;
+          };
+
+          let yearfav = [];
+          let favyear = stats.favouredYears;
+          for (let d = 0; d < favyear.length; ++d) {
+            yearfav.push(`Year: ${favyear[d].year}` + "\n" + `Amount Read/Watched: ${favyear[d].amount}` + " " + `Average Score: ${favyear[d].meanScore}` + "\n");
+          }
+          if (yearfav.length > 3) {
+            yearfav.length = 3;
+          };
+
+          let lastupdated;
+          lastupdated = new Date(updatedAt * 1000);
+          lastupdated = lastupdated.toUTCString();
+          lastupdated = `${moment(lastupdated).format("DD.MM.YYYY")}` + " at " + `${moment(lastupdated).format("hh:mm a")}`;
+
+          const embed = new Discord.RichEmbed()
+            .setAuthor(username + "'s List Info", anilistLogo)
+            .setTitle(username)
+            .setColor(color)
+            .setDescription(about)
+            .setFooter(`Information about ${username}`, anilistLogo)
+            .setImage(bannerIMG)
+            .setThumbnail(avatar)
+            .setTimestamp()
+            .setURL(siteUrl)
+            .addField("Favorite Characters:", `${favoritcharacter}`)
+            .addField("Favorite Animes:", `${favoritanime}`)
+            .addField("Time Spend Watching Anime:", `${time}`)
+            .addField("Anime List:", "**Watching:** " + `${anistats[0].amount}` + "\n" + "**Plan to Watch:** " + `${anistats[1].amount}` + "\n" + "**Completed:** " + `${anistats[2].amount}` + "\n" + "**Dropped:** " + `${anistats[3].amount}` + "\n" + "**Paused:** " + `${anistats[4].amount}`)
+            .addField("Anime Scores (Score: Amount):", `${animescore.join(" ")}`)
+            .addField("Favorite Mangas:", `${favoritmanga}`)
+            .addField("Manga Chapters Read:", `${chapterread}`)
+            .addField("Manga List:", "**Reading:** " + `${mangastats[0].amount}` + "\n" + "**Plan to Read:** " + `${mangastats[1].amount}` + "\n" + "**Completed:** " + `${mangastats[2].amount}` + "\n" + "**Dropped:** " + `${mangastats[3].amount}` + "\n" + "**Paused:** " + `${mangastats[4].amount}`)
+            .addField("Manga Scores (Score: Amount):", `${mangascore.join(" ")}`)
+            .addField("Favorite Genres:", `${genrefav.join(" ")}`)
+            .addField("Favorite Years:", `${yearfav.join(" ")}`)
+            .addField("Last List Update:", `${lastupdated}`);
+
+          await message.channel.send(`${user}, ${username} (${userID}) is ${aniliststringname}'s Anilist Profile!`, { embed });
+        });
+    };
   };
-
-  if (mentionanilistid && mention) {
-    indexmentiondiscid = UserlistDBobj.userlist.findIndex(did => did.discid == mention.id);
-    anilistid = await UserlistDBobj.userlist[indexmentiondiscid].anilistid;
-
-    let variables = {
-      id: anilistid,
-      page: 1,
-      perPage: 5
-    };
-
-    let databody = {
-      query: query,
-      variables: variables
-    };
-
-    await fetch("https://graphql.anilist.co", {
-      method: "post",
-      body: JSON.stringify(databody),
-      headers: { "Content-Type": "application/json", Accept: "application/json" }
-    })
-      .then(fetch1 => fetch1.json())
-      .then(async fetch1 => {
-        let username = fetch1.data.User.name;
-        let userID = fetch1.data.User.id;
-
-        let about = fetch1.data.User.about;
-        if (about == null) {
-          about = `No Bio Information on ${username}'s Profile.`;
-        } else {
-          about = about;
-        };
-
-        let avatar = fetch1.data.User.avatar.large;
-
-        let bannerIMG = fetch1.data.User.bannerImage;
-        if (bannerIMG == null) {
-          bannerIMG = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Fnull.png";
-        } else {
-          bannerIMG = bannerIMG;
-        };
-
-        let color = fetch1.data.User.options.profileColor;
-        if (color.startsWith("#")) {
-          color = color.replace("#", "")
-        } else {
-          let colorfilter = toHex(`${color}`);
-          color = colorfilter.replace("#", "");
-        }
-
-        let siteUrl = fetch1.data.User.siteUrl;
-        let updatedAt = fetch1.data.User.updatedAt;
-
-        let favoritanimes = [];
-        let favoritanime;
-        let favourites = fetch1.data.User.favourites;
-        if (favourites.anime.edges.length < 1) {
-          favoritanime = "No Favorite Animes on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          for (let ab = 0; ab < favourites.anime.edges.length; ++ab) {
-            let favname = favourites.anime.edges[ab].node.title.romaji;
-            let favstatus = bot.caps(favourites.anime.edges[ab].node.status);
-            let favlink = favourites.anime.edges[ab].node.siteUrl;
-            favoritanimes.push("[" + `${favname}` + "]" + "(" + `${favlink}` + ")" + " " + "[" + `${favstatus}` + "]" + "\n");
-          };
-        };
-
-        if (favoritanimes.length == 0) {
-          favoritanime = "No Favorit Animes on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          if (favoritanimes.length > 3) {
-            favoritanimes.length = 3;
-            favoritanime = favoritanimes.join(" ");
-          } else {
-            favoritanimes.join(" ");
-          };
-        };
-
-        let favoritmangas = [];
-        let favoritmanga;
-        if (favourites.manga.edges.length < 1) {
-          favoritmanga = "No Favorite Mangas on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          for (let aa = 0; aa < favourites.manga.edges.length; ++aa) {
-            let favname = favourites.manga.edges[aa].node.title.romaji;
-            let favstatus = bot.caps(favourites.manga.edges[aa].node.status);
-            let favlink = favourites.manga.edges[aa].node.siteUrl;
-            favoritmangas.push("[" + `${favname}` + "]" + "(" + `${favlink}` + ")" + " " + "[" + `${favstatus}` + "]" + "\n");
-          };
-        };
-
-        if (favoritmangas.length == 0) {
-          favoritmanga = "No Favorit Mangas on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          if (favoritmangas.length > 3) {
-            favoritmangas.length = 3;
-            favoritmanga = favoritmangas.join(" ");
-          } else {
-            favoritmanga = favoritmangas.join(" ");
-          };
-        };
-
-        let favoritcharacters = [];
-        let favoritcharacter;
-        if (favourites.characters.nodes.length < 1) {
-          favoritcharacter = "No Favorite Character on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          for (let ac = 0; ac < favourites.characters.nodes.length; ++ac) {
-            let favname = favourites.characters.nodes[ac].name.first;
-            if (favourites.characters.nodes[ac].name.last != null) {
-              favname += ` ${favourites.characters.nodes[ac].name.last}`;
-            }
-
-            let favaltname = favourites.characters.nodes[ac].name.alternative;
-            let favlink = favourites.characters.nodes[ac].siteUrl;
-            favoritcharacters.push("[" + `${favname}` + " " + "(" + `${favaltname}` + ")" + "]" + "(" + `${favlink}` + ")" + "\n");
-          };
-        };
-
-        if (favoritcharacters.length == 0) {
-          favoritcharacter = "No Favorit Characters on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          if (favoritcharacters.length > 3) {
-            favoritcharacters.length = 3;
-            favoritcharacter = favoritcharacters.join(" ");
-          } else {
-            favoritcharacter = favoritcharacters.join(" ");
-          };
-        };
-
-        let stats = fetch1.data.User.stats;
-        let animewatchtime = stats.watchedTime;
-        if (animewatchtime == null) {
-          time = "Can't Calculate Time with no Episodes watched.";
-        } else {
-          timeConvert(animewatchtime);
-        };
-
-        let anistats = stats.animeStatusDistribution;
-        let animescore = [];
-        let animescores = stats.animeScoreDistribution;
-        for (let a = 0; a < stats.animeScoreDistribution.length; ++a) {
-          switch (animescores[a].score) {
-            case 10:
-              animescore.push("**[1]:** " + `${animescores[a].amount}`);
-              break;
-            case 20:
-              animescore.push("**[2]:** " + `${animescores[a].amount}`);
-              break;
-            case 30:
-              animescore.push("**[3]:** " + `${animescores[a].amount}`);
-              break;
-            case 40:
-              animescore.push("**[4]:** " + `${animescores[a].amount}`);
-              break;
-            case 50:
-              animescore.push("**[5]:** " + `${animescores[a].amount}`);
-              break;
-            case 60:
-              animescore.push("**[6]:** " + `${animescores[a].amount}`);
-              break;
-            case 70:
-              animescore.push("**[7]:** " + `${animescores[a].amount}`);
-              break;
-            case 80:
-              animescore.push("**[8]:** " + `${animescores[a].amount}`);
-              break;
-            case 90:
-              animescore.push("**[9]:** " + `${animescores[a].amount}`);
-              break;
-            case 100:
-              animescore.push("**[10]:** " + `${animescores[a].amount}`);
-              break;
-          };
-        };
-
-        let chapterread = stats.chaptersRead;
-        let mangastats = stats.mangaStatusDistribution;
-        let mangascore = [];
-        let mangascores = stats.mangaScoreDistribution;
-        for (let b = 0; b < mangascores.length; ++b) {
-          switch (mangascores[b].score) {
-            case 10:
-              mangascore.push("**[1]:** " + `${mangascores[b].amount}`);
-              break;
-            case 20:
-              mangascore.push("**[2]:** " + `${mangascores[b].amount}`);
-              break;
-            case 30:
-              mangascore.push("**[3]:** " + `${mangascores[b].amount}`);
-              break;
-            case 40:
-              mangascore.push("**[4]:** " + `${mangascores[b].amount}`);
-              break;
-            case 50:
-              mangascore.push("**[5]:** " + `${mangascores[b].amount}`);
-              break;
-            case 60:
-              mangascore.push("**[6]:** " + `${mangascores[b].amount}`);
-              break;
-            case 70:
-              mangascore.push("**[7]:** " + `${mangascores[b].amount}`);
-              break;
-            case 80:
-              mangascore.push("**[8]:** " + `${mangascores[b].amount}`);
-              break;
-            case 90:
-              mangascore.push("**[9]:** " + `${mangascores[b].amount}`);
-              break;
-            case 100:
-              mangascore.push("**[10]:** " + `${mangascores[b].amount}`);
-              break;
-          };
-        };
-
-        let genrefav = [];
-        let favgenre = stats.favouredGenresOverview;
-        for (let c = 0; c < favgenre.length; ++c) {
-          genrefav.push(`${favgenre[c].genre}: ${favgenre[c].amount}` + "\n");
-        }
-        if (genrefav.length > 3) {
-          genrefav.length = 3;
-        };
-
-        let yearfav = [];
-        let favyear = stats.favouredYears;
-        for (let d = 0; d < favyear.length; ++d) {
-          yearfav.push(`Year: ${favyear[d].year}` + "\n" + `Amount Read/Watched: ${favyear[d].amount}` + " " + `Average Score: ${favyear[d].meanScore}` + "\n");
-        }
-        if (yearfav.length > 3) {
-          yearfav.length = 3;
-        };
-
-        let lastupdated;
-        lastupdated = new Date(updatedAt * 1000);
-        lastupdated = lastupdated.toUTCString();
-        lastupdated = `${moment(lastupdated).format("DD.MM.YYYY")}` + " at " + `${moment(lastupdated).format("hh:mm a")}`;
-
-        const embed = new Discord.RichEmbed()
-          .setAuthor(username + "'s List Info", anilistLogo)
-          .setTitle(username)
-          .setColor(color)
-          .setDescription(about)
-          .setFooter(`Information about ${username}`, anilistLogo)
-          .setImage(bannerIMG)
-          .setThumbnail(avatar)
-          .setTimestamp()
-          .setURL(siteUrl)
-          .addField("Favorite Characters:", `${favoritcharacter}`)
-          .addField("Favorite Animes:", `${favoritanime}`)
-          .addField("Time Spend Watching Anime:", `${time}`)
-          .addField("Anime List:", "**Watching:** " + `${anistats[0].amount}` + "\n" + "**Plan to Watch:** " + `${anistats[1].amount}` + "\n" + "**Completed:** " + `${anistats[2].amount}` + "\n" + "**Dropped:** " + `${anistats[3].amount}` + "\n" + "**Paused:** " + `${anistats[4].amount}`)
-          .addField("Anime Scores (Score: Amount):", `${animescore.join(" ")}`)
-          .addField("Favorite Mangas:", `${favoritmanga}`)
-          .addField("Manga Chapters Read:", `${chapterread}`)
-          .addField("Manga List:", "**Reading:** " + `${mangastats[0].amount}` + "\n" + "**Plan to Read:** " + `${mangastats[1].amount}` + "\n" + "**Completed:** " + `${mangastats[2].amount}` + "\n" + "**Dropped:** " + `${mangastats[3].amount}` + "\n" + "**Paused:** " + `${mangastats[4].amount}`)
-          .addField("Manga Scores (Score: Amount):", `${mangascore.join(" ")}`)
-          .addField("Favorite Genres:", `${genrefav.join(" ")}`)
-          .addField("Favorite Years:", `${yearfav.join(" ")}`)
-          .addField("Last List Update:", `${lastupdated}`);
-
-        await message.channel.send(`${user}, ${username} (${userID}) is ${mention}'s Anilist Profile!`, { embed });
-      });
-  };
-
-  if (aniliststringname && !mention && args.length > 0) {
-    let variables = {
-      name: aniliststringname,
-      page: 1,
-      perPage: 5
-    };
-
-    let databody = {
-      query: query,
-      variables: variables
-    };
-
-    await fetch("https://graphql.anilist.co", {
-      method: "post",
-      body: JSON.stringify(databody),
-      headers: { "Content-Type": "application/json", Accept: "application/json" }
-    })
-      .then(fetch1 => fetch1.json())
-      .then(async fetch1 => {
-        let username = fetch1.data.User.name;
-        let userID = fetch1.data.User.id;
-
-        let about = fetch1.data.User.about;
-        if (about == null) {
-          about = `No Bio Information on ${username}'s Profile.`;
-        } else {
-          about = about;
-        };
-
-        let avatar = fetch1.data.User.avatar.large;
-
-        let bannerIMG = fetch1.data.User.bannerImage;
-        if (bannerIMG == null) {
-          bannerIMG = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Fnull.png";
-        } else {
-          bannerIMG = bannerIMG;
-        };
-
-        let color = fetch1.data.User.options.profileColor;
-        if (color.startsWith("#")) {
-          color = color.replace("#", "")
-        } else {
-          let colorfilter = toHex(`${color}`);
-          color = colorfilter.replace("#", "");
-        }
-
-        let siteUrl = fetch1.data.User.siteUrl;
-        let updatedAt = fetch1.data.User.updatedAt;
-
-        let favoritanimes = [];
-        let favoritanime;
-        let favourites = fetch1.data.User.favourites;
-        if (favourites.anime.edges.length < 1) {
-          favoritanime = "No Favorite Animes on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          for (let ab = 0; ab < favourites.anime.edges.length; ++ab) {
-            let favname = favourites.anime.edges[ab].node.title.romaji;
-            let favstatus = bot.caps(favourites.anime.edges[ab].node.status);
-            let favlink = favourites.anime.edges[ab].node.siteUrl;
-            favoritanimes.push("[" + `${favname}` + "]" + "(" + `${favlink}` + ")" + " " + "[" + `${favstatus}` + "]" + "\n");
-          };
-        };
-
-        if (favoritanimes.length == 0) {
-          favoritanime = "No Favorit Animes on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          if (favoritanimes.length > 3) {
-            favoritanimes.length = 3;
-            favoritanime = favoritanimes.join(" ");
-          } else {
-            favoritanimes.join(" ");
-          };
-        };
-
-        let favoritmangas = [];
-        let favoritmanga;
-        if (favourites.manga.edges.length < 1) {
-          favoritmanga = "No Favorite Mangas on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          for (let aa = 0; aa < favourites.manga.edges.length; ++aa) {
-            let favname = favourites.manga.edges[aa].node.title.romaji;
-            let favstatus = bot.caps(favourites.manga.edges[aa].node.status);
-            let favlink = favourites.manga.edges[aa].node.siteUrl;
-            favoritmangas.push("[" + `${favname}` + "]" + "(" + `${favlink}` + ")" + " " + "[" + `${favstatus}` + "]" + "\n");
-          };
-        };
-
-        if (favoritmangas.length == 0) {
-          favoritmanga = "No Favorit Mangas on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          if (favoritmangas.length > 3) {
-            favoritmangas.length = 3;
-            favoritmanga = favoritmangas.join(" ");
-          } else {
-            favoritmanga = favoritmangas.join(" ");
-          };
-        };
-
-        let favoritcharacters = [];
-        let favoritcharacter;
-        if (favourites.characters.nodes.length < 1) {
-          favoritcharacter = "No Favorite Character on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          for (let ac = 0; ac < favourites.characters.nodes.length; ++ac) {
-            let favname = favourites.characters.nodes[ac].name.first;
-            if (favourites.characters.nodes[ac].name.last != null) {
-              favname += ` ${favourites.characters.nodes[ac].name.last}`;
-            }
-
-            let favaltname = favourites.characters.nodes[ac].name.alternative;
-            let favlink = favourites.characters.nodes[ac].siteUrl;
-            favoritcharacters.push("[" + `${favname}` + " " + "(" + `${favaltname}` + ")" + "]" + "(" + `${favlink}` + ")" + "\n");
-          };
-        };
-
-        if (favoritcharacters.length == 0) {
-          favoritcharacter = "No Favorit Characters on" + " " + `${username}` + "'s " + "Profile.";
-        } else {
-          if (favoritcharacters.length > 3) {
-            favoritcharacters.length = 3;
-            favoritcharacter = favoritcharacters.join(" ");
-          } else {
-            favoritcharacter = favoritcharacters.join(" ");
-          };
-        };
-
-        let stats = fetch1.data.User.stats;
-        let animewatchtime = stats.watchedTime;
-        if (animewatchtime == null) {
-          time = "Can't Calculate Time with no Episodes watched.";
-        } else {
-          timeConvert(animewatchtime);
-        };
-
-        let anistats = stats.animeStatusDistribution;
-        let animescore = [];
-        let animescores = stats.animeScoreDistribution;
-        for (let a = 0; a < stats.animeScoreDistribution.length; ++a) {
-          switch (animescores[a].score) {
-            case 10:
-              animescore.push("**[1]:** " + `${animescores[a].amount}`);
-              break;
-            case 20:
-              animescore.push("**[2]:** " + `${animescores[a].amount}`);
-              break;
-            case 30:
-              animescore.push("**[3]:** " + `${animescores[a].amount}`);
-              break;
-            case 40:
-              animescore.push("**[4]:** " + `${animescores[a].amount}`);
-              break;
-            case 50:
-              animescore.push("**[5]:** " + `${animescores[a].amount}`);
-              break;
-            case 60:
-              animescore.push("**[6]:** " + `${animescores[a].amount}`);
-              break;
-            case 70:
-              animescore.push("**[7]:** " + `${animescores[a].amount}`);
-              break;
-            case 80:
-              animescore.push("**[8]:** " + `${animescores[a].amount}`);
-              break;
-            case 90:
-              animescore.push("**[9]:** " + `${animescores[a].amount}`);
-              break;
-            case 100:
-              animescore.push("**[10]:** " + `${animescores[a].amount}`);
-              break;
-          };
-        };
-
-        let chapterread = stats.chaptersRead;
-        let mangastats = stats.mangaStatusDistribution;
-        let mangascore = [];
-        let mangascores = stats.mangaScoreDistribution;
-        for (let b = 0; b < mangascores.length; ++b) {
-          switch (mangascores[b].score) {
-            case 10:
-              mangascore.push("**[1]:** " + `${mangascores[b].amount}`);
-              break;
-            case 20:
-              mangascore.push("**[2]:** " + `${mangascores[b].amount}`);
-              break;
-            case 30:
-              mangascore.push("**[3]:** " + `${mangascores[b].amount}`);
-              break;
-            case 40:
-              mangascore.push("**[4]:** " + `${mangascores[b].amount}`);
-              break;
-            case 50:
-              mangascore.push("**[5]:** " + `${mangascores[b].amount}`);
-              break;
-            case 60:
-              mangascore.push("**[6]:** " + `${mangascores[b].amount}`);
-              break;
-            case 70:
-              mangascore.push("**[7]:** " + `${mangascores[b].amount}`);
-              break;
-            case 80:
-              mangascore.push("**[8]:** " + `${mangascores[b].amount}`);
-              break;
-            case 90:
-              mangascore.push("**[9]:** " + `${mangascores[b].amount}`);
-              break;
-            case 100:
-              mangascore.push("**[10]:** " + `${mangascores[b].amount}`);
-              break;
-          };
-        };
-
-        let genrefav = [];
-        let favgenre = stats.favouredGenresOverview;
-        for (let c = 0; c < favgenre.length; ++c) {
-          genrefav.push(`${favgenre[c].genre}: ${favgenre[c].amount}` + "\n");
-        }
-        if (genrefav.length > 3) {
-          genrefav.length = 3;
-        };
-
-        let yearfav = [];
-        let favyear = stats.favouredYears;
-        for (let d = 0; d < favyear.length; ++d) {
-          yearfav.push(`Year: ${favyear[d].year}` + "\n" + `Amount Read/Watched: ${favyear[d].amount}` + " " + `Average Score: ${favyear[d].meanScore}` + "\n");
-        }
-        if (yearfav.length > 3) {
-          yearfav.length = 3;
-        };
-
-        let lastupdated;
-        lastupdated = new Date(updatedAt * 1000);
-        lastupdated = lastupdated.toUTCString();
-        lastupdated = `${moment(lastupdated).format("DD.MM.YYYY")}` + " at " + `${moment(lastupdated).format("hh:mm a")}`;
-
-        const embed = new Discord.RichEmbed()
-          .setAuthor(username + "'s List Info", anilistLogo)
-          .setTitle(username)
-          .setColor(color)
-          .setDescription(about)
-          .setFooter(`Information about ${username}`, anilistLogo)
-          .setImage(bannerIMG)
-          .setThumbnail(avatar)
-          .setTimestamp()
-          .setURL(siteUrl)
-          .addField("Favorite Characters:", `${favoritcharacter}`)
-          .addField("Favorite Animes:", `${favoritanime}`)
-          .addField("Time Spend Watching Anime:", `${time}`)
-          .addField("Anime List:", "**Watching:** " + `${anistats[0].amount}` + "\n" + "**Plan to Watch:** " + `${anistats[1].amount}` + "\n" + "**Completed:** " + `${anistats[2].amount}` + "\n" + "**Dropped:** " + `${anistats[3].amount}` + "\n" + "**Paused:** " + `${anistats[4].amount}`)
-          .addField("Anime Scores (Score: Amount):", `${animescore.join(" ")}`)
-          .addField("Favorite Mangas:", `${favoritmanga}`)
-          .addField("Manga Chapters Read:", `${chapterread}`)
-          .addField("Manga List:", "**Reading:** " + `${mangastats[0].amount}` + "\n" + "**Plan to Read:** " + `${mangastats[1].amount}` + "\n" + "**Completed:** " + `${mangastats[2].amount}` + "\n" + "**Dropped:** " + `${mangastats[3].amount}` + "\n" + "**Paused:** " + `${mangastats[4].amount}`)
-          .addField("Manga Scores (Score: Amount):", `${mangascore.join(" ")}`)
-          .addField("Favorite Genres:", `${genrefav.join(" ")}`)
-          .addField("Favorite Years:", `${yearfav.join(" ")}`)
-          .addField("Last List Update:", `${lastupdated}`);
-
-        await message.channel.send(`${user}, ${username} (${userID}) is ${aniliststringname}'s Anilist Profile!`, { embed });
-      });
-  };
-
 };
