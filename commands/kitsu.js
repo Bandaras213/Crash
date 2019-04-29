@@ -59,7 +59,7 @@ module.exports = async (bot, message, args, Discord) => {
       .then(fetch1 => fetch1.json())
       .then(async fetch1 => {
         if (fetch1.data.length == 0) {
-          return message.channel.send(`${user}, Couldn't find a matching Kitsulist for '**${userstring}**'`);
+          return message.channel.send(`${user}, Couldn't find a matching Kitsulist for '**${usersearchname}**'`);
         }
 
         let username = fetch1.data[0].attributes.name;
