@@ -1,4 +1,6 @@
 const ms = require("ms");
+const moment = require("moment");
+
 module.exports = bot => {
   let type;
   let status;
@@ -21,6 +23,18 @@ module.exports = bot => {
   } else {
     status = bot.config.botactivity.status;
   };
+
+  let today = [];
+  let day = moment().format("DD");
+  today.push(day)
+  let month = moment().format("MM");
+  today.push(month)
+
+
+  let date = bot.date(today)
+
+  console.log(today)
+  console.log(date)
 
   bot.user.setPresence({
     game: {

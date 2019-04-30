@@ -7,6 +7,7 @@ bot.config = require("./config.json");
 bot.log = require("./functions/log.js");
 bot.caps = require("./functions/capitalize.js");
 bot.allcaps = require("./functions/allcaps.js");
+bot.date = require("./functions/holidaycheck.js");
 
 if (process.env.DISCORDTOKEN == null) {
   token = bot.config.token;
