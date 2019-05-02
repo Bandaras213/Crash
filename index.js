@@ -51,13 +51,12 @@ bot.login(bot.token);
 const http = require("http");
 const express = require("express");
 const app = express();
+var externalRoutes = require('./webserver/externalRoutes');
 app.use(express.static("webserver/script"));
 app.use(express.static("webserver/view"));
+app.use("/", externalRoutes);
 app.get("/stayalive", (request, response) => {
   response.sendStatus(200);
-});
-app.get("/", function(req, res) {
-  res.sendFile("./webserver/view/about.html", { root: __dirname });
 });
 app.listen(process.env.PORT);
 setInterval(() => {
