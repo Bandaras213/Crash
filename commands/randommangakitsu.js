@@ -19,7 +19,10 @@ module.exports = async (bot, message, args, Discord, moment) => {
   })
     .then(random1 => random1.json())
     .then(async random1 => {
-      let randomfilter = random1.meta.count - 10;
+      let randomfilter = random1.meta.count;
+      if (randomfilter > 10) {
+        randomfilter = randomfilter - 10;
+      };
       randomfilter1 = Math.floor(Math.random() * randomfilter);
     });
 
