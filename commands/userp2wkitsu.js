@@ -87,38 +87,42 @@ module.exports = async (bot, message, args, Discord, moment) => {
       Accept: "application/vnd.api+json"
     }
   })
-  .then(random1 => random1.json())
-  .then(async random1 => {
-    let randomfilter = random1.meta.count;
-    randomfilter1 = Math.floor(Math.random() * randomfilter) + 0;
-    p2widlink = plannedanimelist + "&page%5Blimit%5D=1&page%5Boffset%5D=" + randomfilter1;
+    .then(random1 => random1.json())
+    .then(async random1 => {
+      let randomfilter = random1.meta.count;
+      randomfilter1 = Math.floor(Math.random() * randomfilter) + 0;
+      p2widlink = plannedanimelist + "&page%5Blimit%5D=1&page%5Boffset%5D=" + randomfilter1;
+    });
 
-    await fetch(p2widlink, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/vnd.api+json",
-        Accept: "application/vnd.api+json"
-      }
-    })
-      .then(random2 => random2.json())
-      .then(async random2 => {
-        p2widlink = random2.data[0].relationships.anime.links.self;
-      });
-  });
-
-let p2wid;
-
-await fetch(p2widlink, {
-  method: "GET",
-  headers: {
-    "Content-Type": "application/vnd.api+json",
-    Accept: "application/vnd.api+json"
+  if (randomfilter == 0) {
+    return message.channel.send(`${user}, Looks like the specified Kitsulist doesnt have a Plan 2 Watch Anime!`);
   }
-})
-  .then(idgetter => idgetter.json())
-  .then(async idgetter => {
-    p2wid = idgetter.data.id;
-  });
+
+  await fetch(p2widlink, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+      Accept: "application/vnd.api+json"
+    }
+  })
+    .then(random2 => random2.json())
+    .then(async random2 => {
+      p2widlink = random2.data[0].relationships.anime.links.self;
+    });
+
+  let p2wid;
+
+  await fetch(p2widlink, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+      Accept: "application/vnd.api+json"
+    }
+  })
+    .then(idgetter => idgetter.json())
+    .then(async idgetter => {
+      p2wid = idgetter.data.id;
+    });
 
   await fetch("https://kitsu.io/api/edge/anime/" + p2wid, {
     method: "GET",

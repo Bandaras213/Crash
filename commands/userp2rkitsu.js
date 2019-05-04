@@ -79,6 +79,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
     });
 
   let p2ridlink;
+  let randomfilter;
 
   await fetch(plannedmangalist, {
     method: "GET",
@@ -89,21 +90,25 @@ module.exports = async (bot, message, args, Discord, moment) => {
   })
     .then(random1 => random1.json())
     .then(async random1 => {
-      let randomfilter = random1.meta.count;
+      randomfilter = random1.meta.count;
       randomfilter1 = Math.floor(Math.random() * randomfilter) + 0;
       p2ridlink = plannedmangalist + "&page%5Blimit%5D=1&page%5Boffset%5D=" + randomfilter1;
+    });
 
-      await fetch(p2ridlink, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/vnd.api+json",
-          Accept: "application/vnd.api+json"
-        }
-      })
-        .then(random2 => random2.json())
-        .then(async random2 => {
-          p2ridlink = random2.data[0].relationships.manga.links.self;
-        });
+  if (randomfilter == 0) {
+    return message.channel.send(`${user}, Looks like the specified Kitsulist doesnt have a Plan 2 Read Manga!`);
+  }
+
+  await fetch(p2ridlink, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+      Accept: "application/vnd.api+json"
+    }
+  })
+    .then(random2 => random2.json())
+    .then(async random2 => {
+      p2ridlink = random2.data[0].relationships.manga.links.self;
     });
 
   let p2rid;
