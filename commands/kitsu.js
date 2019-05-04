@@ -74,7 +74,7 @@ module.exports = async (bot, message, args, Discord) => {
 
         let avatar;
         if (fetch1.data[0].attributes.avatar == null) {
-          avatar = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2FFF4D00-0.png?1555948245437";
+          avatar = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Fdefault_avatar-ff0fd0e960e61855f9fc4a2c5d994379.png?1556984782182";
         } else if (fetch1.data[0].attributes.avatar.original != null) {
           avatar = fetch1.data[0].attributes.avatar.original;
         } else if (fetch1.data[0].attributes.avatar.large != null) {
@@ -520,7 +520,7 @@ module.exports = async (bot, message, args, Discord) => {
 
           let avatar;
           if (fetch1.data[0].attributes.avatar == null) {
-            avatar = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2FFF4D00-0.png?1555948245437";
+            avatar = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Fdefault_avatar-ff0fd0e960e61855f9fc4a2c5d994379.png?1556984782182";
           } else if (fetch1.data[0].attributes.avatar.original != null) {
             avatar = fetch1.data[0].attributes.avatar.original;
           } else if (fetch1.data[0].attributes.avatar.large != null) {
