@@ -17,9 +17,12 @@ module.exports = async (bot, message, args, Discord, moment) => {
   let indexmentiondiscid;
   let test;
   let mentioncheck = false;
+  let mentioncheckid;
   let mention = message.mentions.users.first();
   if (mention) {
     findmentiondiscid = UserlistDBobj.userlist.find(did => did.discid == mention.id);
+    kitsuuserindex = UserlistDBobj.userlist.findIndex(did => did.discid == mention.id);
+    mentioncheckid = await UserlistDBobj.userlist[kitsuuserindex].kitsuid;
     mentioncheck = true;
   }
   const kitsuLogo = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Ffavicon-32x32-3e0ecb6fc5a6ae681e65dcbc2bdf1f17.png?1555855889085";
@@ -32,7 +35,11 @@ module.exports = async (bot, message, args, Discord, moment) => {
     return message.channel.send(`${user}, Looks like you don't have a Kitsulist! Save a Kitsulist by using kitsu save [name]!`);
   }
 
-  if (mention && findmentiondiscid == undefined && args[0] == undefined) {
+  if (mentioncheck == true && findmentiondiscid == undefined && mentioncheckid == undefined) {
+    return message.channel.send(`${user}, Looks like ${mention} doesn't have a Kitsulist!`);
+  }
+
+  if (mentioncheck == true && mentioncheckid == undefined) {
     return message.channel.send(`${user}, Looks like ${mention} doesn't have a Kitsulist!`);
   }
 
@@ -61,6 +68,7 @@ module.exports = async (bot, message, args, Discord, moment) => {
   }
 
   let plannedanimelist;
+  let nouserfound;
 
   await fetch(fetchthis1 + fetchthis, {
     method: "GET",
@@ -71,14 +79,33 @@ module.exports = async (bot, message, args, Discord, moment) => {
   })
     .then(getlist1 => getlist1.json())
     .then(async getlist1 => {
-      if (test == 1) {
-        plannedanimelist = getlist1.data[0].relationships.libraryEntries.links.related + "?filter[kind]=anime&filter[status]=planned";
+      if (getlist1.meta.count == 0) {
+        nouserfound = true;
       } else {
-        plannedanimelist = getlist1.data.relationships.libraryEntries.links.related + "?filter[kind]=anime&filter[status]=planned";
+        await fetch(fetchthis1 + fetchthis, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/vnd.api+json",
+            Accept: "application/vnd.api+json"
+          }
+        })
+          .then(getlist2 => getlist2.json())
+          .then(async getlist2 => {
+            if (test == 1) {
+              plannedanimelist = getlist2.data[0].relationships.libraryEntries.links.related + "?filter[kind]=anime&filter[status]=planned";
+            } else {
+              plannedanimelist = getlist2.data.relationships.libraryEntries.links.related + "?filter[kind]=anime&filter[status]=planned";
+            }
+          });
       }
     });
+  
+  if (nouserfound == true) {
+    return message.channel.send(`${user}, Looks like ${args[0]} dosn't have a Kitsulist! Or the Kitsulist coudnt be found!`);
+  };
 
   let p2widlink;
+  let randomfilter;
 
   await fetch(plannedanimelist, {
     method: "GET",
@@ -89,8 +116,12 @@ module.exports = async (bot, message, args, Discord, moment) => {
   })
     .then(random1 => random1.json())
     .then(async random1 => {
-      let randomfilter = random1.meta.count;
+      randomfilter = random1.meta.count;
       randomfilter1 = Math.floor(Math.random() * randomfilter) + 0;
+      if (randomfilter1 == random1.meta.count && randomfilter1 != 0) {
+        randomfilter1 = randomfilter1 - 1;
+      }
+
       p2widlink = plannedanimelist + "&page%5Blimit%5D=1&page%5Boffset%5D=" + randomfilter1;
     });
 

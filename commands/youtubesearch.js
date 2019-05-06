@@ -29,7 +29,6 @@ module.exports = async (bot, message, args, Discord) => {
 
   search(custom, opts, async (err, results) => {
     if (err) return console.log(err);
-    console.log(results.length);
 
     let field1 = [];
     for (let a = 0; a < results.length; a++) {
@@ -225,23 +224,23 @@ module.exports = async (bot, message, args, Discord) => {
       switch (i) {
         case 0:
           return em1.delete(), message.channel.send(`${user} aborted the command.`);
-        case emoji[1]:
+        case 1:
           em1.delete();
           message.channel.send(`${user}, Your video is ${results[0].link}`);
           break;
-        case 1:
+        case 2:
           em1.delete();
           message.channel.send(`${user}, Your video is ${results[1].link}`);
           break;
-        case 2:
+        case 3:
           em1.delete();
           message.channel.send(`${user}, Your video is ${results[2].link}`);
           break;
-        case 3:
+        case 4:
           em1.delete();
           message.channel.send(`${user}, Your video is ${results[3].link}`);
           break;
-        case 4:
+        case 5:
           em1.delete();
           message.channel.send(`${user}, Your video is ${results[4].link}`);
           break;
