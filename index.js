@@ -48,6 +48,7 @@ bot.commands.set("antiantibully", require("./commands/antiantibully.js"));
 bot.commands.set("yt", require("./commands/youtubesearch.js"));
 bot.commands.set("animekitsu", require("./commands/searchanimekitsu.js"));
 bot.commands.set("music", require("./commands/music.js"));
+bot.commands.set("rewatch", require("./commands/randomrewatchanime.js"));
 
 bot.login(bot.token);
 
