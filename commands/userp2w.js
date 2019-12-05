@@ -18,13 +18,9 @@ module.exports = async (bot, message, args, Discord) => {
   let bbrgs;
   let bbrrgs;
   let argslength;
-  let anilistname = UserlistDBobj.userlist.find(
-    did => did.anilistusername == args[0]
-  );
+  let anilistname = UserlistDBobj.userlist.find(did => did.anilistusername == args[0]);
   let findmentiondiscid;
-  let finduserdiscid = UserlistDBobj.userlist.find(
-    did => did.discid == user.id
-  );
+  let finduserdiscid = UserlistDBobj.userlist.find(did => did.discid == user.id);
   let anilistuserindex;
   let indexmentiondiscid;
   let variables;
@@ -34,9 +30,7 @@ module.exports = async (bot, message, args, Discord) => {
   let mentioncheck = false;
   let mention = message.mentions.users.first();
   if (mention) {
-    findmentiondiscid = UserlistDBobj.userlist.find(
-      did => did.discid == mention.id
-    );
+    findmentiondiscid = UserlistDBobj.userlist.find(did => did.discid == mention.id);
     mentioncheck = true;
   }
 
@@ -81,9 +75,7 @@ module.exports = async (bot, message, args, Discord) => {
   }
 
   if (mention && findmentiondiscid == undefined && args[0] == undefined) {
-    return message.channel.send(
-      `${user}, Looks like ${mention} doesn't have a Anilist!`
-    );
+    return message.channel.send(`${user}, Looks like ${mention} doesn't have a Anilist!`);
   }
 
   if (
@@ -100,9 +92,7 @@ module.exports = async (bot, message, args, Discord) => {
       MediaListStatus: "PLANNING"
     };
   } else if (anilistname != undefined && mentioncheck == false) {
-    anilistuserindex = UserlistDBobj.userlist.findIndex(
-      did => did.anilistusername == args[0]
-    );
+    anilistuserindex = UserlistDBobj.userlist.findIndex(did => did.anilistusername == args[0]);
     anilistid = await UserlistDBobj.userlist[anilistuserindex].anilistid;
     test = 2;
     listindex = 0;
@@ -112,9 +102,7 @@ module.exports = async (bot, message, args, Discord) => {
       MediaListStatus: "PLANNING"
     };
   } else if (mentioncheck == true && findmentiondiscid != undefined) {
-    indexmentiondiscid = UserlistDBobj.userlist.findIndex(
-      did => did.discid == mention.id
-    );
+    indexmentiondiscid = UserlistDBobj.userlist.findIndex(did => did.discid == mention.id);
     anilistid = await UserlistDBobj.userlist[indexmentiondiscid].anilistid;
     test = 3;
     listindex = 0;
@@ -124,9 +112,7 @@ module.exports = async (bot, message, args, Discord) => {
       MediaListStatus: "PLANNING"
     };
   } else if (mentioncheck == false && args[0] == undefined) {
-    anilistuserindex = UserlistDBobj.userlist.findIndex(
-      did => did.discid == user.id
-    );
+    anilistuserindex = UserlistDBobj.userlist.findIndex(did => did.discid == user.id);
     anilistid = await UserlistDBobj.userlist[anilistuserindex].anilistid;
     test = 4;
     listindex = 0;
@@ -154,19 +140,11 @@ module.exports = async (bot, message, args, Discord) => {
     .then(fetch1 => fetch1.json())
     .then(async fetch1 => {
       if (fetch1.data.MediaListCollection == null) {
-        return message.channel.send(
-          `${user}, Looks like ${
-            args[0]
-          } is not a valid Anilist! Save a Anilist by using €anilist save [name]!`
-        );
+        return message.channel.send(`${user}, Looks like ${args[0]} is not a valid Anilist! Save a Anilist by using €anilist save [name]!`);
       }
 
       if (fetch1.data.MediaListCollection.lists.length == 0) {
-        return message.channel.send(
-          `${user}, Looks like ${
-            args[0]
-          } has no Animes in there Anilist! Add some Animes to your Plan 2 Read List an try again!`
-        );
+        return message.channel.send(`${user}, Looks like ${args[0]} has no Animes in there Anilist! Add some Animes to your Plan 2 Read List an try again!`);
       }
 
       let fetch2 = []
@@ -229,29 +207,15 @@ module.exports = async (bot, message, args, Discord) => {
       i = Math.floor(Math.random() * fetch1.data.MediaListCollection.lists[listindex].entries.length) + 0;
 
 
-      let nsfw =
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .isAdult;
+      let nsfw = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.isAdult;
       let animetitle;
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title
-        .romaji == null
-      ) {
-        animetitle =
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .title.english;
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.romaji == null) {
+        animetitle = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.english;
       } else {
-        animetitle =
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .title.romaji;
+        animetitle = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.romaji;
       }
 
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title
-        .romaji == null &&
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title
-        .english == null
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.romaji == null && fetch1.data.MediaListCollection.lists[listindex].entries[i].media.title.english == null) {
         animetitle = "Unknown.";
       }
 
@@ -259,111 +223,61 @@ module.exports = async (bot, message, args, Discord) => {
       usercheck = fetch1.data.MediaListCollection.user.name;
 
       let description;
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .description == null
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.description == null) {
         description = "No Description found.";
       } else {
-        description = fetch1.data.MediaListCollection.lists[listindex].entries[
-            i
-          ].media.description
-          .replace(/<[^>]*>/g, " ")
-          .replace(/\s{2,}/g, " ")
-          .trim();
+        description = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.description.replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim();
       }
 
       let coverIMG;
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .coverImage.large == null
-      ) {
-        coverIMG =
-          "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848";
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.coverImage.large == null) {
+        coverIMG = "https://cdn.glitch.com/6343387a-229e-4206-a441-3faed6cbf092%2Foie_canvas%20(1).png?1541619925848";
       } else {
-        coverIMG =
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .coverImage.large;
+        coverIMG = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.coverImage.large;
       }
 
       let posterIMG;
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .bannerImage == null
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.bannerImage == null) {
         posterIMG = "";
       } else {
-        posterIMG =
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .bannerImage;
+        posterIMG = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.bannerImage;
       }
 
       let anilistmediaID;
-      if (
-        (anilistmediaID =
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].mediaId ==
-          null)
-      ) {
+      if ((anilistmediaID = fetch1.data.MediaListCollection.lists[listindex].entries[i].mediaId == null)) {
         anilistmediaID = "";
       } else {
-        anilistmediaID = anilistmediaID =
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].mediaId;
+        anilistmediaID = anilistmediaID = fetch1.data.MediaListCollection.lists[listindex].entries[i].mediaId;
       }
 
       let animeurl;
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .siteUrl == null
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.siteUrl == null) {
         animeurl = "https://anilist.co";
       } else {
-        animeurl =
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .siteUrl;
+        animeurl = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.siteUrl;
       }
 
       let video;
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .trailer == null
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.trailer == null) {
         video = "No Video found.";
       } else {
-        video =
-          `[Click Me](https://www.youtube.com/watch?v=` +
-          `${fetch1.data.MediaListCollection.lists[listindex].entries[i].media.trailer.id})`;
+        video = `[Click Me](https://www.youtube.com/watch?v=` + `${fetch1.data.MediaListCollection.lists[listindex].entries[i].media.trailer.id})`;
       }
 
       let format;
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .format == null
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.format == null) {
         format = "Unknown.";
       } else {
-        format =
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .format;
+        format = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.format;
       }
 
       let genres;
       let genre1 = [];
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media.genres
-        .length == 0
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.genres.length == 0) {
         genres = "No Genres found.";
       } else {
-        for (
-          let b = 0; b <
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .genres.length;
-          ++b
-        ) {
-          genre1.push(
-            fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-            .genres[b]
-          );
+        for (let b = 0; b < fetch1.data.MediaListCollection.lists[listindex].entries[i].media.genres.length; ++b) {
+          genre1.push(fetch1.data.MediaListCollection.lists[listindex].entries[i].media.genres[b]);
         }
       }
 
@@ -375,22 +289,11 @@ module.exports = async (bot, message, args, Discord) => {
 
       let tags;
       let tags1 = [];
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media.tags
-        .length == 0
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.tags.length == 0) {
         tags = "No Tags found.";
       } else {
-        for (
-          let c = 0; c <
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media.tags
-          .length;
-          ++c
-        ) {
-          tags1.push(
-            fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-            .tags[c].name
-          );
+        for (let c = 0; c < fetch1.data.MediaListCollection.lists[listindex].entries[i].media.tags.length; ++c) {
+          tags1.push(fetch1.data.MediaListCollection.lists[listindex].entries[i].media.tags[c].name);
         }
       }
 
@@ -401,133 +304,62 @@ module.exports = async (bot, message, args, Discord) => {
       }
 
       let status;
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .status == null
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.status == null) {
         status = "No Status found.";
       } else {
-        status = bot.caps(
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .status
-        );
+        status = bot.caps(fetch1.data.MediaListCollection.lists[listindex].entries[i].media.status);
       }
 
       let season;
       let start;
       let end;
       let airings = [];
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .season == null
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.season == null) {
         season = "";
       } else {
-        season = bot.caps(
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .season
-        );
+        season = bot.caps(fetch1.data.MediaListCollection.lists[listindex].entries[i].media.season);
       }
 
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .startDate.day == null ||
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .startDate.month == null ||
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .startDate.year == null
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.startDate.day == null || fetch1.data.MediaListCollection.lists[listindex].entries[i].media.startDate.month == null || fetch1.data.MediaListCollection.lists[listindex].entries[i].media.startDate.year == null) {
         start = "No Start or End date in Database.";
         airings.push(start);
       } else {
-        start =
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .startDate.day +
-          "." +
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .startDate.month +
-          "." +
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .startDate.year;
+        start = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.startDate.day + "." + fetch1.data.MediaListCollection.lists[listindex].entries[i].media.startDate.month + "." + fetch1.data.MediaListCollection.lists[listindex].entries[i].media.startDate.year;
       }
 
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .endDate.day == null ||
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .endDate.month == null ||
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .endDate.year == null
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.endDate.day == null || fetch1.data.MediaListCollection.lists[listindex].entries[i].media.endDate.month == null || fetch1.data.MediaListCollection.lists[listindex].entries[i].media.endDate.year == null) {
         end = "";
       } else {
-        end =
-          "to " +
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .endDate.day +
-          "." +
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .endDate.month +
-          "." +
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .endDate.year;
+        end = "to " + fetch1.data.MediaListCollection.lists[listindex].entries[i].media.endDate.day + "." + fetch1.data.MediaListCollection.lists[listindex].entries[i].media.endDate.month + "." + fetch1.data.MediaListCollection.lists[listindex].entries[i].media.endDate.year;
       }
 
       airings.push(season + " " + start + " " + end);
 
       let nextepi;
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .nextAiringEpisode == null
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.nextAiringEpisode == null) {
         nextepi = "No new Episodes to Air.";
       } else {
         let dateairing;
-        dateairing = new Date(
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .nextAiringEpisode.airingAt * 1000
-        );
+        dateairing = new Date(fetch1.data.MediaListCollection.lists[listindex].entries[i].media.nextAiringEpisode.airingAt * 1000);
         dateairing = dateairing.toUTCString();
-        dateairing =
-          `${moment(dateairing).format("DD.MM.YYYY")}` +
-          " at " +
-          `${moment(dateairing).format("hh:mm a")}`;
-        nextepi =
-          "Episode " +
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .nextAiringEpisode.episode +
-          ", Airing on: " +
-          dateairing;
+        dateairing = `${moment(dateairing).format("DD.MM.YYYY")}` + " at " + `${moment(dateairing).format("hh:mm a")}`;
+        nextepi = "Episode " + fetch1.data.MediaListCollection.lists[listindex].entries[i].media.nextAiringEpisode.episode + ", Airing on: " + dateairing;
       }
 
-      let episodes =
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .episodes;
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .episodes == null
-      ) {
+      let episodes = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.episodes;
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.episodes == null) {
         episodes = "No Episodes in the Database.";
       } else {
-        episodes =
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .episodes;
+        episodes = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.episodes;
       }
 
       let episodemin;
       let episodemins;
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .duration == null
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.duration == null) {
         episodemin = "No Duration in Database.";
       } else {
-        episodemin =
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .duration + " minutes";
-        episodemins =
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .duration;
+        episodemin = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.duration + " minutes";
+        episodemins = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.duration;
       }
 
       let time;
@@ -559,31 +391,17 @@ module.exports = async (bot, message, args, Discord) => {
       }
 
       let avgRating;
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .averageScore === null
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.averageScore === null) {
         avgRating = "No Rating in Database.";
       } else {
-        avgRating =
-          fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-          .averageScore + "%";
+        avgRating = fetch1.data.MediaListCollection.lists[listindex].entries[i].media.averageScore + "%";
       }
 
       let sourcefilter;
-      if (
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .source == null ||
-        fetch1.data.MediaListCollection.lists[listindex].entries[i].media
-        .source == undefined
-      ) {
+      if (fetch1.data.MediaListCollection.lists[listindex].entries[i].media.source == null || fetch1.data.MediaListCollection.lists[listindex].entries[i].media.source == undefined) {
         sourcefilter = "No Source in Database.";
       } else {
-        sourcefilter = bot.caps(
-          fetch1.data.MediaListCollection.lists[listindex].entries[
-            i
-          ].media.source.split("_")
-        );
+        sourcefilter = bot.caps(fetch1.data.MediaListCollection.lists[listindex].entries[i].media.source.split("_"));
       }
 
       const dominantColor = await getColorFromURL(coverIMG);
@@ -595,23 +413,7 @@ module.exports = async (bot, message, args, Discord) => {
         .setTitle(animetitle)
         .setColor(color)
         .setDescription(description)
-        .setFooter(
-          "Anilistname:" +
-          " " +
-          usercheck +
-          " " +
-          "|" +
-          " " +
-          "Animename:" +
-          " " +
-          animetitle +
-          " " +
-          "|" +
-          " " +
-          "AnimeID:" +
-          " " +
-          anilistmediaID
-        )
+        .setFooter("Anilistname: " + usercheck + " | " + "Animename: " + animetitle + " | " + "AnimeID: " + anilistmediaID)
         .setImage(posterIMG)
         .setThumbnail(coverIMG)
         .setTimestamp()
