@@ -25,7 +25,9 @@ module.exports = async (bot, message, args, Discord) => {
 
     let username = mention.username;
     let avatarurl = mention.avatarURL;
-    avatarurl = avatarurl.substring(0, avatarurl.indexOf('?'));
+  
+    let avatarfilter = avatarurl.indexOf('?');
+    avatarurl = avatarurl.substring(0, avatarfilter != -1 ? avatarfilter : avatarurl.length);
 
     let embed = new Discord.RichEmbed()
         .setTitle("Here is the Avatar for " + username + " in size " + size + "x" + size)
