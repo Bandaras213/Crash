@@ -2,9 +2,7 @@ const fetch = require("node-fetch");
 const moment = require("moment");
 const fs = require("fs");
 const p2w = require("../data/userp2w.js");
-const {
-  getColorFromURL
-} = require("color-thief-node");
+const { getColorFromURL } = require("color-thief-node");
 const rgbHex = require("rgb-hex");
 
 module.exports = async (bot, message, args, Discord) => {

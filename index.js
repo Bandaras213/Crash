@@ -49,6 +49,8 @@ bot.commands.set("yt", require("./commands/youtubesearch.js"));
 bot.commands.set("animekitsu", require("./commands/searchanimekitsu.js"));
 bot.commands.set("music", require("./commands/music.js"));
 bot.commands.set("rewatch", require("./commands/randomrewatchanime.js"));
+bot.commands.set("cheer", require("./commands/cheer.js"));
+bot.commands.set("avatar", require("./commands/avatar.js"));
 
 bot.login(bot.token);
 
