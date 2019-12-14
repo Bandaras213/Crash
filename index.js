@@ -51,6 +51,7 @@ bot.commands.set("music", require("./commands/music.js"));
 bot.commands.set("rewatch", require("./commands/randomrewatchanime.js"));
 bot.commands.set("cheer", require("./commands/cheer.js"));
 bot.commands.set("avatar", require("./commands/avatar.js"));
+bot.commands.set("activity", require("./commands/activity.js"));
 
 bot.login(bot.token);
 
