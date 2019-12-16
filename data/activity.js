@@ -1,7 +1,7 @@
 module.exports = `
 query($userId: Int){
-  Page(perPage: 4) {
-    activities(userId: $userId, sort: ID_DESC, type: MEDIA_LIST) {
+  Page(perPage: 6) {
+    activities(userId: $userId, sort: ID_DESC, type: ANIME_LIST) {
       ... on ListActivity {
         id
         type
