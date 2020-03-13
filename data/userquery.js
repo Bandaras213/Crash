@@ -4,6 +4,9 @@ query ($name: String, $id: Int, $search: String){
 		id
 		name
 		about(asHtml: false)
+		options {
+			profileColor
+		}
 		avatar{
       large
     }

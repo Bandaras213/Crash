@@ -17,19 +17,22 @@ query($userId: Int){
           avatar {
             large
           }
+          siteUrl
         }
         media {
           id
           type
+          format
+          status
+          coverImage {
+            large
+          }
+          bannerImage
           title {
             romaji
           }
           episodes
           siteUrl
-          coverImage {
-            large
-          }
-          bannerImage
         }
       }
     }
